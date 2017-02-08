@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/itemMyOrdersImg"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/real_name_bg"
+            android:gravity="center"
+            android:text="已实名"
+            android:textColor="@color/appGold"
+            android:textSize="10sp"/>
+
+        <TextView
+            android:id="@+id/itemMyOrdersMoneyTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:paddingRight="10dp"
+            android:textColor="@color/appGold"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_marginTop="-10dp"
+        android:id="@+id/itemMyOrdersTitleTv"
+        style="@style/marquee_text"
+        android:padding="10dp"
+        android:layout_marginBottom="-10dp"
+        android:textColor="@color/appBlack"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_marginBottom="-10dp"
+        android:id="@+id/itemMyOrdersContentTv"
+        style="@style/marquee_text"
+        android:padding="10dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/itemMyOrdersStateImg"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:id="@+id/itemMyOrdersStateTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/itemMyOrdersOtherBtn"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/order_item_btn_bg"
+                android:text="完成订单"/>
+
+            <TextView
+                android:id="@+id/itemMyOrdersDetailsBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/order_item_btn_bg"
+                android:text="订单详情"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+

@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:padding="20dp">
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/loaction_img"/>
+
+    <LinearLayout
+        android:id="@+id/rabbitBillingView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@drawable/filled_white_bg_no_wk"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/rabbitBillingAddressView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:text="位置:"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/rabbitBillingAddressEt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="请填写具体位置"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"
+            android:background="#ffeaeaea"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:text="标题:"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/rabbitBillingTitleEt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="请填写订单标题"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"
+            android:background="#ffeaeaea"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:text="费用:"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/rabbitBillingMoneyEt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="推荐费用约XX元"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"
+            android:background="#ffeaeaea"/>
+
+        <LinearLayout
+            android:id="@+id/rabbitBillingTimeView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:text="时间:"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/rabbitBillingDateTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/rabbitBillingTimeTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"
+            android:background="#ffeaeaea"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:text="电话:"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/rabbitBillingPhoneEt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="请填写电话号码"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"
+            android:background="#ffeaeaea"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="5dp"
+                android:text="详细:"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/rabbitBillingDetialEt"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="15dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                android:hint="请填写订单详细信息"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/rabbitBillingSubmitBtn"
+            layout="@layout/circular_progress_button"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+</RelativeLayout>

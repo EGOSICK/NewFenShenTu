@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_view"/>
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <include
+            android:id="@+id/orderDetailsMapView"
+            layout="@layout/order_details_map_view"/>
+
+        <include
+            android:id="@+id/orderDetailsMsgView"
+            layout="@layout/order_details_message_view"/>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/half_trans"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/orderDetailsUserImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:adjustViewBounds="true"/>
+
+            <TextView
+                android:id="@+id/orderDetailsNameTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="name"
+                android:textColor="@color/textBlack"
+                android:textSize="20sp"/>
+
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:layout_width="40dp"
+                android:scaleType="centerCrop"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:src="@mipmap/real_name_bg"/>
+
+            <TextView
+                android:id="@+id/orderDetailsMoneyTv"
+                android:textColor="@color/appGold"
+                android:layout_marginLeft="10dp"
+                android:textSize="18sp"
+                android:text="赏金 : 1234"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <ImageView
+                android:id="@+id/orderDetailsPhoneImg"
+                android:paddingLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/order_phone"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/orderDetailsChatView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+    </LinearLayout>
+</LinearLayout>

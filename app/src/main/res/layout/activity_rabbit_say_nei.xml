@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_view"/>
+    <View
+        style="@style/HorizontalLine"/>
+
+    <!--<include layout="@layout/item_forum_list"/>-->
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical">
+
+        <ListView
+            android:headerDividersEnabled="false"
+            android:id="@+id/forumListView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </ListView>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"/>
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <EditText
+            android:background="@color/transparent"
+            android:id="@+id/huiFuEt"
+            android:gravity="center_vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/huiFuBtn"
+            android:text="发送"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:background="@drawable/order_item_btn_bg"
+            android:layout_width="60dp"
+            android:layout_height="30dp"/>
+    </LinearLayout>
+</LinearLayout>

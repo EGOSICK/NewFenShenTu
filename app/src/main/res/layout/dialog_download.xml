@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:gastudio="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:background="@drawable/filled_white_bg"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下载中..."
+            android:textColor="@color/appBlue"
+            android:textSize="18sp"/>
+
+        <com.gastudio.downloadloadding.library.GADownloadingView
+            android:id="@+id/ga_downloading"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            gastudio:arrow_color="@color/appBlue"
+            gastudio:done_text_color="@color/white"
+            gastudio:loading_circle_back_color="@color/appBlack"
+            gastudio:loading_line_color="@color/appGray"
+            gastudio:progress_line_color="@color/appBlue"
+            gastudio:progress_text_color="@color/white"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/backDownBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@color/transparent"
+                android:text="后台下载"
+                android:textColor="@color/appBlue"
+                android:textSize="16sp"/>
+
+            <Button
+                android:id="@+id/downBtn"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:background="@color/transparent"
+                android:text="取消"
+                android:textColor="@color/appBlue"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

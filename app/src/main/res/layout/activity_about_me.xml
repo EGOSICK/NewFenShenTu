@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/appSGray"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/title_view"/>
+
+    <LinearLayout
+        style="@style/setting_bg">
+
+        <TextView
+            style="@style/settting_tv"
+            android:text="关于我们"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/aboutFSTView"
+        style="@style/setting_bg"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/settting_tv"
+            android:text="关于分身兔"/>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        android:background="@color/appSGray"/>
+
+    <LinearLayout
+        android:id="@+id/serviceProvisionView"
+        style="@style/setting_bg"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/settting_tv"
+            android:text="服务条款"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/setting_bg">
+
+        <TextView
+            style="@style/settting_tv"
+            android:text="分销模式"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/setting_bg"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/settting_tv"
+            android:layout_weight="1"
+            android:text="推广用户"/>
+
+        <TextView
+            android:id="@+id/aboutMePromoteUserNumTv"
+            style="@style/settting_tv"
+            android:layout_marginRight="10dp"/>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        android:background="@color/appSGray"/>
+
+    <LinearLayout
+        android:id="@+id/recommendView"
+        style="@style/setting_bg"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/settting_tv"
+            android:text="直接推广"/>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"
+        android:background="@color/appSGray"/>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/fillInRecommendedPersonView"
+        style="@style/setting_bg"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/settting_tv"
+            android:text="填写推荐人"/>
+    </LinearLayout>
+</LinearLayout>

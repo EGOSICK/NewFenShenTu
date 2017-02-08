@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="110dp"
+              android:background="@drawable/filled_white_bg_no_wk"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <com.xiandong.fst.view.customview.CircularImageView
+            android:id="@+id/itemFriendRNUserPhotoImg"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/itemFriendRNUserNameTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:textColor="#FF454545"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:textColor="#FF979797"
+            android:id="@+id/itemFriendRNUserDistanceTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
+    <View
+        android:background="#FFE7E8E4"
+        style="@style/HorizontalLine"/>
+
+    <LinearLayout
+        android:id="@+id/itemFriendRNOtherView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/itemFriendRNOtherPhoneImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_phone"/>
+
+        <View
+            android:background="#FFE7E8E4"
+            style="@style/VerticalLine"/>
+
+        <ImageView
+            android:id="@+id/itemFriendRNOtherChatImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_chat"/>
+
+        <View
+            android:background="#FFE7E8E4"
+            style="@style/VerticalLine"/>
+
+        <ImageView
+            android:id="@+id/itemFriendRNOtherYueImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_meet"/>
+
+        <View
+            android:background="#FFE7E8E4"
+            style="@style/VerticalLine"/>
+
+        <ImageView
+            android:id="@+id/itemFriendRNOtherLocationImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_location"/>
+
+        <View
+            android:background="#FFE7E8E4"
+            style="@style/VerticalLine"/>
+
+        <ImageView
+            android:id="@+id/itemFriendRNUserCardImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_people"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemFriendRNMeView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/itemFriendRNMeOrdersImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_me_one"/>
+
+        <View
+            android:background="#FFE7E8E4"
+            style="@style/VerticalLine"/>
+
+        <ImageView
+            android:id="@+id/itemFriendRNMePurseImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_me_two"/>
+
+        <View
+            android:background="#FFE7E8E4"
+            style="@style/VerticalLine"/>
+
+        <ImageView
+            android:id="@+id/itemFriendRNMeChatImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_chat"/>
+
+        <View
+            android:background="#FFE7E8E4"
+            style="@style/VerticalLine"/>
+
+        <ImageView
+            android:id="@+id/itemFriendRNMeRabbitImg"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="10dp"
+            android:scaleType="centerInside"
+            android:src="@mipmap/item_friends_rn_me_foru"/>
+    </LinearLayout>
+
+</LinearLayout>

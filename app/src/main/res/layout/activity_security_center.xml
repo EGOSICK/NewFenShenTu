@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_view"/>
+
+    <View
+        style="@style/HorizontalLine"/>
+
+    <ScrollView
+        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                style="@style/setting_bg">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:text="账号绑定"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/securityCenterWXBDView"
+                style="@style/setting_bg"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:layout_weight="1"
+                    android:text="微信绑定"/>
+
+                <TextView
+                    android:id="@+id/securityCenterWXBDTv"
+                    style="@style/settting_tv"
+                    android:paddingRight="20dp"
+                    android:text="未绑定"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/securityCenterPhoneBDView"
+                style="@style/setting_bg"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:layout_weight="1"
+                    android:text="手机号绑定"/>
+
+                <TextView
+                    android:id="@+id/securityCenterPhoneBDTv"
+                    style="@style/settting_tv"
+                    android:paddingRight="20dp"
+                    android:text="未绑定"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/setting_bg">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:text="密码管理"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/securityCenterPayPasswordView"
+                style="@style/setting_bg"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:text="支付密码"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/securityCenterLogInPswView"
+                style="@style/setting_bg"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:text="登录密码"/>
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/setting_bg">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:text="实名认证"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/securityCenterShiMingView"
+                style="@style/setting_bg"
+                android:background="@color/white">
+
+                <TextView
+                    style="@style/settting_tv"
+                    android:layout_weight="1"
+                    android:text="实名认证"/>
+
+                <TextView
+                    android:id="@+id/securityCenterShiMingTv"
+                    style="@style/settting_tv"
+                    android:paddingRight="20dp"
+                    android:text="未认证"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

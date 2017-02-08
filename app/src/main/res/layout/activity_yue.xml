@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_view"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.baidu.mapapi.map.MapView
+            android:id="@+id/mMapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.baidu.mapapi.map.MapView>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:paddingBottom="30dp"
+            android:src="@mipmap/loaction_img"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+        <View
+            style="@style/HorizontalLine"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="位置 : "
+                android:textColor="@color/textBlack"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/yueAddressEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:hint="请选择要到达的地点"
+                android:singleLine="true"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"/>
+
+        <LinearLayout
+            android:id="@+id/yueTimeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="时间 : "
+                android:textColor="@color/textBlack"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/yueDateTimeTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/yueTimeTimeTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <View
+            style="@style/HorizontalLine"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="好友 : "
+                android:textColor="@color/textBlack"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/yueFriendsNumTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/appBlue"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:paddingLeft="15dp"
+                android:id="@+id/yueFriendsRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="备注 : "
+                android:textColor="@color/textBlack"
+                android:textSize="15sp"/>
+
+            <EditText
+                android:id="@+id/yueBzEt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:hint="请填写备注信息"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/yueCommitBtn"
+            layout="@layout/circular_progress_button"/>
+    </LinearLayout>
+</LinearLayout>

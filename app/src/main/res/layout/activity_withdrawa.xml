@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_view"/>
+
+    <LinearLayout
+        style="@style/setting_bg">
+
+        <TextView
+            style="@style/settting_tv"
+            android:text="提现到支付宝"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="账号:"
+            android:textColor="@color/appBlack"
+            android:textSize="17sp"/>
+
+        <EditText
+            android:id="@+id/withdrawalAccountEt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:gravity="right"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓名:"
+            android:textColor="@color/appBlack"
+            android:textSize="17sp"/>
+
+        <EditText
+            android:inputType="textPersonName"
+            android:id="@+id/withdrawalNameEt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:gravity="right"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号:"
+            android:textColor="@color/appBlack"
+            android:textSize="17sp"/>
+
+        <EditText
+            android:inputType="number"
+            android:id="@+id/withdrawalPhoneEt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:gravity="right"
+            android:singleLine="true"/>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="金额:"
+            android:textColor="@color/appBlack"
+            android:textSize="17sp"/>
+
+        <EditText
+            android:inputType="numberDecimal"
+            android:id="@+id/withdrawalEt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/transparent"
+            android:gravity="right"
+            android:singleLine="true"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:text="元"
+            android:textColor="@color/appBlack"
+            android:textSize="17sp"/>
+    </LinearLayout>
+
+    <View
+        style="@style/HorizontalLine"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/haveMoneyTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="余额: 100 元"/>
+
+        <TextView
+            android:id="@+id/withdrawalAllTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全部提现"
+            android:textColor="@color/appBlue"/>
+    </LinearLayout>
+
+    <include
+        android:id="@+id/withdrawalBtn"
+        layout="@layout/circular_progress_button"
+        />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/withdrawalRulesTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        android:text="体现规则"/>
+</LinearLayout>

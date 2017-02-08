@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/filled_white_bg"
+              android:orientation="vertical"
+              android:paddingBottom="40dp"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp"
+              android:paddingTop="40dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="填写推荐人电话号"
+        android:textColor="@color/appBlack"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="根据规则,仅在用户注册成功后7天内有效"
+        android:textSize="15sp"/>
+
+    <EditText
+        android:id="@+id/dialogFillInEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:inputType="phone"
+        android:maxLength="11"
+        android:maxLines="1"
+        android:textSize="15sp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.dd.CircularProgressButton
+            android:id="@+id/dialogFillInBtn"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:cpb_cornerRadius="48dp"
+            app:cpb_iconComplete="@mipmap/circular_progress_button_true"
+            app:cpb_iconError="@mipmap/circular_progress_button_error"
+            app:cpb_selectorIdle="@color/appBlue"
+            app:cpb_textIdle=""
+            />
+    </RelativeLayout>
+
+
+</LinearLayout>

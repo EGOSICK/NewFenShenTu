@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:toggle="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:background="@color/white">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@color/appBlue"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.xiandong.fst.view.customview.CircularImageView
+                android:id="@+id/userCardImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <EditText
+                    android:id="@+id/userCardNameEt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_centerInParent="true"
+                    android:enabled="false"
+                    android:maxLines="1"
+                    android:maxWidth="250dp"
+                    android:textColor="@color/textBlack"
+                    android:textSize="18sp"/>
+
+                <ToggleButton
+                    android:id="@+id/userCardChangeNameTb"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@+id/userCardNameEt"
+                    android:background="@mipmap/me_change_name"
+                    android:button="@null"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn=""/>
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/titleBackImg"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"
+                android:padding="5dp"
+                android:src="@mipmap/title_back_white"/>
+
+            <TextView
+                android:id="@+id/titleTitleTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/appBlack"
+                android:textSize="16sp"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:paddingRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/setting_bg"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/settting_tv"
+                android:text="好友电话:"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:textColor="@color/textBlack"
+                android:id="@+id/userCardPhoneTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:maxLines="1"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/setting_bg"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/settting_tv"
+                android:text="信誉积分:"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/userCardCreditTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:maxLines="1"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/setting_bg"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/settting_tv"
+                android:text="是否实名:"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:id="@+id/userCardRealNameTv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="right|center_vertical"
+                android:maxLines="1"
+                android:textSize="18sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/setting_bg"
+            android:background="@color/white">
+
+            <TextView
+                style="@style/settting_tv"
+                android:layout_weight="1"
+                android:text="屏蔽位置:"
+                android:textSize="18sp"/>
+
+            <com.zcw.togglebutton.ToggleButton
+                android:id="@+id/userCardShieldingPositionTb"
+                android:layout_width="45dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                toggle:tbAsDefaultOn="true"
+                toggle:tbBorderWidth="0.5dp"
+                toggle:tbOffBorderColor="@color/appSGray"
+                toggle:tbOffColor="@color/appSGray"
+                toggle:tbOnColor="@color/appBlue"
+                toggle:tbSpotColor="@color/white"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/userCardDeleteFriendTv"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/delete_friend_btn_bg"
+        android:gravity="center"
+        android:text="删除好友"
+        android:textColor="#FFFB4B4F"
+        android:textSize="18sp"/>
+</LinearLayout>

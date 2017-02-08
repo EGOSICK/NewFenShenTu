@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="@color/white"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+    <include layout="@layout/title_view"/>
+
+    <View
+        style="@style/HorizontalLine"/>
+
+    <RelativeLayout
+        android:id="@+id/jiFengView"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="当前积分"
+            android:textSize="20sp"/>
+
+        <ImageView
+            android:id="@+id/yuanBg"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/xin_yu_ji_fen_bg"/>
+
+        <TextView
+            android:id="@+id/creditScoreTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="0"
+            android:maxLines="1"
+            android:maxLength="5"
+            android:textColor="@color/white"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:gravity="center"
+            android:id="@+id/jiFenXQTv"
+            android:text="积分详情"
+            android:textSize="16sp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:background="@drawable/order_item_btn_bg"
+            android:layout_marginTop="50dp"
+            android:layout_below="@+id/creditScoreTv"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="-250dp"
+        android:id="@+id/bottomView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/jiFengView"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <View
+            style="@style/HorizontalLine"
+            android:layout_marginTop="15dp"/>
+
+        <ImageView
+            android:id="@+id/upImg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:background="@color/white"
+            android:src="@mipmap/up_arrow"/>
+
+        <TextView
+            android:id="@+id/xinYuSHuoMingTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/upImg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="信誉积分说明"
+            android:textColor="@color/black"
+            android:textSize="20sp"/>
+
+
+        <TextView
+            android:layout_below="@+id/xinYuSHuoMingTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:padding="10dp"
+            android:text="@string/xin_yu_ji_fen"
+            android:textSize="16sp"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/filled_white_bg"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/haveOrdersView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/itemROLContentTitleTv"
+                style="@style/marquee_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/appBlack"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/itemROLContentMoneyTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/appGold"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/itemROLContentContentTv"
+            style="@style/marquee_text"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/appGray"
+            android:textSize="14sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/itemROLContentAddressTv"
+                style="@style/marquee_text"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textColor="@color/appGray"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:id="@+id/itemROLContentDistanceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/appGray"
+                android:textSize="14sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.xiandong.fst.view.customview.CircularImageView
+                android:id="@+id/itemROLContentUserImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@color/appBlue"/>
+
+            <ImageView
+                android:id="@+id/itemROLContentIsSmImg"
+                android:layout_width="35dp"
+                android:layout_height="15dp"
+                android:layout_marginLeft="10dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/real_name_bg"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/itemRabbitOrdersRobBtn"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:background="@drawable/blue_btn_selector"
+                android:text="抢单"
+                android:textColor="@color/white"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/noOrdersView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="暂无订单"
+            android:textColor="@color/appBlack"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+</LinearLayout>

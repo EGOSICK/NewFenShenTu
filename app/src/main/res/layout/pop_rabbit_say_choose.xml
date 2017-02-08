@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:background="@drawable/filled_white_bg"
+              android:gravity="center"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/popRabbitSayChooseKeyTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:text="关键字"
+        android:textColor="@color/appBlack"
+        android:textSize="15sp"/>
+
+    <View
+        style="@style/HorizontalLine"/>
+
+    <TextView
+        android:id="@+id/popRabbitSayChoosePositionTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="5dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="5dp"
+        android:text="位置"
+        android:textColor="@color/appBlack"
+        android:textSize="15sp"/>
+</LinearLayout>

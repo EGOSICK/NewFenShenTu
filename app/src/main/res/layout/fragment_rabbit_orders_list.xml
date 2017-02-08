@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:paddingTop="15dp"
+              android:paddingLeft="15dp"
+              android:paddingRight="15dp"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include
+        layout="@layout/empty_view"/>
+
+    <ListView
+        android:id="@+id/rabbitOrdersListLv"
+        android:dividerHeight="15dp"
+        android:scrollbars="none"
+        android:divider="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </ListView>
+
+</LinearLayout>
