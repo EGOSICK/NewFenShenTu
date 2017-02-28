@@ -56,9 +56,6 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
     protected void initialize() {
         context = this;
         titleTitleTv.setText("加好友");
-
-
-
         addFriendsSearchEt.clearFocus();
         adapter = new SearchFriendsAdapter(context);
         titleAdapter = new AddFriendsTitleAdapter(getSupportFragmentManager());

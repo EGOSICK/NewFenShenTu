@@ -85,7 +85,8 @@
         <activity android:name=".view.activity.ChangeLogInPasswordActivity"/>
         <activity android:name=".view.activity.RealNameAuthenticationActivity"/>
         <activity android:name=".view.activity.RecommendActivity"/>
-        <activity android:name=".view.activity.MyOrdersActivity"/>
+        <activity android:name=".view.activity.MyOrdersActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".view.activity.AddFriendsActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".view.activity.CaptureActivity"/>
@@ -103,7 +104,8 @@
         <activity
             android:name=".view.activity.YueActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
-        <activity android:name=".view.activity.MyRabbitSayActivity"/>
+        <activity android:name=".view.activity.MyRabbitSayActivity"
+                  android:launchMode="singleTask"/>
         <activity
             android:name=".view.activity.MyChatActivity"
             android:launchMode="singleTask"/>

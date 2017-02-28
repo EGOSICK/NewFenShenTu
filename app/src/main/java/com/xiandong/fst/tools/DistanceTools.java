@@ -29,9 +29,9 @@ public class DistanceTools {
     public static String changeDistance(String position, LatLng LocationPosition) {
         String distance = "0m";
         if (LocationPosition != null) {
-            if (!StringUtil.isEmpty(position) &&position.length() > 0 ){
+            if (!StringUtil.isEmpty(position) && position.length() > 0) {
                 String dis[] = position.split(";");
-                if (dis.length == 2){
+                if (dis.length == 2) {
                     double j = Double.parseDouble(dis[0]);
                     double w = Double.parseDouble(dis[1]);
                     double lj = LocationPosition.latitude;
@@ -46,6 +46,23 @@ public class DistanceTools {
             }
         }
         return distance;
+    }
+
+    public static double calculationDistance(String position, LatLng latLng) {
+        if (latLng != null) {
+            if (!StringUtil.isEmpty(position) && position.length() > 0){
+                String dis[] = position.split(";");
+                if (dis.length == 2) {
+                    double j = Double.parseDouble(dis[0]);
+                    double w = Double.parseDouble(dis[1]);
+                    double lj = latLng.latitude;
+                    double lw = latLng.longitude;
+                    double m = calculateDistance(j, w, lj, lw);
+                    return m;
+                }
+            }
+        }
+        return 0;
     }
 
 }

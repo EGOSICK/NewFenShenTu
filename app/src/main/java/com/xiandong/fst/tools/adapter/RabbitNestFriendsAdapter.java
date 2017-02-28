@@ -53,7 +53,6 @@ public class RabbitNestFriendsAdapter extends RecyclingPagerAdapter implements F
     FriendsManagerPresenterImpl presenter =
             new FriendsManagerPresenterImpl(RabbitNestFriendsAdapter.this);
 
-
     @Override
     public void changeFriendMessageSuccess(String msg) {
 
@@ -306,8 +305,15 @@ public class RabbitNestFriendsAdapter extends RecyclingPagerAdapter implements F
                                     initNetWork(fm.getId(), fm.getUimg(), fm.getUnicheng());
                                     break;
                                 case R.id.itemFriendRNZuDaoHangImg:
-                                    StyledDialogTools.showLoding(context);
-                                    listener.clickListener(5, fm.getPosition(), fm.getPcontent());
+                                    double distance = DistanceTools.calculationDistance(
+                                            fm.getPosition(), location);
+                                    if (distance >= 300) {
+                                        StyledDialogTools.showLoding(context);
+                                        listener.clickListener(5, fm.getPosition(), fm.getPcontent());
+
+                                    }else {
+                                        CustomToast.customToast(false,"距离太近,无法计算路线",context);
+                                    }
                                     break;
                                 case R.id.itemFriendRNZuLogoutImg:
                                     StyledDialogTools.showLogoutMeetDialog(context, new MyDialogListener() {

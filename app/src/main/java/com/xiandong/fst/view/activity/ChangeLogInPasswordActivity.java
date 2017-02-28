@@ -12,6 +12,7 @@ import com.xiandong.fst.presenter.ChangeUserMessagePresenterImpl;
 import com.xiandong.fst.presenter.GetVerificationCodePresenterImpl;
 import com.xiandong.fst.tools.CircularProgressButtonTools;
 import com.xiandong.fst.tools.CustomToast;
+import com.xiandong.fst.tools.dbmanager.AppDbManager;
 import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.ChangeUserMessageView;
 import com.xiandong.fst.view.GetVerificationCodeView;
@@ -48,6 +49,7 @@ public class ChangeLogInPasswordActivity extends AbsBaseActivity implements Chan
         changeLogInPasswordBtn.setIdleText("完成");
         titleTitleTv.setText("修改密码");
         codePresenter = new GetVerificationCodePresenterImpl(this);
+        changeLogInPswPhoneEt.setText(AppDbManager.getLastUser().getUserPhone());
     }
 
     @Event(type = View.OnClickListener.class, value = {R.id.titleBackImg,

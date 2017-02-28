@@ -6,4 +6,5 @@ package com.xiandong.fst.tools.jpush;
 public interface IListener<T> {
     void notifyAllActivity(T t);
 
+    void changePager(int flag ,String id);
 }

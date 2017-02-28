@@ -36,10 +36,13 @@ import com.xiandong.fst.model.bean.EWaiPayBean;
 import com.xiandong.fst.model.bean.OrderDetailsMsgBean;
 import com.xiandong.fst.presenter.OrderDetailsPresenterImpl;
 import com.xiandong.fst.tools.CustomToast;
+import com.xiandong.fst.tools.IsOrderInvaild;
 import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.XCircleImgTools;
 import com.xiandong.fst.tools.dbmanager.AppDbManager;
 import com.xiandong.fst.tools.chat.ChatTools;
+import com.xiandong.fst.tools.jpush.IListener;
+import com.xiandong.fst.tools.jpush.JPushListenerManager;
 import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.OrderDetailsView;
 import com.xiandong.fst.view.fragment.ChatBaseFragment;
@@ -122,22 +125,34 @@ public class OrderDetailsActivity extends AbsBaseActivity implements OrderDetail
             }
         }, AppDbManager.getUserId(), sendId);
 
-//        eWaiEt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean b) {
-//                if (!b) {
-////                    topView.setVisibility(View.GONE);
-//                    setAnimation(roteBtn, 0, 180);
-//                    isShowDtl = false;
-//                } else {
-////                    topView.setVisibility(View.VISIBLE);
-////                    setAnimation(roteBtn, 180, 360);
-////                    isShowDtl = true;
-//                }
-////                showOrDisMiss();
-//            }
-//        });
 
+        JPushListenerManager.getInstance().registerListtener(new IListener() {
+            @Override
+            public void notifyAllActivity(Object o) {
+
+            }
+
+            @Override
+            public void changePager(int flag ,String id) {
+                switch (flag){
+                    case 6:
+                        if (StringUtil.isEquals(id, orderId)) {
+                            finish();
+                        }
+                        break;
+                    case 8:
+                        if (StringUtil.isEquals(id, orderId)) {
+                            initOrderMessage(id);
+                        }
+                        break;
+                    case 9:
+                        if (StringUtil.isEquals(id, orderId)) {
+                            finish();
+                        }
+                        break;
+                }
+            }
+        });
         return orderId;
     }
 
@@ -473,6 +488,15 @@ public class OrderDetailsActivity extends AbsBaseActivity implements OrderDetail
 
     @Override
     protected void onResume() {
+        IsOrderInvaild invaild = new IsOrderInvaild();
+        invaild.loadOrderMsg(orderId, new IsOrderInvaild.IsOrdering() {
+            @Override
+            public void isOrdering(boolean is) {
+                if (!is){
+                    finish();
+                }
+            }
+        });
         // MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
         mapView.onResume();
         super.onResume();

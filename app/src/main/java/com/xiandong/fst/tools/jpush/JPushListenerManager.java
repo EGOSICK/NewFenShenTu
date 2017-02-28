@@ -49,4 +49,10 @@ public class JPushListenerManager<T> {
         }
     }
 
+    public void changePager(int flag ,String id){
+        for (IListener iListener : iListenerList) {
+            iListener.changePager(flag ,id);
+        }
+    }
+
 }

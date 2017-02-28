@@ -52,6 +52,7 @@ import com.xiandong.fst.application.Constant;
 import com.xiandong.fst.model.bean.SearchAddressBean;
 import com.xiandong.fst.presenter.MarkerPresenterImpl;
 import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
+import com.xiandong.fst.tools.IsOrderInvaild;
 import com.xiandong.fst.tools.chat.ChatTools;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.StyledDialogTools;
@@ -98,6 +99,8 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
     String locationCity;
     String locationAddress;
     NaviHelpTools naviHelpTools;
+    IsOrderInvaild invaild = new IsOrderInvaild();
+
 
     @Override
     protected void initialize() {
@@ -126,7 +129,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                         }
 
                         try {
-                            name =  message.getStringAttribute("name") ;
+                            name = message.getStringAttribute("name");
                         } catch (HyphenateException e) {
                             e.printStackTrace();
                         }
@@ -149,7 +152,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                         } catch (HyphenateException e) {
                             e.printStackTrace();
                         }
-                        return name +": "+ msg;
+                        return name + ": " + msg;
                     }
 
                     @Override
@@ -186,7 +189,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
 
                     @Override
                     public Intent getLaunchIntent(EMMessage message) {
-                        Intent intent = new Intent();
+                        final Intent intent = new Intent();
                         if (message.getChatType() == EMMessage.ChatType.Chat) {
                             intent.setClass(getApplicationContext(), MyChatActivity.class);
                             intent.putExtra("id", message.getFrom());
@@ -199,8 +202,19 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                                         intent.setClass(getApplicationContext(), MeetChatActivity.class);
                                         intent.putExtra("id", orderid.substring(4, orderid.length()));
                                     } else {
-                                        intent.setClass(getApplicationContext(), OrderDetailsActivity.class);
-                                        intent.putExtra("orderId", orderid.substring(5, orderid.length()));
+                                        final String orderId = orderid.substring(5, orderid.length());
+
+                                        invaild.loadOrderMsg(orderId, new IsOrderInvaild.IsOrdering() {
+                                            @Override
+                                            public void isOrdering(boolean is) {
+                                                if (is){
+                                                    intent.setClass(getApplicationContext(), OrderDetailsActivity.class);
+                                                    intent.putExtra("orderId", orderId);
+                                                }else {
+                                                    intent.setClass(context, MyOrdersActivity.class);
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             } catch (HyphenateException e) {
@@ -215,25 +229,93 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         JPushListenerManager.getInstance().registerListtener(new IListener() {
             @Override
             public void notifyAllActivity(Object o) {
-                NoticeTag tag = (NoticeTag) o;
-                Intent intent = new Intent();
+                final NoticeTag tag = (NoticeTag) o;
+                final Intent intent = new Intent();
                 switch (tag.getTag()) {
                     case 1:  // 请求添加好友
                         intent.setClass(context, AddFriendsActivity.class)
                                 .putExtra("notice", "1");
+                        startActivity(intent);
                         break;
                     case 2:  // 同意好友申请
                         intent.setClass(context, AddFriendsActivity.class)
                                 .putExtra("notice", "1");
+                        startActivity(intent);
                         break;
-                    case 3:
-                        intent.setClass(context , MessageWebViewActivity.class)
-                                .putExtra("url",tag.getUrl());
+                    case 3:  // 系统消息
+                        intent.setClass(context, MessageWebViewActivity.class)
+                                .putExtra("url", tag.getUrl());
+                        startActivity(intent);
+                        break;
+                    case 4:  // 创建群组
+                        intent.setClass(context, MeetChatActivity.class)
+                                .putExtra("id", tag.getId());
+                        startActivity(intent);
+                        break;
+                    case 5:  // 接单
+                        invaild.loadOrderMsg(tag.getId(), new IsOrderInvaild.IsOrdering() {
+                            @Override
+                            public void isOrdering(boolean is) {
+                                if (is){
+                                    intent.setClass(context, OrderDetailsActivity.class)
+                                            .putExtra("orderId", tag.getId())
+                                            .putExtra("sendId", tag.getUid());
+                                    startActivity(intent);
+                                }else {
+                                    intent.setClass(context, MyOrdersActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                        break;
+                    case 6:  // 强制取消
+                        intent.setClass(context, MyOrdersActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 7:  // 协商取消
+                        invaild.loadOrderMsg(tag.getId(), new IsOrderInvaild.IsOrdering() {
+                            @Override
+                            public void isOrdering(boolean is) {
+                                if (is){
+                                    intent.setClass(context, OrderDetailsActivity.class)
+                                            .putExtra("orderId", tag.getId())
+                                            .putExtra("sendId", tag.getUid());
+                                    startActivity(intent);
+                                }else {
+                                    intent.setClass(context, MyOrdersActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                        break;
+                    case 8:  // 额外金额
+                        invaild.loadOrderMsg(tag.getId(), new IsOrderInvaild.IsOrdering() {
+                            @Override
+                            public void isOrdering(boolean is) {
+                                if (is){
+                                    intent.setClass(context, OrderDetailsActivity.class)
+                                            .putExtra("orderId", tag.getId())
+                                            .putExtra("sendId", tag.getUid());
+                                    startActivity(intent);
+                                }else {
+                                    intent.setClass(context, MyOrdersActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+                        });
+                        break;
+                    case 9:  // 完成订单
+                        intent.setClass(context, MyOrdersActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 10: // 回复兔子说
+                        intent.setClass(context, MyRabbitSayActivity.class);
+                        startActivity(intent);
                         break;
                 }
-                startActivity(intent);
             }
-
+            @Override
+            public void changePager(int flag ,String price) {}
         });
     }
 
@@ -734,7 +816,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         }
         // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
         mapView.onDestroy();
-        BaiduNaviManager.getInstance().uninit();
+//        BaiduNaviManager.getInstance().uninit();
         super.onDestroy();
     }
 

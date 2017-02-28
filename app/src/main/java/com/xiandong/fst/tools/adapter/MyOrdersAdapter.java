@@ -178,6 +178,8 @@ public class MyOrdersAdapter extends BaseAdapter {
                     });
                     break;
                 case "3":  // 未完成
+
+
                     holder.itemMyOrdersStateTv.setText("未完成");
                     holder.itemMyOrdersStateImg.setImageResource(R.mipmap.wei_wan_cheng);
                     holder.itemMyOrdersOtherBtn.setVisibility(View.GONE);

@@ -57,8 +57,27 @@ public class MyReceiver extends BroadcastReceiver {
                 }
             }
         }
-//        if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-//        }
+        if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
+            if (bundle != null && bundle.getString(JPushInterface.EXTRA_EXTRA) != null) {
+                try {
+                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
+                    int flag = json.getInt("flag");
+                    switch (flag){
+                        case 8:  // 额外金额
+                            JPushListenerManager.getInstance().changePager(flag,json.getString("id"));
+                            break;
+                        case 6:  // 强制取消
+                            JPushListenerManager.getInstance().changePager(flag,json.getString("id"));
+                            break;
+                        case 9:  // 完成订单
+                            JPushListenerManager.getInstance().changePager(flag,json.getString("id"));
+                            break;
+                    }
+                }catch (JSONException e){
+                    Log.e(TAG, "Get message extra JSON error!");
+                }
+            }
+        }
     }
 
 

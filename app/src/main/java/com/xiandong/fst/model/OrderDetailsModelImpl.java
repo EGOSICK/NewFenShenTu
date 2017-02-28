@@ -27,7 +27,6 @@ public class OrderDetailsModelImpl implements OrderDetailsModel {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.d("OrderDetailsModelImpl", result);
                 AbsBaseBean bean = GsonUtil.fromJson(result, AbsBaseBean.class);
                 switch (bean.getResult()) {
                     case Constant.HTTPSUCCESS:

@@ -183,11 +183,17 @@ public class SettingActivity extends AbsBaseActivity implements LogOutView {
 
     @Override
     public void logOutSuccess() {
-        EMClient.getInstance().logout(true);
-        Intent intent = new Intent();
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.setClass(context, LogInActivity.class);
-        startActivity(intent);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                EMClient.getInstance().logout(true);
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.setClass(context, LogInActivity.class);
+                startActivity(intent);
+            }
+        }).start();
+
     }
 
     @Override
