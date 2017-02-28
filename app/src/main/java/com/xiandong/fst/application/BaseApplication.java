@@ -1,7 +1,9 @@
 package com.xiandong.fst.application;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDex;
+
 import com.baidu.mapapi.SDKInitializer;
 import com.hyphenate.easeui.DemoApplication;
 import com.hyphenate.easeui.DemoHelper;
@@ -9,7 +11,11 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiandong.fst.tools.jpush.IListener;
 import com.xiandong.fst.tools.jpush.JPushListenerManager;
+import com.xiandong.fst.tools.jpush.NoticeTag;
+import com.xiandong.fst.view.activity.AddFriendsActivity;
+
 import org.xutils.x;
+
 import cn.jpush.android.api.JPushInterface;
 
 /**
@@ -39,8 +45,17 @@ public class BaseApplication extends DemoApplication {
         JPushListenerManager.getInstance().registerListtener(new IListener() {
             @Override
             public void notifyAllActivity(Object o) {
-
+                NoticeTag tag = (NoticeTag) o;
+                Intent intent = new Intent();
+                switch (tag.getTag()) {
+                    case 1:  // 请求添加好友
+                        intent.setClass(getApplicationContext(), AddFriendsActivity.class)
+                                .putExtra("notice", "1");
+                        break;
+                }
+                getApplicationContext().startActivity(intent);
             }
+
         });
     }
 
@@ -49,4 +64,5 @@ public class BaseApplication extends DemoApplication {
         super.attachBaseContext(base);
         MultiDex.install(this);
     }
+
 }

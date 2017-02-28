@@ -98,8 +98,6 @@ public class OrderDetailsActivity extends AbsBaseActivity implements OrderDetail
     private String initView() {
         titleTitleTv.setText("订单详情");
         Intent intent = getIntent();
-//        final String name = intent.getStringExtra("name");
-//        final String img = intent.getStringExtra("img");
         final String sendId = intent.getStringExtra("sendId");
         final String orderId = intent.getStringExtra("orderId");
         ChatTools.chooseGroup("order" + orderId, new ChatTools.chooseGroupComplete() {
