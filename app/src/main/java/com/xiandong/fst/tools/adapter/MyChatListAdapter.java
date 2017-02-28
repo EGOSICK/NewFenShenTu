@@ -34,8 +34,6 @@ public class MyChatListAdapter extends BaseAdapter {
     private List<FriendsBean.FriendEntity> list;
     private OnMyItemSelectListener listener;
 
-//    private HashMap<String, int[]> noticeMap = new HashMap<>();
-
     public interface OnMyItemSelectListener {
         void onMyItemSelect(int position);
     }
@@ -80,14 +78,6 @@ public class MyChatListAdapter extends BaseAdapter {
         return null;
     }
 
-//    public void getSingleMessage(String friendId) {
-//        if (noticeMap.containsKey(friendId)) {
-//            noticeMap.put(friendId, new int[]{0, noticeMap.get(friendId)[1]++});
-//        } else {
-//            noticeMap.put(friendId, new int[]{});
-//        }
-//    }
-
     @Override
     public long getItemId(int i) {
         return 0;
@@ -98,19 +88,20 @@ public class MyChatListAdapter extends BaseAdapter {
         view = LayoutInflater.from(context).inflate(R.layout.item_my_chat, viewGroup, false);
         ImageView chatListImg = (ImageView) view.findViewById(R.id.chatListImg);
         TextView chatListTv = (TextView) view.findViewById(R.id.chatListTv);
-        DragIndicatorView indicator = (DragIndicatorView) view.findViewById(R.id.indicator);
+        final DragIndicatorView indicator = (DragIndicatorView) view.findViewById(R.id.indicator);
         if (isMapNotNull()) {
+            final EMConversation conversation = EMClient.getInstance().chatManager()
+                    .getConversation(list.get(i).getUser_id());
             XCircleImgTools.setCircleImg(chatListImg, list.get(i).getImg());
             String s = StringUtil.isEmpty(list.get(i).getBz()) ? list.get(i).getNicheng() : list.get(i).getBz();
             chatListTv.setSelected(true);
             chatListTv.setText(s);
-
             if (selectPosition == i) {
                 view.setBackgroundResource(R.color.appBlue);
+                indicator.setVisibility(View.INVISIBLE);
             } else {
                 view.setBackgroundColor(0xFF77D7FF);
             }
-
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -118,22 +109,40 @@ public class MyChatListAdapter extends BaseAdapter {
                         if (selectPosition == i)
                             return;
                         listener.onMyItemSelect(i);
+                        EMConversation conversation = EMClient.getInstance().chatManager()
+                                .getConversation(list.get(i).getUser_id());
+                        if (conversation != null) {
+                            if (indicator.getVisibility() == View.VISIBLE)
+                                indicator.dismissView();
+                        } else {
+                            if (indicator.getVisibility() == View.VISIBLE)
+                                indicator.setVisibility(View.INVISIBLE);
+                        }
                     }
                 }
             });
 
-            EMConversation conversation = EMClient.getInstance().chatManager()
-                    .getConversation(list.get(i).getUser_id());
-            if (conversation != null)
+            if (conversation != null) {
                 if (conversation.getUnreadMsgCount() > 0) {
-                    indicator.setText(conversation.getUnreadMsgCount()+"");
-                    indicator.setVisibility(View.VISIBLE);
+                    if (selectPosition == i) {
+                        indicator.setVisibility(View.INVISIBLE);
+                    } else {
+                        indicator.setText(String.valueOf(conversation.getUnreadMsgCount()));
+                        indicator.setVisibility(View.VISIBLE);
+                    }
                 } else {
                     indicator.setVisibility(View.INVISIBLE);
                 }
-
+                indicator.setOnDismissAction(new DragIndicatorView.OnIndicatorDismiss() {
+                    @Override
+                    public void OnDismiss(DragIndicatorView view) {
+                        conversation.markAllMessagesAsRead();
+                    }
+                });
+            } else {
+                indicator.dismissView();
+            }
         }
-
         return view;
     }
 }

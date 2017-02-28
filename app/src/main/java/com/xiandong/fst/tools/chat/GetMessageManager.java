@@ -31,7 +31,7 @@ public class GetMessageManager {
     /**
      * 注册监听
      */
-    public void registerListtener(GetMessageInterface iListener) {
+    public void registerListener(GetMessageInterface iListener) {
         iListenerList.add(iListener);
     }
 

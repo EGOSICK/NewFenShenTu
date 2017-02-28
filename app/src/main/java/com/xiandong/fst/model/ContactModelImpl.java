@@ -45,6 +45,7 @@ public class ContactModelImpl implements ContactModel {
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.d("ContactModelImpl", result);
                 AbsBaseBean bean = GsonUtil.fromJson(result, AbsBaseBean.class);
                 switch (bean.getResult()) {
                     case 1:

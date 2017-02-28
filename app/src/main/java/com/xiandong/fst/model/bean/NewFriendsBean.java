@@ -32,7 +32,7 @@ public class NewFriendsBean extends AbsBaseBean {
     public static class UserEntity {
         private String id;
         private String uid;
-        private String act;
+        private String haoyou;
         private String nicheng;
         private String position;
         private String img;
@@ -55,12 +55,12 @@ public class NewFriendsBean extends AbsBaseBean {
             this.uid = uid;
         }
 
-        public String getAct() {
-            return act;
+        public String getHaoyou() {
+            return haoyou;
         }
 
-        public void setAct(String act) {
-            this.act = act;
+        public void setHaoyou(String haoyou) {
+            this.haoyou = haoyou;
         }
 
         public String getNicheng() {

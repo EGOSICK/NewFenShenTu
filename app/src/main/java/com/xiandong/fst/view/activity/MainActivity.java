@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -150,12 +151,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
 
                     @Override
                     public String getTitle(EMMessage message) {
-
-
-
-
                         if (message.getChatType() == EMMessage.ChatType.GroupChat) {
-
                             try {
                                 String orderid = message.getStringAttribute("orderID");
                                 if (!StringUtil.isEmpty(orderid)) {

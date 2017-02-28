@@ -91,7 +91,7 @@ public class AddFriendsAdapter extends BaseAdapter {
             holder.contactNameTv.setText(entity.getNicheng());
             holder.contactPhoneTv.setVisibility(View.GONE);
             XCircleImgTools.setCircleImg(holder.contactUserImg, entity.getImg());
-            switch (entity.getAct()) {
+            switch (entity.getHaoyou()) {
                 case "1":
                     holder.contactUserAlreadyTv.setVisibility(View.VISIBLE);
                     holder.contactUserAlreadyImg.setVisibility(View.GONE);

@@ -45,8 +45,6 @@ public class MyChatActivity extends AbsBaseActivity {
         FragmentTransaction ft = manager.beginTransaction();
         ft.replace(R.id.chatListFg, chatListFragment);
         ft.commit();
-
-
     }
 
     public String getSelectFriendId() {

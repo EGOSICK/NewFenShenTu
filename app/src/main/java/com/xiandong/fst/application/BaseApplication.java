@@ -39,6 +39,7 @@ public class BaseApplication extends DemoApplication {
         JPushListenerManager.getInstance().registerListtener(new IListener() {
             @Override
             public void notifyAllActivity(Object o) {
+
             }
         });
     }

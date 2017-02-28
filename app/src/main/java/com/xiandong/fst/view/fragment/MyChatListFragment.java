@@ -1,10 +1,8 @@
 package com.xiandong.fst.view.fragment;
 
 import android.content.Context;
-import android.view.View;
-import android.widget.AdapterView;
+import android.util.Log;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MarkerOptions;
@@ -20,8 +18,6 @@ import com.xiandong.fst.view.activity.MyChatActivity;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
-
-import java.util.List;
 
 /**
  * Created by dell on 2017/1/25.
@@ -60,7 +56,7 @@ public class MyChatListFragment extends AbsBaseFragment implements FriendsView {
             }
         });
 
-        GetMessageManager.getInstance().registerListtener(messageInterface);
+        GetMessageManager.getInstance().registerListener(messageInterface);
     }
 
     @Override
@@ -95,7 +91,13 @@ public class MyChatListFragment extends AbsBaseFragment implements FriendsView {
     public GetMessageInterface messageInterface = new GetMessageInterface() {
         @Override
         public void getSingleMessage(String friendId) {
-            Toast.makeText(chatActivity, "xinxiaoxi", Toast.LENGTH_SHORT).show();
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
+
         }
 
         @Override
