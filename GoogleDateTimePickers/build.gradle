@@ -10,7 +10,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'maven'
 
 version = "1.0.1"
-group="org.unknown"
+group = "org.unknown"
 archivesBaseName = "googledatetimepickers"
 
 dependencies {
@@ -40,7 +40,6 @@ android {
         instrumentTest.setRoot('tests')
     }
 }
-
 
 //uploadArchives {
 //    repositories {

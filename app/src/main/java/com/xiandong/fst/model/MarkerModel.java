@@ -7,7 +7,7 @@ import com.xiandong.fst.presenter.MarkerPresenter;
  */
 
 public interface MarkerModel {
-    void getRedPacketMsg(String come, String id, String money, MarkerPresenter presenter);
+    void getRedPacketMsg(String come, String id, String money,String address, MarkerPresenter presenter);
 
     void grabRedPacket(String id, MarkerPresenter presenter);
 }

@@ -62,7 +62,7 @@ public class SendRedPacketActivity extends AbsBaseActivity {
 
     private void initView() {
         sendRedPacketBtn.setIndeterminateProgressMode(true);
-        titleView.setBackgroundResource(R.color.red);
+        titleView.setBackgroundColor(0xFFE5494A);
         titleTitleTv.setText("发红包");
         titleTitleTv.setTextColor(0xFFFFFFFF);
         titleBackImg.setImageResource(R.mipmap.title_back_white);
@@ -174,13 +174,11 @@ public class SendRedPacketActivity extends AbsBaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data != null) {
-            if (resultCode == 0) {
-                finish();
-                CircularProgressButtonTools.showTrue(sendRedPacketBtn);
-            }else {
-                CircularProgressButtonTools.showErr(sendRedPacketBtn);
-            }
+        if (resultCode == 0) {
+            finish();
+            CircularProgressButtonTools.showTrue(sendRedPacketBtn);
+        } else {
+            CircularProgressButtonTools.showErr(sendRedPacketBtn);
         }
     }
 }

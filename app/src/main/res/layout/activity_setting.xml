@@ -22,17 +22,19 @@
 
 
             <LinearLayout
+                android:visibility="gone"
                 style="@style/setting_bg">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="提示音"
-                    android:textColor="@color/appBlack"
-                    android:textSize="16sp"/>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="提示音"-->
+                    <!--android:textColor="@color/appBlack"-->
+                    <!--android:textSize="16sp"/>-->
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 style="@style/setting_bg"
                 android:background="@color/white">
 
@@ -57,20 +59,21 @@
                     toggle:tbAsDefaultOn="true"
                     toggle:tbBorderWidth="0.5dp"
                     toggle:tbOffBorderColor="@color/appSGray"
-                    toggle:tbOffColor="@color/appSGray"
+                    toggle:tbOffColor="@color/appGray"
                     toggle:tbOnColor="@color/appBlue"
                     toggle:tbSpotColor="@color/white"/>
             </LinearLayout>
 
             <LinearLayout
+                android:visibility="gone"
                 style="@style/setting_bg">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="关于我们"
-                    android:textColor="@color/appBlack"
-                    android:textSize="16sp"/>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="关于我们"-->
+                    <!--android:textColor="@color/appBlack"-->
+                    <!--android:textSize="16sp"/>-->
             </LinearLayout>
 
             <LinearLayout
@@ -88,6 +91,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/feedBackView"
                 style="@style/setting_bg"
                 android:background="@color/white">
 

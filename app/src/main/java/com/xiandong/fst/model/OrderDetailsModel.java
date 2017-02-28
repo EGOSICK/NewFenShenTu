@@ -9,4 +9,9 @@ import com.xiandong.fst.presenter.OrderDetailsPresenter;
 public interface OrderDetailsModel{
     void getOrderMsg(String id , OrderDetailsPresenter presenter);
 
+    void complicateOrder(String id , OrderDetailsPresenter presenter);
+
+    void cancelOrder(String id,String type , OrderDetailsPresenter presenter);
+
+    void eWai(String id , String money ,OrderDetailsPresenter presenter);
 }

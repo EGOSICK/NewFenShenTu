@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:padding="10dp"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical"
+              android:layout_marginTop="50dp"
+              android:paddingBottom="50dp"
+              android:padding="10dp">
+
     <TextView
+        android:id="@+id/orderDetailsOtherTitleTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textColor="@color/textBlack"
-        android:layout_width="wrap_content"
-        android:textSize="20sp"
-        android:layout_height="wrap_content"/>
+        android:textSize="18sp"/>
 
     <TextView
-        android:paddingTop="10dp"
-        android:textSize="17sp"
-        android:textColor="@color/appGray"
+        android:id="@+id/orderDetailsOtherContentTv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textColor="@color/appGray"
+        android:textSize="15sp"/>
 
     <TextView
-
-        android:paddingTop="10dp"
-        android:textSize="17sp"
-        android:textColor="@color/appGray"
+        android:id="@+id/orderDetailsOtherAddressTv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:textColor="@color/appGray"
+        android:textSize="15sp"/>
 </LinearLayout>

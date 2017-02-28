@@ -12,7 +12,9 @@
         android:handleProfiling="false"
         android:label="Tests for mirko.android.datetimepicker.test"
         android:targetPackage="mirko.android.datetimepicker.test" />
-
+    <!-- <uses-sdk -->
+    <!-- android:minSdkVersion="14" -->
+    <!-- android:targetSdkVersion="17" /> -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application>

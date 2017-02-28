@@ -10,7 +10,6 @@ import com.xiandong.fst.application.Constant;
 import com.xiandong.fst.model.HotPintsModel;
 import com.xiandong.fst.model.HotPintsModelImpl;
 import com.xiandong.fst.model.bean.HotPintsBean;
-import com.xiandong.fst.model.bean.SearchFriendsBean;
 import com.xiandong.fst.model.bean.SearchPintsBean;
 import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.view.HotPintsView;
@@ -40,33 +39,33 @@ public class HotPintsPresenterImpl implements HotPintsPresenter{
 
     @Override
     public void getHotPintsSuccess(List<HotPintsBean.ForumEntity> list) {
-        for (HotPintsBean.ForumEntity hf: list){
-            String[] position = hf.getPosition().split(";");
-            LatLng latLng = new LatLng(Double.valueOf(position[0]), Double.valueOf(position[1]));
-            MarkerOptions option = new MarkerOptions();
-            option.animateType(MarkerOptions.MarkerAnimateType.drop);
-            option.title(MarkMapTools.setTitle(Constant.MarkerType.FORUM, hf.getId()));
-            option.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.froum_icon));
-            if (MarkMapTools.getRedPacket() != null && MarkMapTools.getRedPacket().size() > 0) {
-                if (MarkMapTools.isHavaRedPcaket(hf.getId())) {
-                    if (MarkMapTools.getRedPacket().get(hf.getId()).getPosition() == latLng) {
-                        return;
-                    } else {
-                        MarkMapTools.getRedPacket().get(hf.getId()).setPosition(latLng);
-                    }
-                } else {
-                    MarkMapTools.getRedPacket().put(hf.getId(), (Marker) hotPintsView.loadForum().addOverlay(option));
-                }
-            } else {
-                MarkMapTools.getRedPacket().put(hf.getId(), (Marker) hotPintsView.loadForum().addOverlay(option));
-            }
-        }
+//        for (HotPintsBean.ForumEntity hf: list){
+//            String[] position = hf.getPosition().split(";");
+//            LatLng latLng = new LatLng(Double.valueOf(position[0]), Double.valueOf(position[1]));
+//            MarkerOptions option = new MarkerOptions();
+//            option.animateType(MarkerOptions.MarkerAnimateType.none);
+//            option.title(MarkMapTools.setTitle(Constant.MarkerType.FORUM, hf.getId()));
+//            option.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.froum_icon));
+//            if (MarkMapTools.getForum() != null && MarkMapTools.getForum().size() > 0) {
+//                if (MarkMapTools.isHavaForm(hf.getId())) {
+//                    if (MarkMapTools.getForum().get(hf.getId()).getPosition() == latLng) {
+//                        return;
+//                    } else {
+//                        MarkMapTools.getForum().get(hf.getId()).setPosition(latLng);
+//                    }
+//                } else {
+//                    MarkMapTools.getForum().put(hf.getId(), (Marker) hotPintsView.loadForum().addOverlay(option));
+//                }
+//            } else {
+//                MarkMapTools.getForum().put(hf.getId(), (Marker) hotPintsView.loadForum().addOverlay(option));
+//            }
+//        }
         hotPintsView.getHotPintsSuccess(list);
     }
 
     @Override
     public void fetHotPintsFails(String err) {
-        hotPintsView.fetHotPintsFails(err);
+        hotPintsView.getHotPintsFails(err);
     }
 
     @Override

@@ -95,11 +95,9 @@ public class FriendsManagerModelImpl implements FriendsManagerModel {
         RequestParams params = new RequestParams(Constant.APIURL + "showposition");
         params.addBodyParameter("show",shi+"");
         params.addBodyParameter("id",id);
-
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                Log.d("FriendsManagerModelImpl", result);
             }
 
             @Override

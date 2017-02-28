@@ -10,7 +10,7 @@ public interface HotPintView{
 
     void getHotPintSuccess( HotPintDetailBean bean);
 
-    void fetHotPintFails(String err);
+    void getHotPintFails(String err);
 
     void huiFuSuccess();
 }

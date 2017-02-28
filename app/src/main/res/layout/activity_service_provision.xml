@@ -18,9 +18,13 @@
             android:orientation="vertical">
 
             <TextView
+                android:padding="20dp"
+                android:textSize="16sp"
+                android:textScaleX="1"
+                android:lineSpacingMultiplier="1.6"
+                android:id="@+id/serviceTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="服务条款"/>
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
     </ScrollView>

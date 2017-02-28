@@ -3,6 +3,7 @@ package com.xiandong.fst.view.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -10,7 +11,10 @@ import android.widget.TextView;
 
 import com.gastudio.downloadloadding.library.GADownloadingView;
 import com.hss01248.dialog.interfaces.MyDialogListener;
+import com.hss01248.dialog.interfaces.MyItemDialogListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.controller.EaseUI;
 import com.xiandong.fst.R;
 import com.xiandong.fst.model.LogOutModelImpl;
 import com.xiandong.fst.presenter.LogOutPresenterImpl;
@@ -21,10 +25,14 @@ import com.xiandong.fst.tools.WechatShareManager;
 import com.xiandong.fst.utils.DataCleanManager;
 import com.xiandong.fst.utils.UpdateManager;
 import com.xiandong.fst.view.LogOutView;
+import com.zcw.togglebutton.ToggleButton;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+
+import cn.jpush.android.api.BasicPushNotificationBuilder;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 设置activity
@@ -43,15 +51,72 @@ public class SettingActivity extends AbsBaseActivity implements LogOutView {
     View dataCleanView;
     @ViewInject(R.id.shareFriendsView)
     View shareFriendsView;
+    @ViewInject(R.id.settingTb)
+    ToggleButton settingTb;
 
     @Override
     protected void initialize() {
         titleTitleTv.setText("设置");
         context = this;
+        settingTb.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+            @Override
+            public void onToggle(boolean on) {
+                if (on){
+                    EaseUI.getInstance().setSettingsProvider(new EaseUI.EaseSettingsProvider() {
+                        @Override
+                        public boolean isMsgNotifyAllowed(EMMessage message) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean isMsgSoundAllowed(EMMessage message) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean isMsgVibrateAllowed(EMMessage message) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean isSpeakerOpened() {
+                            return false;
+                        }
+                    });
+                    JPushInterface.setDefaultPushNotificationBuilder(new
+                            BasicPushNotificationBuilder(SettingActivity.this));
+//                    CloseSpeaker(0);
+                }else {
+//                    CloseSpeaker(50);
+
+                    EaseUI.getInstance().setSettingsProvider(new EaseUI.EaseSettingsProvider() {
+                        @Override
+                        public boolean isMsgNotifyAllowed(EMMessage message) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean isMsgSoundAllowed(EMMessage message) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean isMsgVibrateAllowed(EMMessage message) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean isSpeakerOpened() {
+                            return false;
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Event(type = View.OnClickListener.class, value = {R.id.titleBackImg, R.id.updateView,
-            R.id.dataCleanView, R.id.shareFriendsView, R.id.logOutView})
+            R.id.dataCleanView, R.id.shareFriendsView, R.id.logOutView, R.id.feedBackView})
     private void setttingOnCLick(final View view) {
         switch (view.getId()) {
             case R.id.titleBackImg:
@@ -77,23 +142,24 @@ public class SettingActivity extends AbsBaseActivity implements LogOutView {
                 });
                 break;
             case R.id.shareFriendsView:
-//                WechatShareManager shareManager = WechatShareManager.getInstance(context);
-//                shareManager.shareByWebchat(shareManager.getShareContentPicture(
-//                        R.layout.activity_start), 1);
-//                shareManager.registerListener(new WechatShareManager.ShareInterface() {
-//                    @Override
-//                    public void shareSuccess() {
-//                        CustomToast.customToast(true, "分享成功", context);
-//                    }
-//
-//                    @Override
-//                    public void shareFails() {
-//                        CustomToast.customToast(false, "分享失败", context);
-//                    }
-//                });
+                StyledDialogTools.showShareDialog(this, new MyItemDialogListener() {
+                    @Override
+                    public void onItemClick(CharSequence charSequence, int i) {
+                        WXShareTools.wechatShare(i, context);
+                        StyledDialogTools.showLoding(context);
+                    }
+                });
+                WechatShareManager.getInstance(context).registerListener(new WechatShareManager.ShareInterface() {
+                    @Override
+                    public void shareSuccess() {
+                        StyledDialogTools.disMissStyleDialog();
+                    }
 
-                WXShareTools.wechatShare(0,context);
-
+                    @Override
+                    public void shareFails() {
+                        StyledDialogTools.disMissStyleDialog();
+                    }
+                });
                 break;
             case R.id.logOutView:
                 StyledDialogTools.showLogOutDialog(context, new MyDialogListener() {
@@ -108,6 +174,9 @@ public class SettingActivity extends AbsBaseActivity implements LogOutView {
                         StyledDialogTools.disMissStyleDialog();
                     }
                 });
+                break;
+            case R.id.feedBackView:
+                startActivity(new Intent(context, FeedBackActivity.class));
                 break;
         }
     }
@@ -124,5 +193,21 @@ public class SettingActivity extends AbsBaseActivity implements LogOutView {
     @Override
     public void logOutFails(String err) {
         CustomToast.customToast(false, err, context);
+    }
+
+    //关闭扬声器
+    public void CloseSpeaker(int v) {
+        try {
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            if (audioManager != null) {
+                if (audioManager.isSpeakerphoneOn()) {
+                    audioManager.setSpeakerphoneOn(false);
+                    audioManager.setStreamVolume(AudioManager.STREAM_VOICE_CALL, v,
+                            AudioManager.STREAM_VOICE_CALL);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

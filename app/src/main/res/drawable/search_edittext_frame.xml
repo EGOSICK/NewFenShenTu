@@ -4,7 +4,7 @@
     android:shape="rectangle">
 
     <!-- 填充的颜色 -->
-    <solid android:color="#FFEEEEEE"/>
+    <solid android:color="@color/white"/>
 
     <!-- 设置按钮的四个角为弧形 -->
      <!--android:radius 弧形的半径-->
@@ -13,7 +13,7 @@
     <size android:height="30dp"
           android:width="150dp"/>
 
-    <stroke android:color="@color/appGray"
+    <stroke android:color="#FFE7E8E4"
         android:width="1px"/>
     <!--<gradient-->
     <!--android:angle="270"-->

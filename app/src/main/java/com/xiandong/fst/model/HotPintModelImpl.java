@@ -50,10 +50,19 @@ public class HotPintModelImpl implements HotPintModel {
 
     @Override
     public void huiFu(String msg, String pid, String position, final HotPintPresenter presenter) {
-        RequestParams params = new RequestParams(Constant.APIURL + "hfforum");
+        RequestParams params;
+        switch (pid) {
+            case "0":
+                params = new RequestParams(Constant.APIURL + "addforum");
+                break;
+            default:
+                params = new RequestParams(Constant.APIURL + "hfforum");
+                break;
+        }
+
+        params.addBodyParameter("pid", pid);
         params.addBodyParameter("content", msg);
         params.addBodyParameter("uid", AppDbManager.getUserId());
-        params.addBodyParameter("pid", pid);
         params.addBodyParameter("position", position);
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override

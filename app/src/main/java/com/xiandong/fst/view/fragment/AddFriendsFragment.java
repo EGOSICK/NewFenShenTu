@@ -37,21 +37,17 @@ import java.util.List;
  */
 
 @ContentView(R.layout.fragment_add_friends)
-public class AddFriendsFragment extends AbsBaseFragment implements ContactView,
-        AddFriendsView, GetNewFriendsView {
+public class AddFriendsFragment extends AbsBaseFragment implements ContactView, AddFriendsView, GetNewFriendsView {
     public static AddFriendsFragment getInstance(int position) {
         AddFriendsFragment fragment = new AddFriendsFragment();
         fragment.getData(position);
         return fragment;
     }
-
-    int position;
-    Context context;
-
     private void getData(int position) {
         this.position = position;
     }
-
+    private int position;
+    private Context context;
     @ViewInject(R.id.addFriendsLv)
     ListView addFriendsLv;
     @ViewInject(R.id.hhEmptyView)
@@ -71,7 +67,6 @@ public class AddFriendsFragment extends AbsBaseFragment implements ContactView,
                 initNewFriends();
                 break;
         }
-
     }
 
     private void initData() {
@@ -193,6 +188,13 @@ public class AddFriendsFragment extends AbsBaseFragment implements ContactView,
         CustomToast.customToast(false, err, context);
     }
 
+    public void showSearchList(){
+        addFriendsLv.setVisibility(View.GONE);
+    }
+
+    public void disMissSearchList(){
+        addFriendsLv.setVisibility(View.VISIBLE);
+    }
 
 //    /**
 //     * 上次第一个可见元素，用于滚动时记录标识。

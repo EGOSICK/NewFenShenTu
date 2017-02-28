@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +23,7 @@ import com.xiandong.fst.model.entity.UserEntity;
 import com.xiandong.fst.presenter.ChangeUserMessagePresenterImpl;
 import com.xiandong.fst.presenter.ChooseImageViewPresenterImpl;
 import com.xiandong.fst.presenter.UserMessagePresenterImpl;
+import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.XCircleImgTools;
@@ -31,8 +34,10 @@ import com.xiandong.fst.view.ChooseImageViewView;
 import com.xiandong.fst.view.UserMessageView;
 import com.xiandong.fst.view.activity.AboutMeActivity;
 import com.xiandong.fst.view.activity.CredibilityIntegralActivity;
+import com.xiandong.fst.view.activity.MessageActivity;
 import com.xiandong.fst.view.activity.MyOrdersActivity;
 import com.xiandong.fst.view.activity.MyWalletActivity;
+import com.xiandong.fst.view.activity.QianDaoActivity;
 import com.xiandong.fst.view.activity.SecurityCenterActivity;
 import com.xiandong.fst.view.activity.SettingActivity;
 import com.xiandong.fst.view.customview.CircularImageView;
@@ -71,20 +76,27 @@ public class RabbitMeFragment extends AbsBaseFragment implements ChooseImageView
     TextView rabbitMeUserNameTv;
     @ViewInject(R.id.rabbitMeBarCodeImg)
     ImageView rabbitMeBarCodeImg;
-
+    @ViewInject(R.id.rabbitMeChangeNameImg)
+    ToggleButton compoundButton;
     ChooseImageViewPresenterImpl chooseImageViewPresenter;
     UserEntity user;
     UserMessagePresenterImpl presenter;
+    boolean isCheck = false;
+    @ViewInject(R.id.rabbitMeChangeNameImg)
+    ToggleButton rabbitMeChangeNameImg;
 
     private static RabbitMeFragment rabbitMeFragment = null;
+
     public static RabbitMeFragment getInstance() {
         if (rabbitMeFragment == null)
             rabbitMeFragment = new RabbitMeFragment();
         return rabbitMeFragment;
     }
 
-    public RabbitMeFragment showPager(){
+    public RabbitMeFragment showPager() {
         getMainActivity().cleanMarks();
+        MarkMapTools.choosePager(false, false, false, false, true);
+        initCheck();
         return rabbitMeFragment;
     }
 
@@ -103,8 +115,11 @@ public class RabbitMeFragment extends AbsBaseFragment implements ChooseImageView
     @Event(type = CompoundButton.OnCheckedChangeListener.class,
             value = {R.id.rabbitMeChangeNameImg})
     private void changeNameCheckListener(CompoundButton compoundButton, boolean b) {
+        isCheck = b;
         rabbitMeUserNameTv.setEnabled(b);
         if (b) {
+            InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
             compoundButton.setBackgroundResource(R.mipmap.me_change_name_complect);
         } else {
             compoundButton.setBackgroundResource(R.mipmap.me_change_name);
@@ -138,9 +153,15 @@ public class RabbitMeFragment extends AbsBaseFragment implements ChooseImageView
     @Event(type = View.OnClickListener.class, value = {R.id.rabbitMeSettingView,
             R.id.rabbitMeAboutMeView, R.id.rabbitMeUserImg, R.id.rabbitMeBarCodeImg,
             R.id.rabbitMeWalletView, R.id.rabbitMeSecuritySettingView, R.id.rabbitMeOrdersView,
-            R.id.rabbitMeCreditScoreView})
+            R.id.rabbitMeCreditScoreView, R.id.rabbitMeQianDaoImg, R.id.rabbitMeMessageImg})
     private void rabbitMeOnClick(View view) {
         switch (view.getId()) {
+            case R.id.rabbitMeQianDaoImg:
+                startActivity(new Intent(context, QianDaoActivity.class));
+                break;
+            case R.id.rabbitMeMessageImg:
+                startActivity(new Intent(context, MessageActivity.class));
+                break;
             case R.id.rabbitMeUserImg:
                 StyledDialogTools.showSelectStyleDialog(context, chooseImageViewPresenter.chooseImageView(),
                         "", new MyItemDialogListener() {
@@ -185,7 +206,7 @@ public class RabbitMeFragment extends AbsBaseFragment implements ChooseImageView
                 break;
             case R.id.rabbitMeCreditScoreView:
                 startActivity(new Intent(context, CredibilityIntegralActivity.class)
-                        .putExtra("fen",user.getUserJiFen()));
+                        .putExtra("fen", user.getUserJiFen()));
                 break;
         }
     }
@@ -279,6 +300,21 @@ public class RabbitMeFragment extends AbsBaseFragment implements ChooseImageView
         if (user != null && user.isUserLogIn()) {
             XCircleImgTools.setCircleImg(rabbitMeUserImg, user.getUserImg());
             rabbitMeUserNameTv.setText(user.getUserName());
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initCheck();
+    }
+
+    private void initCheck() {
+        if (isCheck) {
+            rabbitMeChangeNameImg.setChecked(false);
+            rabbitMeUserNameTv.setEnabled(false);
+            compoundButton.setBackgroundResource(R.mipmap.me_change_name);
+            initUserData();
         }
     }
 }

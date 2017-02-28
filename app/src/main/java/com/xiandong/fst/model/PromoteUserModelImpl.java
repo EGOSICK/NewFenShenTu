@@ -62,7 +62,7 @@ public class PromoteUserModelImpl implements PromoteUserModel {
         x.http().post(params1, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                PromoteUserBean bean = GsonUtil.fromJson(result , PromoteUserBean.class);
+                PromoteUserBean bean = GsonUtil.fromJson(result, PromoteUserBean.class);
                 presenter.getPromoteUserSuccess(bean);
             }
 

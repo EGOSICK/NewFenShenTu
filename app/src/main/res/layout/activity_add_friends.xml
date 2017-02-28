@@ -10,23 +10,28 @@
 
     <android.support.design.widget.TabLayout
         android:id="@+id/addFriendsTl"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="40dp"
+        android:layout_gravity="center"
         android:background="@color/white"
-        app:tabGravity="center">
+        app:tabGravity="center"
+        app:tabMode="fixed">
 
     </android.support.design.widget.TabLayout>
 
+    <View
+        style="@style/HorizontalLine"/>
+
     <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/search_edittext_frame_white">
+        android:background="@drawable/search_edittext_frame_white"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <ImageView
             android:layout_width="20dp"
@@ -36,6 +41,7 @@
             android:src="@mipmap/search_icon"/>
 
         <EditText
+            android:textSize="15sp"
             android:id="@+id/addFriendsSearchEt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -44,11 +50,12 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:gravity="center_vertical"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <View
-            android:background="#FFE4E4E4"
-            style="@style/VerticalLine"/>
+            style="@style/VerticalLine"
+            android:background="#FFE4E4E4"/>
 
         <ImageView
             android:id="@+id/addFriendsSweepCodeImg"

@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import com.xiandong.fst.R;
+import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.XCircleImgTools;
 import com.xiandong.fst.tools.adapter.RabbitOrdersListAdapter;
 import org.xutils.view.annotation.ContentView;
@@ -28,6 +29,7 @@ public class RabbitOrdersFragment extends AbsBaseFragment {
 
     public RabbitOrdersFragment showPager(){
         getMainActivity().cleanMarks();
+        MarkMapTools.choosePager(false, false, true, false, false);
         RabbitOrdersListAdapter adapter = new RabbitOrdersListAdapter(getFragmentManager());
         f = (RabbitOrdersListFragment) adapter.getItem(0);
         rabbitOrdersVp.setAdapter(adapter);
@@ -47,6 +49,7 @@ public class RabbitOrdersFragment extends AbsBaseFragment {
         f = (RabbitOrdersListFragment) adapter.getItem(0);
         rabbitOrdersVp.setAdapter(adapter);
         rabbitOrdersTl.setupWithViewPager(rabbitOrdersVp);
+
     }
 
     @Event(type = View.OnClickListener.class , value = {R.id.rabbitOrdersBottomImg})
@@ -54,7 +57,9 @@ public class RabbitOrdersFragment extends AbsBaseFragment {
         switch (view.getId()){
             case R.id.rabbitOrdersBottomImg:
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.viewThree ,  RabbitOrderFragment.getInstance(f.getOrdersList()));
+
+                ft.replace(R.id.viewThree ,  RabbitOrderFragment.getInstance(
+                        f.getOrdersList() , getMainActivity().getBaiDuMap()));
                 ft.commit();
                 break;
         }

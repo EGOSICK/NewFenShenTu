@@ -12,6 +12,7 @@ import com.xiandong.fst.view.fragment.AddFriendsFragment;
 
 public class AddFriendsTitleAdapter extends FragmentPagerAdapter {
     String[] title = {"通讯录", "新好友"};
+
     public AddFriendsTitleAdapter(FragmentManager fm) {
         super(fm);
     }

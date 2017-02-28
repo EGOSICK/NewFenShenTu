@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/transparent"
+              android:orientation="vertical"
+              android:padding="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:layout_marginTop="50dp"
+        android:background="@color/transparent">
+
+        <LinearLayout
+            android:id="@+id/dialogMeetDetailsView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/dialog_background"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:text="发起人:"
+                    android:textColor="#FFB2B2B2"
+                    android:textSize="15sp"/>
+
+
+                <TextView
+                    android:id="@+id/dialogMeetDetailsUserTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="123123123"
+                    android:textColor="#FF45C8FF"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="聚会好友"
+                android:textColor="#FFB2B2B2"
+                android:textSize="18sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/dialogMeetFriendsRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/dialogMeetDetailsContentTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textColor="#FFB2B2B2"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/dialogMeetDetailsAddressTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textColor="#FFB2B2B2"
+                android:textSize="15sp"/>
+
+            <TextView
+                android:id="@+id/dialogMeetDetailsOtherTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:textColor="#FFB2B2B2"
+                android:textSize="15sp"/>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/round_white_bg">
+
+            <ImageView
+                android:id="@+id/dialogMeetDetailsUserImg"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/dialogMeetDetailsCloseImg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_below="@+id/dialogMeetDetailsView"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/close"/>
+    </RelativeLayout>
+</LinearLayout>

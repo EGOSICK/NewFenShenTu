@@ -17,4 +17,5 @@ public interface FriendsModel{
 
     void showFriendsPosition(Context context ,List<FriendsBean.FriendEntity> list, FriendsPresenter presenter);
 
+    void showMeetsPosition(Context context , List<FriendsBean.MeetEntity> list,FriendsPresenter presenter);
 }

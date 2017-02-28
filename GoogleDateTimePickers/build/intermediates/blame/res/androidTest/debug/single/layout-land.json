@@ -1,18 +1,18 @@
 [
     {
-        "merged": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\time_picker_dialog.xml",
-        "source": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\time_picker_dialog.xml"
+        "merged": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\time_picker_dialog_clear.xml",
+        "source": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\time_picker_dialog_clear.xml"
     },
     {
-        "merged": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\date_picker_dialog.xml",
-        "source": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\date_picker_dialog.xml"
+        "merged": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\time_picker_dialog.xml",
+        "source": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\time_picker_dialog.xml"
     },
     {
-        "merged": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\date_picker_dialog_clear.xml",
-        "source": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\date_picker_dialog_clear.xml"
+        "merged": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\date_picker_dialog_clear.xml",
+        "source": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\date_picker_dialog_clear.xml"
     },
     {
-        "merged": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\time_picker_dialog_clear.xml",
-        "source": "C:\\Users\\dell\\Desktop\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\time_picker_dialog_clear.xml"
+        "merged": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout-land\\date_picker_dialog.xml",
+        "source": "D:\\Android Demo\\NewFenShenTu\\GoogleDateTimePickers\\build\\intermediates\\bundles\\debug\\res\\layout-land\\date_picker_dialog.xml"
     }
 ]

@@ -6,78 +6,223 @@
 
     <include layout="@layout/title_view"/>
 
-    <RelativeLayout
-
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
-
-        <include
-            android:id="@+id/orderDetailsMapView"
-            layout="@layout/order_details_map_view"/>
-
-        <include
-            android:id="@+id/orderDetailsMsgView"
-            layout="@layout/order_details_message_view"/>
-
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@color/half_trans"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <ImageView
-                android:id="@+id/orderDetailsUserImg"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:adjustViewBounds="true"/>
-
-            <TextView
-                android:id="@+id/orderDetailsNameTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="name"
-                android:textColor="@color/textBlack"
-                android:textSize="20sp"/>
-
-            <ImageView
-                android:layout_gravity="center_vertical"
-                android:layout_width="40dp"
-                android:scaleType="centerCrop"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:src="@mipmap/real_name_bg"/>
-
-            <TextView
-                android:id="@+id/orderDetailsMoneyTv"
-                android:textColor="@color/appGold"
-                android:layout_marginLeft="10dp"
-                android:textSize="18sp"
-                android:text="赏金 : 1234"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:id="@+id/orderDetailsPhoneImg"
-                android:paddingLeft="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:src="@mipmap/order_phone"/>
-        </LinearLayout>
-
-
-    </RelativeLayout>
-
     <LinearLayout
-        android:id="@+id/orderDetailsChatView"
+        android:id="@+id/topView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <RelativeLayout
+            android:id="@+id/orderDetailsContentView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp">
+
+            <include
+                android:id="@+id/orderDetailsMapView"
+                layout="@layout/order_details_map_view"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/orderDetailsMsgView"
+                layout="@layout/order_details_message_view"
+                android:visibility="gone"/>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/half_trans"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/orderDetailsUserImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"/>
+
+                <TextView
+                    android:id="@+id/orderDetailsNameTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="name"
+                    android:textColor="@color/textBlack"
+                    android:textSize="18sp"/>
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/real_name_bg"/>
+
+                <TextView
+                    android:id="@+id/orderDetailsMoneyTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+
+                    android:text="赏金 : 1234"
+                    android:textColor="@color/appGold"
+                    android:textSize="18sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <ImageView
+                    android:id="@+id/orderDetailsPhoneImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:adjustViewBounds="true"
+                    android:paddingLeft="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/order_phone"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:paddingBottom="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="8dp">
+
+                <Button
+                    android:id="@+id/eWaiFeiYongBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/order_details_btn_bg"
+                    android:gravity="center"
+                    android:text="额外费用"
+                    android:textColor="#FF555555"
+                    android:textSize="15sp"/>
+
+                <Button
+                    android:id="@+id/wanChengDingDanBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/order_details_btn_bg"
+                    android:gravity="center"
+                    android:text="完成订单"
+                    android:textColor="#FF555555"
+                    android:textSize="15sp"/>
+
+                <Button
+                    android:id="@+id/quXiaoDingDanBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/order_details_btn_bg"
+                    android:gravity="center"
+                    android:text="取消订单"
+                    android:textColor="#FF555555"
+                    android:textSize="15sp"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/eWaiFeiYongView"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#AAADADAD"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="额外费用"
+                android:textColor="#FF666666"
+                android:textSize="13sp"/>
+
+            <EditText
+                android:id="@+id/eWaiEt"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:inputType="numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="元"
+                android:textColor="#FF666666"
+                android:textSize="13sp"/>
+
+            <Button
+                android:id="@+id/eWaiBtn"
+                android:layout_width="60dp"
+                android:layout_height="25dp"
+                android:layout_marginRight="15dp"
+                android:background="@drawable/order_details_commit_btn_bg"
+                android:text="提交"
+                android:textColor="#FFADADAD"
+                android:textSize="15sp"/>
+
+            <!--<Button-->
+                <!--android:id="@+id/eWaiZFBtn"-->
+                <!--android:layout_width="60dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_marginRight="15dp"-->
+                <!--android:background="@drawable/order_details_commit_btn_bg"-->
+                <!--android:text="支付"-->
+                <!--android:textColor="#FFADADAD"-->
+                <!--android:textSize="15sp"-->
+                <!--android:visibility="gone"/>-->
+        </LinearLayout>
     </LinearLayout>
+
+    <RelativeLayout
+        android:background="#f2f0eb"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:paddingTop="30dp"
+            android:id="@+id/orderDetailsChatView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/showMoreOrLessView"
+            android:layout_width="40dp"
+            android:layout_height="60dp"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="20dp">
+
+            <View
+                style="@style/VerticalLine"
+                android:layout_width="1dp"
+                android:layout_height="15dp"
+                android:background="#AAADADAD"/>
+
+            <ImageView
+                android:id="@+id/roteBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/up_arrow"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+
 </LinearLayout>

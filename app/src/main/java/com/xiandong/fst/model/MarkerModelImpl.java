@@ -20,7 +20,8 @@ import org.xutils.x;
 public class MarkerModelImpl implements MarkerModel {
 
     @Override
-    public void getRedPacketMsg(final String come, String id, final String money, final MarkerPresenter presenter) {
+    public void getRedPacketMsg(final String come, String id, final String money,
+                                final String address , final MarkerPresenter presenter) {
         RequestParams params = new RequestParams(Constant.APIURL + "grab");
         params.addBodyParameter("uid", AppDbManager.getUserId());
         params.addBodyParameter("id", id);
@@ -28,7 +29,7 @@ public class MarkerModelImpl implements MarkerModel {
             @Override
             public void onSuccess(String result) {
                 AbsBaseBean bean = GsonUtil.fromJson(result, AbsBaseBean.class);
-                presenter.getRedPacketSuccess(bean.getResult(), come, money);
+                presenter.getRedPacketSuccess(bean.getResult(), come, money ,address);
             }
 
             @Override

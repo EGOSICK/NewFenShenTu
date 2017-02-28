@@ -3,20 +3,23 @@ package com.xiandong.fst.view.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.hyphenate.easeui.EaseConstant;
 import com.xiandong.fst.R;
 import com.xiandong.fst.model.bean.MyOrdersBean;
 import com.xiandong.fst.presenter.MyOrdersPresenterImpl;
 import com.xiandong.fst.tools.CustomToast;
+import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.adapter.MyOrdersAdapter;
 import com.xiandong.fst.view.customview.emptyview.HHEmptyView;
 import com.xiandong.fst.view.MyOrdersView;
-import com.xiandong.fst.view.fragment.ChatBaseFragment;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -48,15 +51,31 @@ public class MyOrdersActivity extends AbsBaseActivity implements MyOrdersView {
             public void clickListener(int type, String[] msg) {
                 switch (type) {
                     case 0:
-                        presenter.completeOrder(msg[0]);
+                        final String id = msg[0];
+                        StyledDialogTools.showComplacteOrderDialog(MyOrdersActivity.this
+                                , new MyDialogListener() {
+                            @Override
+                            public void onFirst() {
+                                presenter.completeOrder(id);
+                                StyledDialogTools.disMissStyleDialog();
+                            }
+
+                            @Override
+                            public void onSecond() {
+                                StyledDialogTools.disMissStyleDialog();
+                            }
+                        });
                         break;
                     case 1:
-                        startActivity(new Intent(context , EvaluationOrderActivity.class));
+                        startActivityForResult(new Intent(context, EvaluationOrderActivity.class)
+                                .putExtra("img", msg[0])
+                                .putExtra("name", msg[1])
+                                .putExtra("id", msg[2]),0);
                         break;
                     case 2:
-                        startActivity(new Intent(context , OrderDetailsActivity.class)
-                                .putExtra("name",msg[0]).putExtra("img",msg[1])
-                                .putExtra("orderId",msg[2]).putExtra("sendId",msg[3]));
+                        startActivityForResult(new Intent(context, OrderDetailsActivity.class)
+                                .putExtra("name", msg[0]).putExtra("img", msg[1])
+                                .putExtra("orderId", msg[2]).putExtra("sendId", msg[3]), 0);
                         break;
                 }
             }
@@ -80,6 +99,13 @@ public class MyOrdersActivity extends AbsBaseActivity implements MyOrdersView {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        adapter.addData(new MyOrdersBean());
+        presenter.getMyOrders();
     }
 
     @Override

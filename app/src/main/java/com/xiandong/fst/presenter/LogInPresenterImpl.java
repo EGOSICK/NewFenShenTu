@@ -5,7 +5,6 @@ import android.os.Handler;
 
 import com.xiandong.fst.model.LogInModel;
 import com.xiandong.fst.model.LogInModelImpl;
-import com.xiandong.fst.tools.ChatTools;
 import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.LogInView;
 
@@ -31,8 +30,8 @@ public class LogInPresenterImpl implements LogInPresenter {
             return;
         }
 
-        if (StringUtil.isEmpty(psw)) {
-            logInView.showToast("请输入密码");
+        if (StringUtil.isEmpty(psw) || psw.length() < 4) {
+            logInView.showToast("请输入4位及以上的密码");
             return;
         }
 

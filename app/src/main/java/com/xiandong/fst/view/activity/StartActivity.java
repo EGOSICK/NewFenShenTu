@@ -12,6 +12,8 @@ import com.xiandong.fst.utils.AppUtils;
 
 import org.xutils.view.annotation.ContentView;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * 欢迎界面
  */
@@ -66,5 +68,29 @@ public class StartActivity extends AbsBaseActivity {
             startActivity(new Intent(context, LogInActivity.class));
             finish();
         }
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        JPushInterface.onResume(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JPushInterface.onPause(this);
     }
 }

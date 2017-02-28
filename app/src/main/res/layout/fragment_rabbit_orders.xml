@@ -27,8 +27,8 @@
 
     <ImageView
         android:id="@+id/rabbitOrdersBottomImg"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:src="@mipmap/rabbit_order_map_img"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"

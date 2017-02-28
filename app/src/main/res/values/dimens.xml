@@ -5,5 +5,7 @@
     
     
     <dimen name="line_width">1px</dimen>
+    <dimen name="item_tab">25dp</dimen>
 
+    <dimen name="pagerwhit">10dp</dimen>
 </resources>

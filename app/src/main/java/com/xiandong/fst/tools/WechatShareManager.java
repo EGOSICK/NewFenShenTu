@@ -1,8 +1,12 @@
 package com.xiandong.fst.tools;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.Rect;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -103,13 +107,13 @@ public class WechatShareManager {
      * @param shareContent 分享的方式（文本、图片、链接）
      * @param shareType    分享的类型（朋友圈，会话）
      */
-    public void shareByWebchat(ShareContent shareContent, int shareType, String money) {
+    public void shareByWebchat(ShareContent shareContent, int shareType, String money, String address) {
         switch (shareContent.getShareWay()) {
             case WECHAT_SHARE_WAY_TEXT:
                 shareText(shareContent, shareType);
                 break;
             case WECHAT_SHARE_WAY_PICTURE:
-                sharePicture(shareContent, shareType, money);
+                sharePicture(shareContent, shareType, money, address);
                 break;
             case WECHAT_SHARE_WAY_WEBPAGE:
                 shareWebPage(shareContent, shareType);
@@ -360,25 +364,33 @@ public class WechatShareManager {
     /*
      * 分享图片
      */
-    private void sharePicture(ShareContent shareContent, int shareType, String money) {
+    private void sharePicture(ShareContent shareContent, int shareType, String money, String address) {
         //加载xml布局文件
 //        LayoutInflater factory = LayoutInflater.from(context);
         View view = inflater.inflate(shareContent.getPictureResource(), null);
-        //获得布局文件中的TextView
         TextView tv = (TextView) view.findViewById(R.id.shareRedPacketMoneyTv);
-        tv.setText(money);
-        //启用绘图缓存
-        view.setDrawingCacheEnabled(true);
-        //调用下面这个方法非常重要，如果没有调用这个方法，得到的bitmap为null
-        view.measure(View.MeasureSpec.makeMeasureSpec(512, View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(512, View.MeasureSpec.EXACTLY));
-        //这个方法也非常重要，设置布局的尺寸和位置
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        //获得绘图缓存中的Bitmap
-        view.buildDrawingCache();
-        Bitmap bitmap = view.getDrawingCache();
+        tv.setText("有个"+money+"元大红包");
+        TextView at = (TextView) view.findViewById(R.id.shareRedPacketAddressTv);
+        at.setText(address);
+//        //启用绘图缓存
+//        view.setDrawingCacheEnabled(true);
+//        //调用下面这个方法非常重要，如果没有调用这个方法，得到的bitmap为null
+//        view.measure(View.MeasureSpec.makeMeasureSpec(512, View.MeasureSpec.EXACTLY),
+//                View.MeasureSpec.makeMeasureSpec(512, View.MeasureSpec.EXACTLY));
+//        //这个方法也非常重要，设置布局的尺寸和位置
+//        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+//        //获得绘图缓存中的Bitmap
+//        view.buildDrawingCache();
+//        Bitmap bitmap = view.getDrawingCache();
 
 //        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), shareContent.getPictureResource());
+//        view.setDrawingCacheEnabled(true);
+//        Bitmap bitmap = view.getDrawingCache();
+
+//        Bitmap bitmap = getViewBitmap(view,0,0);
+//        Bitmap bitmap = view2Bitmap(view, shareContent.getPictureResource(), money, address);
+
+        Bitmap bitmap = screenShot(view);
         WXImageObject imgObj = new WXImageObject(bitmap);
         WXMediaMessage msg = new WXMediaMessage();
         msg.mediaObject = imgObj;
@@ -445,5 +457,115 @@ public class WechatShareManager {
 
     private String buildTransaction(final String type) {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
+    }
+
+    public Bitmap view2Bitmap(View view, int res, String money, String address) {
+//        View view = LayoutInflater.from(context).inflate(res, null);
+
+
+        view.setDrawingCacheEnabled(true);
+        view.measure(View.MeasureSpec.makeMeasureSpec(720, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(1154, View.MeasureSpec.UNSPECIFIED));
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.buildDrawingCache();
+        Bitmap cacheBitmap = view.getDrawingCache();
+        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+        return bitmap;
+    }
+
+
+    /**
+     * 把View绘制到Bitmap上
+     *
+     * @param comBitmap 需要绘制的View
+     * @param width     该View的宽度
+     * @param height    该View的高度
+     * @return 返回Bitmap对象
+     */
+    public Bitmap getViewBitmap(View comBitmap, int width, int height) {
+        Bitmap bitmap = null;
+        if (comBitmap != null) {
+            comBitmap.clearFocus();
+            comBitmap.setPressed(false);
+
+            boolean willNotCache = comBitmap.willNotCacheDrawing();
+            comBitmap.setWillNotCacheDrawing(false);
+
+            // Reset the drawing cache background color to fully transparent
+            // for the duration of this operation
+            int color = comBitmap.getDrawingCacheBackgroundColor();
+            comBitmap.setDrawingCacheBackgroundColor(0);
+            float alpha = comBitmap.getAlpha();
+            comBitmap.setAlpha(1.0f);
+
+            if (color != 0) {
+                comBitmap.destroyDrawingCache();
+            }
+
+            int widthSpec = View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY);
+            int heightSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
+            comBitmap.measure(widthSpec, heightSpec);
+            comBitmap.layout(0, 0, width, height);
+
+            comBitmap.buildDrawingCache();
+            Bitmap cacheBitmap = comBitmap.getDrawingCache();
+            if (cacheBitmap == null) {
+                Log.e("view.ProcessImageToBlur", "failed getViewBitmap(" + comBitmap + ")",
+                        new RuntimeException());
+                return null;
+            }
+            bitmap = Bitmap.createBitmap(cacheBitmap);
+            // Restore the view
+            comBitmap.setAlpha(alpha);
+            comBitmap.destroyDrawingCache();
+            comBitmap.setWillNotCacheDrawing(willNotCache);
+            comBitmap.setDrawingCacheBackgroundColor(color);
+        }
+        return bitmap;
+    }
+
+
+    private Bitmap getViewBitmap(View v) {
+        v.clearFocus();
+        v.setPressed(false);
+
+        boolean willNotCache = v.willNotCacheDrawing();
+        v.setWillNotCacheDrawing(false);
+
+        // Reset the drawing cache background color to fully transparent
+        // for the duration of this operation
+        int color = v.getDrawingCacheBackgroundColor();
+        v.setDrawingCacheBackgroundColor(0);
+
+        if (color != 0) {
+            v.destroyDrawingCache();
+        }
+        v.buildDrawingCache();
+        Bitmap cacheBitmap = v.getDrawingCache();
+        if (cacheBitmap == null) {
+            Log.e("Folder", "failed getViewBitmap(" + v + ")", new RuntimeException());
+            return null;
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
+
+        // Restore the view
+        v.destroyDrawingCache();
+        v.setWillNotCacheDrawing(willNotCache);
+        v.setDrawingCacheBackgroundColor(color);
+
+        return bitmap;
+    }
+
+    public Bitmap screenShot(View view) {
+        if (null == view) {
+            throw new IllegalArgumentException("parameter can't be null.");
+        }
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        view.setDrawingCacheEnabled(true);
+        view.buildDrawingCache();
+        Bitmap bitmap = view.getDrawingCache();
+        return bitmap;
     }
 }

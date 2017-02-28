@@ -1,5 +1,6 @@
 package com.xiandong.fst.presenter;
 
+import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.xiandong.fst.model.bean.FriendsBean;
 
@@ -14,4 +15,7 @@ public interface FriendsPresenter {
     void friendsImgSuccess(MarkerOptions option);
 
     void friendsImgFails(String err);
+
+    BaiduMap getBaiDuMap();
+
 }

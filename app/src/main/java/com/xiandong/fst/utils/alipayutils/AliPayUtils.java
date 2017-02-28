@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Log;
+
 import com.alipay.sdk.app.PayTask;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -46,6 +48,7 @@ public class AliPayUtils {
                      * docType=1) 建议商户依赖异步通知
                      */
                     String resultInfo = payResult.getResult();// 同步返回需要验证的信息
+                    Log.d("AliPayUtils", resultInfo);
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
                     if (TextUtils.equals(resultStatus, "9000")) {
@@ -76,11 +79,11 @@ public class AliPayUtils {
     public void pay(String name, String body, String price, String orderId , AliPayListener listener) {
         this.listener = listener;
         if (TextUtils.isEmpty(PARTNER) || TextUtils.isEmpty(RSA_PRIVATE) || TextUtils.isEmpty(SELLER)) {
-            new AlertDialog.Builder(context).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
-                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialoginterface, int i) {
-                        }
-                    }).show();
+//            new AlertDialog.Builder(context).setTitle("警告").setMessage("需要配置PARTNER | RSA_PRIVATE| SELLER")
+//                    .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialoginterface, int i) {
+//                        }
+//                    }).show();
             return;
         }
 
@@ -134,7 +137,7 @@ public class AliPayUtils {
         String orderInfo = "partner=" + "\"" + PARTNER + "\"";
 
         // 签约卖家支付宝账号
-        orderInfo += "&seller_id=" + "\"" + SELLER + "\"";
+        orderInfo += "&seller_id=" + "\"" + PARTNER + "\"";  //SELLER
 
         // 商户网站唯一订单号
         orderInfo += "&out_trade_no=" + "\"" + orderId + "\"";
@@ -208,30 +211,4 @@ public class AliPayUtils {
     private String getSignType() {
         return "sign_type=\"RSA\"";
     }
-
-
-//    /***
-//     * 自定义Toast
-//     *
-//     * @param is 成功失败
-//     * @param tm 提示消息
-//     */
-//    protected void customToast(boolean is, String tm) {
-//        int res;
-//        if (is) {
-//            res = R.drawable.toast_ture;
-//        } else {
-//            res = R.drawable.toast_error;
-//        }
-//        Toast toast = new Toast(context);
-//        View tv = LayoutInflater.from(context).inflate(R.layout.toast_custom, null);
-//        ImageView img = (ImageView) tv.findViewById(R.id.toastImg);
-//        img.setImageResource(res);
-//        TextView msg = (TextView) tv.findViewById(R.id.toastMsg);
-//        msg.setText(tm);
-//        toast.setGravity(Gravity.CENTER, 0, 0);
-//        toast.setDuration(Toast.LENGTH_SHORT);
-//        toast.setView(tv);
-//        toast.show();
-//    }
 }

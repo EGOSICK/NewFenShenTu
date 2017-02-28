@@ -27,7 +27,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
-                android:text="name"
                 android:textSize="15sp"/>
 
             <TextView
@@ -36,7 +35,6 @@
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:paddingBottom="10dp"
-                android:text="neirong"
                 android:textColor="@color/appBlack"
                 android:textSize="18sp"/>
 
@@ -51,10 +49,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="weaeawe"
                     android:textSize="15sp"/>
 
                 <ImageView
+                    android:layout_marginRight="5dp"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
                     android:src="@mipmap/hui_fu_icon"/>
@@ -63,7 +61,6 @@
                     android:id="@+id/itemForumHFTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="123"
                     android:textSize="15sp"/>
             </LinearLayout>
         </LinearLayout>

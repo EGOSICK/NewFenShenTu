@@ -1,24 +1,16 @@
 package com.xiandong.fst.application;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-
 import com.baidu.mapapi.SDKInitializer;
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
 import com.hyphenate.easeui.DemoApplication;
 import com.hyphenate.easeui.DemoHelper;
-import com.hyphenate.easeui.controller.EaseUI;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
-import com.xiandong.fst.BuildConfig;
-
+import com.xiandong.fst.tools.jpush.IListener;
+import com.xiandong.fst.tools.jpush.JPushListenerManager;
 import org.xutils.x;
-
-import java.util.ArrayList;
-import java.util.List;
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * 程序入口
@@ -26,30 +18,34 @@ import java.util.List;
 
 public class BaseApplication extends DemoApplication {
     public static IWXAPI iwxapi;
+
     @Override
     public void onCreate() {
         super.onCreate();
-
         x.Ext.init(this);
         x.Ext.setDebug(false); // 是否输出debug日志, 开启debug会影响性能.
         SDKInitializer.initialize(this);
-
+        //JPush1   设置开启日志,发布时请关闭日志
+        JPushInterface.setDebugMode(false);
+        //JPush2 初始化 JPush
+        JPushInterface.init(this);
         //注册微信1
         iwxapi = WXAPIFactory.createWXAPI(this, Constant.WX_APPID, true);
         //注册微信2
         iwxapi.registerApp(Constant.WX_APPID);
 
-        if (EaseUI.getInstance().init(this, null)) {
-            EMClient.getInstance().setDebugMode(true);
-            SDKInitializer.initialize(this);
-            DemoHelper.getInstance().init(this);
-        }
+        DemoHelper.getInstance().init(this);
+
+        JPushListenerManager.getInstance().registerListtener(new IListener() {
+            @Override
+            public void notifyAllActivity(Object o) {
+            }
+        });
     }
 
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
-        MultiDex.install(this) ;
+        MultiDex.install(this);
     }
-
 }

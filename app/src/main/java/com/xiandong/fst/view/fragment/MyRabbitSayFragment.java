@@ -1,5 +1,8 @@
 package com.xiandong.fst.view.fragment;
 
+import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.xiandong.fst.R;
@@ -9,6 +12,7 @@ import com.xiandong.fst.model.bean.MyRabbitSayBean;
 import com.xiandong.fst.tools.adapter.MyRabbitSayAdapter;
 import com.xiandong.fst.tools.dbmanager.AppDbManager;
 import com.xiandong.fst.utils.GsonUtil;
+import com.xiandong.fst.view.activity.RabbitSayNeiActivity;
 
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
@@ -42,6 +46,15 @@ public class MyRabbitSayFragment extends AbsBaseFragment {
     protected void initialize() {
         adapter = new MyRabbitSayAdapter(getContext(),position);
         myRabbitSayLv.setAdapter(adapter);
+
+        myRabbitSayLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                startActivity(new Intent(getContext() , RabbitSayNeiActivity.class)
+                        .putExtra("id",adapter.getSayId(i)).putExtra("position",adapter.getPosition(i)));
+            }
+        });
+
         switch (position) {
             case 0:
                 getSay("h");

@@ -7,7 +7,7 @@
     <include layout="@layout/empty_view"/>
 
     <ListView
-        android:divider="#FFEAEAEA"
+        android:divider="@color/line"
         android:id="@+id/addFriendsLv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

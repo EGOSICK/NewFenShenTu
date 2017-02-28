@@ -87,6 +87,7 @@ public class LogInActivity extends AbsBaseActivity implements LogInView, Registe
         logInLogInBtn.setIndeterminateProgressMode(true);
         logInLogInBtn.setText("登录");
         logInLogInBtn.setIdleText("登录");
+        userAgreementCb.setChecked(true);
         getViewHeight();
 
         UserEntity user = AppDbManager.getLastUser();
@@ -129,7 +130,7 @@ public class LogInActivity extends AbsBaseActivity implements LogInView, Registe
 
     @Event(type = View.OnClickListener.class, value = {R.id.logInLogInBtn,
             R.id.weXinLogInBtn, R.id.forgetPasswordTv, R.id.goToRegisterTv,
-            R.id.getCodeMsgTv})
+            R.id.getCodeMsgTv, R.id.userAgreementTv})
     private void logIn(View view) {
         switch (view.getId()) {
             case R.id.logInLogInBtn:   // 注册或登录
@@ -177,6 +178,9 @@ public class LogInActivity extends AbsBaseActivity implements LogInView, Registe
                 } else {
                     getCodeFails(getString(R.string.phone_err));
                 }
+                break;
+            case R.id.userAgreementTv:
+                StyledDialogTools.showAgreementDialog(context);
                 break;
         }
     }
@@ -426,7 +430,7 @@ public class LogInActivity extends AbsBaseActivity implements LogInView, Registe
 
     @Override
     public void registerSuccess() {
-        CustomToast.customToast(false, "注册成功", context);
+        CustomToast.customToast(true, "注册成功", context);
         CircularProgressButtonTools.showTrue(logInLogInBtn);
         new Handler().postDelayed(new Runnable() {
             @Override

@@ -50,7 +50,6 @@ public class AboutMeActivity extends AbsBaseActivity implements
 
     CircularProgressButton dialogFillInBtn;
     FillInRecommendedPersonPresenterImpl presenter;
-    boolean isGetPromoteUser = false;
     PromoteUserBean bean;
 
     @Override
@@ -87,7 +86,7 @@ public class AboutMeActivity extends AbsBaseActivity implements
     }
 
     @Event(type = View.OnClickListener.class, value = {R.id.aboutFSTView, R.id.serviceProvisionView,
-            R.id.fillInRecommendedPersonView, R.id.recommendView,R.id.titleBackImg})
+            R.id.fillInRecommendedPersonView, R.id.recommendView, R.id.titleBackImg})
     private void aboutMeOnClick(View v) {
         switch (v.getId()) {
             case R.id.aboutFSTView:
@@ -112,12 +111,10 @@ public class AboutMeActivity extends AbsBaseActivity implements
                 });
                 break;
             case R.id.recommendView:
-                if (isGetPromoteUser){
                     Bundle bundle = new Bundle();
-                    bundle.putParcelable("promoteUser",bean);
+                    bundle.putParcelable("promoteUser", bean);
                     startActivity(new Intent(context, RecommendActivity.class)
-                            .putExtra("promoteUser",bundle));
-                }
+                            .putExtra("promoteUser", bundle));
                 break;
             case R.id.titleBackImg:
                 finish();
@@ -150,8 +147,7 @@ public class AboutMeActivity extends AbsBaseActivity implements
 
     @Override
     public void getPromoteUserSuccess(PromoteUserBean bean) {
-        aboutMePromoteUserNumTv.setText(bean.getChildren()+"人");
-        isGetPromoteUser = true;
+        aboutMePromoteUserNumTv.setText(bean.getChildren() + "人");
         this.bean = bean;
     }
 }

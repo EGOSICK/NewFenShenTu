@@ -50,6 +50,10 @@ public class RabbitSaySearchAddressAdapter extends BaseAdapter {
         return list != null && list.size() > 0;
     }
 
+    public SearchAddressBean getAddress(int position){
+        return list.get(position);
+    }
+
     @Override
     public int getCount() {
         return isListNotNull() ? list.size() : 0;

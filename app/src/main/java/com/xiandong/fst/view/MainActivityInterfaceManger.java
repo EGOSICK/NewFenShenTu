@@ -36,36 +36,31 @@ public class MainActivityInterfaceManger {
     }
 
     public void refresh(LatLng latLng){
-        for (MainActivityInterface anInterface :
-                list) {
+        for (MainActivityInterface anInterface : list) {
             anInterface.onRefresh(latLng);
         }
     }
 
     public void mapChangeStart(){
-        for (MainActivityInterface anInterface :
-                list) {
+        for (MainActivityInterface anInterface : list) {
             anInterface.onMapChangeStart();
         }
     }
 
     public void mapChanging(){
-        for (MainActivityInterface anInterface :
-                list) {
+        for (MainActivityInterface anInterface : list) {
             anInterface.onMapChanging();
         }
     }
 
     public void mapChangeFinish(LatLng latLng ,String address){
-        for (MainActivityInterface anInterface :
-                list) {
+        for (MainActivityInterface anInterface : list) {
             anInterface.OnMapChangeFinish(latLng , address);
         }
     }
 
     public void searchResult(List<SearchAddressBean> searchList){
-        for (MainActivityInterface anInterface :
-                list) {
+        for (MainActivityInterface anInterface : list) {
             anInterface.onSearchResult(searchList);
         }
     }

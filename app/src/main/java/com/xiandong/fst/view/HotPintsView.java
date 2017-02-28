@@ -14,7 +14,7 @@ import java.util.List;
 public interface HotPintsView{
     void getHotPintsSuccess(List<HotPintsBean.ForumEntity> list);
 
-    void fetHotPintsFails(String err);
+    void getHotPintsFails(String err);
 
     BaiduMap loadForum();
 

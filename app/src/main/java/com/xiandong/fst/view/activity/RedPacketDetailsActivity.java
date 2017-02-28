@@ -66,7 +66,7 @@ public class RedPacketDetailsActivity extends AbsBaseActivity {
                     case 2:
                         RedPacketDetailsBean detailsBean = GsonUtil.fromJson(result, RedPacketDetailsBean.class);
                         RedPacketDetailsBean.RedbagEntity rr = detailsBean.getRedbag();
-                        redPacketDetailsTv.setText(rr.getTotalfee());
+                        redPacketDetailsTv.setText(rr.getUfee());
                         XCircleImgTools.setCircleImg(redPacketDetailsImg , rr.getImg());
                         adapter.addData(rr.getChildren());
                         break;

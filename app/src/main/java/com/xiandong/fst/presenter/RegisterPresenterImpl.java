@@ -29,7 +29,7 @@ public class RegisterPresenterImpl extends GetVerificationCodePresenterImpl impl
 
     public void register(String phone, String code, String psw, boolean isCheckBox) {
         if (!StringUtil.isEmpty(phone)) {
-            if (!StringUtil.isEmpty(psw)) {
+            if (!StringUtil.isEmpty(psw) && psw.length() >= 4) {
                 if (StringUtil.isTelPhone(phone)) {
                     if (verificationCode(code)) {
                         if (isCheckBox) {
@@ -44,7 +44,7 @@ public class RegisterPresenterImpl extends GetVerificationCodePresenterImpl impl
                     registerView.registerFails("手机号码输入有误");
                 }
             } else {
-                registerView.registerFails("请输入密码");
+                registerView.registerFails("请输入4位及以上的密码");
             }
         } else {
             registerView.registerFails("请输入手机号码");

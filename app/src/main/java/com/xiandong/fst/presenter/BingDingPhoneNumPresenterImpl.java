@@ -2,12 +2,10 @@ package com.xiandong.fst.presenter;
 
 
 import android.content.Context;
-import android.util.Log;
 
 import com.xiandong.fst.R;
 import com.xiandong.fst.model.BingDingPhoneNumModel;
 import com.xiandong.fst.model.BingDingPhoneNumModelImpl;
-import com.xiandong.fst.tools.ChatTools;
 import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.BingDingPhoneNumView;
 

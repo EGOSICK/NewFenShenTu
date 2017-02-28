@@ -52,6 +52,14 @@ public class MyRabbitSayAdapter extends BaseAdapter {
         return 0;
     }
 
+    public String getSayId(int position){
+        return list.get(position).getId();
+    }
+
+    public String getPosition(int position){
+        return list.get(position).getPosition();
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;

@@ -1,6 +1,7 @@
 package com.xiandong.fst.tools.adapter;
 
 
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +46,14 @@ public abstract class RecyclingPagerAdapter extends PagerAdapter {
 
     @Override
     public final void destroyItem(ViewGroup container, int position, Object object) {
+
+
+//        new Handler().post(new Runnable() {
+//            public void run() {
+//                parent.removeView(imageView);
+//            }
+//        });
+
         View view = (View) object;
         container.removeView(view);
         int viewType = getItemViewType(position);

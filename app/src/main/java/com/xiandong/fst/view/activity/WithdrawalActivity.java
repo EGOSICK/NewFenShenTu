@@ -86,6 +86,7 @@ public class WithdrawalActivity extends AbsBaseActivity implements WithdrawalVie
     @Override
     public void withdrawalSuccess(String msg) {
         CustomToast.customToast(true, msg, context);
+        finish();
     }
 
     @Override

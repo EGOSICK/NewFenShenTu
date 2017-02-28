@@ -4,18 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.hss01248.dialog.interfaces.MyDialogListener;
 import com.xiandong.fst.R;
 import com.xiandong.fst.model.bean.FriendsBean;
 import com.xiandong.fst.presenter.FriendsManagerPresenterImpl;
 import com.xiandong.fst.tools.CustomToast;
+import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.XCircleImgTools;
 import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.FriendsManagerView;
+import com.zcw.togglebutton.ToggleButton;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -70,14 +75,25 @@ public class UserCardActivity extends AbsBaseActivity implements FriendsManagerV
         else
             userCardRealNameTv.setText("已实名");
 
-        switch (friend.getTurnon()){
+        switch (friend.getTurnon()) {
             case "0":
-                userCardShieldingPositionTb.setSelected(true);
+                userCardShieldingPositionTb.setToggleOn();
                 break;
             case "1":
-                userCardShieldingPositionTb.setSelected(false);
+                userCardShieldingPositionTb.setToggleOff();
                 break;
         }
+
+        userCardShieldingPositionTb.setOnToggleChanged(new ToggleButton.OnToggleChanged() {
+            @Override
+            public void onToggle(boolean on) {
+                if (on) {
+                    presenter.shieldingPosition(0, friend.getId());
+                } else {
+                    presenter.shieldingPosition(1, friend.getId());
+                }
+            }
+        });
     }
 
     @Event(type = View.OnClickListener.class, value = {R.id.titleBackImg, R.id.userCardDeleteFriendTv})
@@ -87,39 +103,54 @@ public class UserCardActivity extends AbsBaseActivity implements FriendsManagerV
                 finish();
                 break;
             case R.id.userCardDeleteFriendTv:
-                presenter.deleteFriend(friend.getId());
+                StyledDialogTools.showDeleteDialog(this, new MyDialogListener() {
+                    @Override
+                    public void onFirst() {
+                        presenter.deleteFriend(friend.getId());
+                        StyledDialogTools.disMissStyleDialog();
+                    }
+
+                    @Override
+                    public void onSecond() {
+                        StyledDialogTools.disMissStyleDialog();
+                    }
+                });
                 break;
         }
     }
 
     @Event(type = CompoundButton.OnCheckedChangeListener.class,
-            value = {R.id.userCardChangeNameTb, R.id.userCardShieldingPositionTb})
+            value = {R.id.userCardChangeNameTb})
     private void changeNameCheckListener(CompoundButton compoundButton, boolean b) {
         switch (compoundButton.getId()) {
-            case R.id.userCardShieldingPositionTb:
-                if (b) {
-                    presenter.shieldingPosition(0, friend.getId());
-                } else {
-                    presenter.shieldingPosition(1, friend.getId());
-                }
-                break;
+//            case R.id.userCardShieldingPositionTb:
+//                if (b) {
+//                    presenter.shieldingPosition(0, friend.getId());
+//                } else {
+//                    presenter.shieldingPosition(1, friend.getId());
+//                }
+//                break;
             case R.id.userCardChangeNameTb:
                 userCardNameEt.setEnabled(b);
                 if (b) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                     compoundButton.setBackgroundResource(R.mipmap.me_change_name_complect);
                 } else {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
                     compoundButton.setBackgroundResource(R.mipmap.me_change_name);
                     String cName = userCardNameEt.getText().toString().trim();
-                    if (StringUtil.isEmpty(cName)) {
-                        CustomToast.customToast(false, "昵称不可为空", context);
-                    } else {
-                        if (StringUtil.isEquals(friend.getBz(), cName))
-                            return;
-                        if (StringUtil.isEquals(friend.getNicheng(), cName))
-                            return;
+//                    if (StringUtil.isEmpty(cName)) {
+//                        CustomToast.customToast(false, "昵称不可为空", context);
+//                    } else {
+//                        if (StringUtil.isEquals(friend.getBz(), cName))
+//                            return;
+//                        if (StringUtil.isEquals(friend.getNicheng(), cName))
+//                            return;
                         //////////提交修改操作
                         presenter.changeFriendBz(friend.getId(), cName);
-                    }
+//                    }
                 }
                 break;
         }

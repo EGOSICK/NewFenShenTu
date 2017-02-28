@@ -106,6 +106,7 @@ public class CostomAnimation {
         valueAnimator.setDuration(time).start();
     }
 
+
     /***
      * 平移动画
      *
@@ -161,7 +162,7 @@ public class CostomAnimation {
     }
 
     // 动画实际执行
-    public static void  startPropertyAnim(View v) {
+    public static void startPropertyAnim(View v) {
         // 第二个参数"rotation"表明要执行旋转
         // 0f -> 360f，从旋转360度，也可以是负值，负值即为逆时针旋转，正值是顺时针旋转。
         ObjectAnimator anim = ObjectAnimator.ofFloat(v, "rotation", 0f, 360f);

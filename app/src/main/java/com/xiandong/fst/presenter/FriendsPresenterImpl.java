@@ -3,10 +3,12 @@ package com.xiandong.fst.presenter;
 
 import android.content.Context;
 
+import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.xiandong.fst.model.FriendsModel;
 import com.xiandong.fst.model.FriendsModelImpl;
 import com.xiandong.fst.model.bean.FriendsBean;
+import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.view.FriendsView;
 
 import java.util.List;
@@ -32,9 +34,14 @@ public class FriendsPresenterImpl implements FriendsPresenter {
         model.showFriendsPosition(context, list, this);
     }
 
+    public void showMeetsPosition(Context context, List<FriendsBean.MeetEntity> list){
+        model.showMeetsPosition(context , list , this);
+    }
+
     @Override
     public void getFriendsSuccess(FriendsBean friendsBean) {
-        view.getFriendsSuccess(friendsBean);
+        if (MarkMapTools.isNestPager)
+            view.getFriendsSuccess(friendsBean);
     }
 
     @Override
@@ -50,5 +57,10 @@ public class FriendsPresenterImpl implements FriendsPresenter {
     @Override
     public void friendsImgFails(String err) {
         view.friendsImgFails(err);
+    }
+
+    @Override
+    public BaiduMap getBaiDuMap() {
+        return view.getBaiDuMap();
     }
 }

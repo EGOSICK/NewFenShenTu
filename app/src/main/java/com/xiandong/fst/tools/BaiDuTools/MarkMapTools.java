@@ -9,7 +9,14 @@ import java.util.HashMap;
  */
 
 public class MarkMapTools {
-    public static HashMap<String, String> friends = new HashMap<>();
+
+    public static boolean isNestPager = false;
+    public static boolean isBillingPager = false;
+    public static boolean isOrderPager = false;
+    public static boolean isSayPager = false;
+    public static boolean isMePager = false;
+
+    public static HashMap<String, Marker> friends = new HashMap<>();
 
     public static boolean isHaveFriend(String friendId) {
         return friends.containsKey(friendId);
@@ -31,18 +38,40 @@ public class MarkMapTools {
         StringBuffer sb = new StringBuffer();
         sb.append(type);
         for (int i = 0; i < other.length; i++) {
-            sb.append(","+other[i]);
+            sb.append("," + other[i]);
         }
         return sb.toString();
     }
 
-    private static HashMap<String ,Marker> forum = new HashMap<>();
+    private static HashMap<String, Marker> forum = new HashMap<>();
 
-    public static HashMap<String ,Marker> getForum(){
+    public static HashMap<String, Marker> getForum() {
         if (forum == null)
             forum = new HashMap<>();
         return forum;
     }
+    public static boolean isHavaForm(String pid) {
+        return forum.containsKey(pid);
+    }
 
+    private static HashMap<String, Marker> orders = new HashMap<>();
+
+    public static HashMap<String, Marker> getOrders() {
+        if (orders == null)
+            orders = new HashMap<>();
+        return orders;
+    }
+    public static boolean isHaveOrder(String id){
+        return orders.containsKey(id);
+    }
+
+    public static void choosePager(boolean isNP, boolean isBP
+            , boolean isOP, boolean isSP, boolean isMP) {
+        isNestPager = isNP;
+        isBillingPager = isBP;
+        isOrderPager = isOP;
+        isSayPager = isSP;
+        isMePager = isMP;
+    }
 
 }

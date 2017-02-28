@@ -84,7 +84,78 @@ public class MyOrdersAdapter extends BaseAdapter {
                     holder.itemMyOrdersStateTv.setText("已失效");
                     holder.itemMyOrdersStateImg.setImageResource(R.mipmap.wei_wan_cheng);
                     break;
-                case "0":  // 进行中
+                case "0":  // 没人做
+                    holder.itemMyOrdersStateTv.setText("");
+                    holder.itemMyOrdersStateImg.setVisibility(View.INVISIBLE);
+                    holder.itemMyOrdersOtherBtn.setVisibility(View.GONE);
+                    break;
+                case "1":  // 已完成
+                    boolean isSendUser;
+                    if (StringUtil.isEquals(AppDbManager.getUserId(), entity.getUid())) {
+                        isSendUser = true;
+                    } else {
+                        isSendUser = false;
+                    }
+
+                    if (StringUtil.isEquals("1", entity.getUact()) &&
+                            StringUtil.isEquals("1", entity.getUseract())) {
+                        holder.itemMyOrdersStateTv.setText("已完成");
+                        if (StringUtil.isEmpty(entity.getStar())){
+                            if (isSendUser) {
+                                holder.itemMyOrdersOtherBtn.setVisibility(View.VISIBLE);
+                                holder.itemMyOrdersOtherBtn.setText("去评价");
+                                holder.itemMyOrdersOtherBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (anInterface != null)
+                                            anInterface.clickListener(1, entity.getImg(),
+                                                    entity.getNicheng(), entity.getId());
+                                    }
+                                });
+                            } else {
+                                holder.itemMyOrdersOtherBtn.setVisibility(View.GONE);
+                            }
+                        }else {
+                            holder.itemMyOrdersOtherBtn.setVisibility(View.GONE);
+                        }
+                    } else {
+                        if (StringUtil.isEquals("1", entity.getUact())) {
+                            holder.itemMyOrdersStateTv.setText("发单人已完成");
+                            if (!isSendUser) {
+                                holder.itemMyOrdersOtherBtn.setVisibility(View.VISIBLE);
+                                holder.itemMyOrdersOtherBtn.setText("完成订单");
+                                holder.itemMyOrdersOtherBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (anInterface != null)
+                                            anInterface.clickListener(0, entity.getId());
+                                    }
+                                });
+                            } else {
+                                holder.itemMyOrdersOtherBtn.setVisibility(View.GONE);
+                            }
+                        }
+
+                        if (StringUtil.isEquals("1", entity.getUseract())) {
+                            holder.itemMyOrdersStateTv.setText("接单人已完成");
+                            if (isSendUser) {
+                                holder.itemMyOrdersOtherBtn.setVisibility(View.VISIBLE);
+                                holder.itemMyOrdersOtherBtn.setText("完成订单");
+                                holder.itemMyOrdersOtherBtn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if (anInterface != null)
+                                            anInterface.clickListener(0, entity.getId());
+                                    }
+                                });
+                            } else {
+                                holder.itemMyOrdersOtherBtn.setVisibility(View.GONE);
+                            }
+                        }
+                    }
+                    holder.itemMyOrdersStateImg.setImageResource(R.mipmap.yi_wan_cheng);
+                    break;
+                case "2":  // 进行中
                     holder.itemMyOrdersStateTv.setText("进行中");
                     holder.itemMyOrdersStateImg.setImageResource(R.mipmap.jin_xing_zhong);
                     holder.itemMyOrdersOtherBtn.setVisibility(View.VISIBLE);
@@ -96,7 +167,6 @@ public class MyOrdersAdapter extends BaseAdapter {
                                 anInterface.clickListener(0, entity.getId());
                         }
                     });
-
                     view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -107,18 +177,10 @@ public class MyOrdersAdapter extends BaseAdapter {
                         }
                     });
                     break;
-                case "1":  // 已完成
-                    holder.itemMyOrdersStateTv.setText("已完成");
-                    holder.itemMyOrdersStateImg.setImageResource(R.mipmap.yi_wan_cheng);
-                    holder.itemMyOrdersOtherBtn.setVisibility(View.VISIBLE);
-                    holder.itemMyOrdersOtherBtn.setText("去评价");
-                    holder.itemMyOrdersOtherBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (anInterface != null)
-                                anInterface.clickListener(1, entity.getId());
-                        }
-                    });
+                case "3":  // 未完成
+                    holder.itemMyOrdersStateTv.setText("未完成");
+                    holder.itemMyOrdersStateImg.setImageResource(R.mipmap.wei_wan_cheng);
+                    holder.itemMyOrdersOtherBtn.setVisibility(View.GONE);
                     break;
             }
             holder.itemMyOrdersDetailsBtn.setOnClickListener(new View.OnClickListener() {

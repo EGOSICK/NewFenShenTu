@@ -5,6 +5,9 @@ import com.xiandong.fst.model.bean.PayBean;
 import com.xiandong.fst.presenter.BillingPresenter;
 import com.xiandong.fst.tools.dbmanager.AppDbManager;
 import com.xiandong.fst.utils.StringUtil;
+import com.xiandong.fst.utils.TimeUtil;
+
+import java.util.Date;
 
 /**
  * Created by dell on 2017/01/09
@@ -19,7 +22,8 @@ public class BillingModelImpl implements BillingModel {
             if (!StringUtil.isEmpty(address)) {
                 if (!StringUtil.isEmpty(title)) {
                     if (!StringUtil.isEmpty(money) && Double.valueOf(money) >= 1) {
-                        if (!StringUtil.isEmpty(time)) {
+                        if (!StringUtil.isEmpty(time) && (Long.valueOf(time))*100
+                                > new Date().getTime()) {
                             if (StringUtil.isTelPhone(phone)) {
                                 if (!StringUtil.isEmpty(detial)) {
                                     PayBean payBean = new PayBean();
@@ -39,7 +43,7 @@ public class BillingModelImpl implements BillingModel {
                                 billingPresenter.billingMsgErr("订单手机号码格式不正确");
                             }
                         } else {
-                            billingPresenter.billingMsgErr("请选择订单到期时间");
+                            billingPresenter.billingMsgErr("请选择未来时间");
                         }
                     } else {
                         billingPresenter.billingMsgErr("订单金额不能少于1");

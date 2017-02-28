@@ -11,19 +11,20 @@
         android:orientation="vertical">
 
         <ImageView
-            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:scaleType="centerCrop"
             android:src="@mipmap/user_bg"/>
 
         <LinearLayout
+            android:layout_toRightOf="@+id/rabbitMeUserImgView"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:paddingLeft="20dp"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="120dp">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -33,15 +34,17 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:ellipsize="end"
+                    android:text="asdasdasdasdas"
+                    android:background="@color/transparent"
                     android:id="@+id/rabbitMeUserNameTv"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:enabled="false"
                     android:gravity="center"
-                    android:maxLength="15"
-                    android:maxLines="1"
+                    android:maxLength="8"
                     android:maxWidth="180dp"
-                    android:text="name"
+                    android:maxLines="1"
                     android:textColor="@color/textBlack"
                     android:textSize="14sp"/>
 
@@ -66,15 +69,42 @@
                 android:src="@mipmap/me_code"/>
         </LinearLayout>
 
-        <com.xiandong.fst.view.customview.CircularImageView
-            android:id="@+id/rabbitMeUserImg"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+        <RelativeLayout
+            android:id="@+id/rabbitMeUserImgView"
+            android:layout_width="82dp"
+            android:layout_height="82dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="20dp"
-            android:scaleType="centerCrop"/>
+            android:background="@drawable/round_white_bg">
 
+            <com.xiandong.fst.view.customview.CircularImageView
+                android:id="@+id/rabbitMeUserImg"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"/>
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/rabbitMeMessageImg"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_alignParentRight="true"
+            android:layout_margin="10dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/me_message"/>
+
+        <ImageView
+            android:id="@+id/rabbitMeQianDaoImg"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_toLeftOf="@+id/rabbitMeMessageImg"
+            android:layout_margin="10dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/me_qian_dao"/>
     </RelativeLayout>
 
     <ScrollView
@@ -171,7 +201,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="安全设置"
+                    android:text="安全中心"
                     android:textColor="@color/textBlack"
                     android:textSize="17sp"/>
             </LinearLayout>

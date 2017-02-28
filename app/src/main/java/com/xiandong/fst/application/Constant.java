@@ -62,6 +62,7 @@ public class Constant {
     public static class MarkerType{
         public static final String REDPACKET = "redPacket";
         public static final String FORUM = "forum";
+        public static final String ORDER = "order";
         public static final String REDPACKETCOME = "fenshentu";
     }
 

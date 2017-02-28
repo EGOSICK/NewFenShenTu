@@ -9,11 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gongwen.marqueen.MarqueeFactory;
-import com.gongwen.marqueen.MarqueeView;
 import com.xiandong.fst.R;
 import com.xiandong.fst.model.bean.OrderListBean;
-import com.xiandong.fst.tools.MarqueeTextTools;
 import com.xiandong.fst.tools.XCircleImgTools;
 
 import org.xutils.x;
@@ -82,13 +79,30 @@ public class RabbitOrdersListContentAdapter extends BaseAdapter {
             viewHolder.itemROLContentContentTv.setSelected(true);
             viewHolder.itemROLContentMoneyTv.setText(orderEntity.getPrice() + "元");
             XCircleImgTools.setCircleImg(viewHolder.itemROLContentUserImg, orderEntity.getImg());
-            viewHolder.itemRabbitOrdersRobBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (listener != null)
-                        listener.rabbitOrdersListContentRobBtnClick(uid);
-                }
-            });
+
+            switch (orderEntity.getAct()){
+                case "0":
+                    viewHolder.itemRabbitOrdersRobBtn.setText("抢单");
+                    viewHolder.itemRabbitOrdersRobBtn.setBackgroundResource(R.drawable.blue_btn_selector);
+                    viewHolder.itemRabbitOrdersRobBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (listener != null)
+                                listener.rabbitOrdersListContentRobBtnClick(uid);
+                        }
+                    });
+                    break;
+                case "1":
+                    viewHolder.itemRabbitOrdersRobBtn.setText("完成");
+                    viewHolder.itemRabbitOrdersRobBtn.setBackgroundResource(R.drawable.btn_select_bg_gray);
+                    break;
+                case "2":
+                    viewHolder.itemRabbitOrdersRobBtn.setText("进行中");
+                    viewHolder.itemRabbitOrdersRobBtn.setBackgroundResource(R.drawable.btn_select_bg_gray);
+                    break;
+            }
+
+
         }
         return convertView;
     }

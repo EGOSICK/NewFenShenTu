@@ -749,8 +749,11 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         sendMessage(message);
     }
 
-    String orderId;
+    String orderId , friendId;
 
+    public void setFriendId(String friendId){
+        this.friendId = friendId;
+    }
     public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
@@ -771,11 +774,6 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
             //设置消息扩展属性
             message.setAttribute("name", name);
             message.setAttribute("picturl", ava);
-
-
-
-            Log.d("oooooooooooooo", "111111-----"+name);
-            Log.d("oooooooooooooo", "111111-----"+ava);
         }
         if (chatFragmentHelper != null) {
             //set extension
@@ -783,13 +781,13 @@ public class EaseChatFragment extends EaseBaseFragment implements EMMessageListe
         }
         if (chatType == EaseConstant.CHATTYPE_GROUP) {
             message.setChatType(ChatType.GroupChat);
+            message.setAttribute("orderID", orderId);
         } else if (chatType == EaseConstant.CHATTYPE_CHATROOM) {
             message.setChatType(ChatType.ChatRoom);
+        } else if (chatType == EaseConstant.CHATTYPE_SINGLE){
+            message.setChatType(ChatType.Chat);
+            message.setAttribute("friendID",friendId);
         }
-//        if (chatType == EaseConstant.CHATTYPE_SINGLE)
-//
-//
-//        if (chatType == EaseConstant.CHATTYPE_GROUP)
 
         //send message
         EMClient.getInstance().chatManager().sendMessage(message);

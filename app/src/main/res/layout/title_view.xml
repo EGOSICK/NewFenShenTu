@@ -11,11 +11,12 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerVertical="true"
-
         android:padding="15dp"
         android:src="@mipmap/title_back_bg"/>
 
     <TextView
+        android:maxLines="1"
+        android:ellipsize="end"
         android:id="@+id/titleTitleTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

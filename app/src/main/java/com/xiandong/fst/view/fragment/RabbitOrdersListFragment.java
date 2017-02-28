@@ -110,6 +110,7 @@ public class RabbitOrdersListFragment extends AbsBaseFragment implements RabbitO
     @Override
     public void acceptOrderSuccess(String msg) {
         CustomToast.customToast(true, msg, context);
+        initNetWork();
     }
 
     @Override

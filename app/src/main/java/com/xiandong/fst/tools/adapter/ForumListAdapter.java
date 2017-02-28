@@ -35,6 +35,10 @@ public class ForumListAdapter extends BaseAdapter {
         return list != null && list.size() > 0;
     }
 
+    public String getForumId(int position){
+        return list.get(position - 1).getId();
+    }
+
     @Override
     public int getCount() {
         return isListNotNull() ? list.size() : 0;

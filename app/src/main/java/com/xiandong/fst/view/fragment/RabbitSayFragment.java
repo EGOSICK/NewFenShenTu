@@ -1,11 +1,14 @@
 package com.xiandong.fst.view.fragment;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +25,7 @@ import com.xiandong.fst.model.bean.SearchAddressBean;
 import com.xiandong.fst.model.bean.SearchPintsBean;
 import com.xiandong.fst.presenter.HotPintPresenterImpl;
 import com.xiandong.fst.presenter.HotPintsPresenterImpl;
+import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.adapter.RabbitSayAdapter;
 import com.xiandong.fst.tools.adapter.RabbitSaySearchAdapter;
 import com.xiandong.fst.tools.adapter.RabbitSaySearchAddressAdapter;
@@ -51,8 +55,9 @@ public class RabbitSayFragment extends AbsBaseFragment implements HotPintsView, 
         return rabbitSayFragment;
     }
 
-    public RabbitSayFragment showPager(){
+    public RabbitSayFragment showPager() {
         getMainActivity().cleanMarks();
+        MarkMapTools.choosePager(false, false, false, true, false);
         initHotPints();
         return rabbitSayFragment;
     }
@@ -141,8 +146,28 @@ public class RabbitSayFragment extends AbsBaseFragment implements HotPintsView, 
             }
         });
 
-    }
 
+//        rabbitSaySendMsgEt.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//
+//                    Rect r = new Rect();
+//                    rabbitSaySendMsgEt.getWindowVisibleDisplayFrame(r);
+//                    int screenHeight = rabbitSaySendMsgEt.getRootView().getHeight();
+//                    softHeight = screenHeight - (r.bottom - r.top);
+////                    boolean visible = softHeight > screenHeight / 3;
+////                    if (!visible) {
+////                        oh = softHeight;
+////                    } else {
+////                        ah = softHeight;
+////                    }
+//                Log.d("RabbitSayFragment", "softHeight:" + softHeight);
+//
+//            }
+//        });
+
+    }
+//    int softHeight, oh, ah;
     @Event(type = View.OnClickListener.class, value = {R.id.rabbitSayChooseKOPView,
             R.id.rabbitSaySendMsgImg, R.id.rabbitSaySearchNeiView,
             R.id.rabbitSaySendMsgBtn, R.id.rabbitSaySearchQXTv})
@@ -195,7 +220,6 @@ public class RabbitSayFragment extends AbsBaseFragment implements HotPintsView, 
             case R.id.rabbitSaySendMsgBtn:
                 rabbitSaySendMsgImg.setVisibility(View.VISIBLE);
                 rabbitSaySendMsgView.setVisibility(View.GONE);
-                rabbitSaySendMsgEt.setText("");
 
                 if (StringUtil.isEmpty(rabbitSaySendMsgEt.getText().toString().trim()))
                     return;
@@ -233,23 +257,27 @@ public class RabbitSayFragment extends AbsBaseFragment implements HotPintsView, 
 
             @Override
             public void onRefresh(LatLng location) {
-                locationPosition = location.latitude + ";" + location.longitude;
-                presenter.getHotPints();
-                adapter.setPosition(locationPosition);
+                if (location != null && MarkMapTools.isSayPager) {
+                    locationPosition = location.latitude + ";" + location.longitude;
+                    presenter.getHotPints();
+                    adapter.setPosition(locationPosition);
+                }
             }
 
             @Override
             public void onSearchResult(List<SearchAddressBean> list) {
-                searchAddressAdapter = new RabbitSaySearchAddressAdapter(context);
-                rabbitSaySearchResultLv.setAdapter(searchAddressAdapter);
-                searchAddressAdapter.addData(list);
-                searchAddressAdapter.setListener(new RabbitSaySearchAddressAdapter.searchResultListener() {
-                    @Override
-                    public void resultListener(LatLng latLng , String address) {
-                        presenter.searchPints(latLng.latitude + ";" + latLng.longitude, "");
-                        rabbitSaySearchEt.setText(address);
-                    }
-                });
+                if (list != null && list.size() > 0 && MarkMapTools.isSayPager) {
+                    searchAddressAdapter = new RabbitSaySearchAddressAdapter(context);
+                    rabbitSaySearchResultLv.setAdapter(searchAddressAdapter);
+                    searchAddressAdapter.addData(list);
+                    searchAddressAdapter.setListener(new RabbitSaySearchAddressAdapter.searchResultListener() {
+                        @Override
+                        public void resultListener(LatLng latLng, String address) {
+                            presenter.searchPints(latLng.latitude + ";" + latLng.longitude, "");
+                            rabbitSaySearchEt.setText(address);
+                        }
+                    });
+                }
             }
         });
     }
@@ -260,7 +288,7 @@ public class RabbitSayFragment extends AbsBaseFragment implements HotPintsView, 
     }
 
     @Override
-    public void fetHotPintsFails(String err) {
+    public void getHotPintsFails(String err) {
 
     }
 
@@ -287,12 +315,12 @@ public class RabbitSayFragment extends AbsBaseFragment implements HotPintsView, 
     }
 
     @Override
-    public void fetHotPintFails(String err) {
+    public void getHotPintFails(String err) {
 
     }
 
     @Override
     public void huiFuSuccess() {
-
+        rabbitSaySendMsgEt.setText("");
     }
 }

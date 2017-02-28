@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.xiandong.fst.R;
@@ -19,6 +20,7 @@ import com.xiandong.fst.model.bean.FriendsBean;
 import com.xiandong.fst.presenter.FriendsPresenter;
 import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.dbmanager.AppDbManager;
+import com.xiandong.fst.utils.BitmapUtils;
 import com.xiandong.fst.utils.GsonUtil;
 import com.xiandong.fst.utils.StringUtil;
 
@@ -79,51 +81,55 @@ public class FriendsModelImpl implements FriendsModel {
         if (list != null && list.size() > 0) {
             for (FriendsBean.FriendEntity friend : list) {
                 if (MarkMapTools.friends != null && MarkMapTools.friends.size() > 0) {
-                    if (MarkMapTools.isHaveFriend(friend.getId())){
-                        if (StringUtil.isEquals(MarkMapTools.friends.get(friend.getId()) , friend.getPosition())){
+                    if (MarkMapTools.isHaveFriend(friend.getId())) {
+                        String[] pon = friend.getPosition().split(";");
+                        LatLng latLng = new LatLng(Double.valueOf(pon[0]), Double.valueOf(pon[1]));
+                        if (MarkMapTools.friends.get(friend.getId()).getPosition() == latLng) {
                             return;
-                        }else {
-                            show(friend , context ,presenter);
+                        } else {
+                            MarkMapTools.friends.get(friend.getId()).setPosition(latLng);
                         }
-                    }else {
-                        show(friend , context ,presenter);
+                    } else {
+                        show(friend.getPosition() , friend.getId() , friend.getImg() , context, presenter);
                     }
-                }else {
-                    show(friend , context ,presenter);
+                } else {
+                    show(friend.getPosition() , friend.getId() , friend.getImg(), context, presenter);
                 }
             }
         }
     }
 
-    private void show(FriendsBean.FriendEntity friend, Context context, FriendsPresenter presenter){
-        String[] position = friend.getPosition().split(";");
-        LatLng latLng = new LatLng(Double.parseDouble(position[0]),
-                Double.parseDouble(position[1]));
-        MarkBitmap markBitmap = new MarkBitmap(context, friend.getId(), latLng, presenter);
-        markBitmap.execute(friend.getImg());
-        MarkMapTools.friends.put(friend.getId() , friend.getPosition());
+    @Override
+    public void showMeetsPosition(Context context, List<FriendsBean.MeetEntity> list, FriendsPresenter presenter) {
+        if (list != null && list.size() > 0) {
+            for (FriendsBean.MeetEntity meet: list) {
+                if (MarkMapTools.friends != null && MarkMapTools.friends.size() > 0) {
+                    if (MarkMapTools.isHaveFriend(meet.getId())) {
+                        String[] pon = meet.getPosition().split(";");
+                        LatLng latLng = new LatLng(Double.valueOf(pon[0]), Double.valueOf(pon[1]));
+                        if (MarkMapTools.friends.get(meet.getId()).getPosition() == latLng) {
+                            return;
+                        } else {
+                            MarkMapTools.friends.get(meet.getId()).setPosition(latLng);
+                        }
+                    } else {
+                        show(meet.getPosition() , meet.getId() , meet.getUimg() , context, presenter);
+                    }
+                } else {
+                    show(meet.getPosition() , meet.getId() , meet.getUimg(), context, presenter);
+                }
+            }
+        }
     }
 
-
-    /***
-     * url转换为bitmap
-     *
-     * @param urlpath 网址
-     * @return bitmap
-     */
-    public static Bitmap getBitMBitmap(String urlpath) {
-        Bitmap map = null;
-        try {
-            URL url = new URL(urlpath);
-            URLConnection conn = url.openConnection();
-            conn.connect();
-            InputStream in;
-            in = conn.getInputStream();
-            map = BitmapFactory.decodeStream(in);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void show(String pio , String id ,String img, Context context, FriendsPresenter presenter) {
+        String[] position = pio.split(";");
+        if (position.length == 2) {
+            LatLng latLng = new LatLng(Double.parseDouble(position[0]),
+                    Double.parseDouble(position[1]));
+            MarkBitmap markBitmap = new MarkBitmap(context, id, latLng, presenter);
+            markBitmap.execute(img);
         }
-        return map;
     }
 
     /**
@@ -146,7 +152,7 @@ public class FriendsModelImpl implements FriendsModel {
     /***
      * 使用异步任务进行mark的自定义
      */
-    class MarkBitmap extends AsyncTask<String, String, Bitmap> {
+    private class MarkBitmap extends AsyncTask<String, String, Bitmap> {
         private LatLng latLng;
         private String id;
         private Context context;
@@ -172,7 +178,7 @@ public class FriendsModelImpl implements FriendsModel {
          */
         @Override
         protected Bitmap doInBackground(String... params) {
-            return getBitMBitmap(params[0]);
+            return BitmapUtils.getBitMBitmap(params[0]);
         }
 
         /**
@@ -187,9 +193,10 @@ public class FriendsModelImpl implements FriendsModel {
                     .position(latLng)
                     .icon(bd).title(id);
             // 定义mark出现动画  生长动画
-            option.animateType(MarkerOptions.MarkerAnimateType.drop);
+            option.animateType(MarkerOptions.MarkerAnimateType.none);
             //在地图上添加Marker，并显示
-//            Marker m = (Marker) mBaiduMap.addOverlay(option);
+            Marker m = (Marker) presenter.getBaiDuMap().addOverlay(option);
+            MarkMapTools.friends.put(id, m);
             presenter.friendsImgSuccess(option);
         }
 

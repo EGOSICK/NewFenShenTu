@@ -87,10 +87,10 @@ public class EaseChatPrimaryMenu extends EaseChatPrimaryMenuBase implements OnCl
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (!TextUtils.isEmpty(s)) {
-                    buttonMore.setVisibility(View.GONE);
+                    buttonSetModeVoice.setVisibility(View.GONE);
                     buttonSend.setVisibility(View.VISIBLE);
                 } else {
-                    buttonMore.setVisibility(View.VISIBLE);
+                    buttonSetModeVoice.setVisibility(View.VISIBLE);
                     buttonSend.setVisibility(View.GONE);
                 }
             }

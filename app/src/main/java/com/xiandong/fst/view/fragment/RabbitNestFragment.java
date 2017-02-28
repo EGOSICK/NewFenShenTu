@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.xiandong.fst.R;
@@ -15,6 +16,7 @@ import com.xiandong.fst.presenter.FriendsPresenterImpl;
 import com.xiandong.fst.presenter.RedPacketPresenterImpl;
 import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.CustomToast;
+import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.adapter.RabbitNestFriendsAdapter;
 import com.xiandong.fst.view.RedPacketView;
 import com.xiandong.fst.view.activity.MyChatActivity;
@@ -28,11 +30,14 @@ import com.xiandong.fst.view.activity.AddFriendsActivity;
 import com.xiandong.fst.view.activity.SendRedPacketActivity;
 import com.xiandong.fst.view.customview.PagerContainer;
 
+
+
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 
 import java.util.List;
+
 
 /**
  * 兔子窝
@@ -47,16 +52,23 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
     }
 
     public RabbitNestFragment showPager() {
+        MarkMapTools.choosePager(true, false, false, false, false);
         getMainActivity().cleanMarks();
-        MarkMapTools.friends.clear();
-        MarkMapTools.getRedPacket().clear();
         initNetWork();
         return rabbitNestFragment;
     }
 
+    //    @ViewInject(R.id.friendsPc)
+//    PagerContainer friendsPc;
+//    @ViewInject(R.id.friendsPc)
+//    AppPagerContainer container;
     @ViewInject(R.id.friendsPc)
     PagerContainer friendsPc;
     Context context;
+    LatLng location;
+//    @ViewInject(R.id.viewpager_layout)
+
+    //    @ViewInject(R.id.viewPager)
     ViewPager vp;
     RabbitNestFriendsAdapter adapter;
     FriendsPresenterImpl presenter;
@@ -64,7 +76,9 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
 
     @Override
     protected void initialize() {
+        MarkMapTools.choosePager(true, false, false, false, false);
         context = getContext();
+        StyledDialogTools.showLoding(context);
         presenter = new FriendsPresenterImpl(this);
         redPacketPresenter = new RedPacketPresenterImpl(this);
         adapter = new RabbitNestFriendsAdapter(context);
@@ -80,8 +94,13 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
 
             @Override
             public void onPageSelected(int position) {
-                LatLng latLng = adapter.getSelectLocation(position);
-                getMainActivity().positioning(latLng);
+                if (adapter.getSelectId(position) != null) {
+                    Marker marker = MarkMapTools.friends.get(adapter.getSelectId(position));
+                    if (marker == null)
+                        return;
+                    marker.setToTop();
+                    getMainActivity().positioning(marker.getPosition());
+                }
             }
 
             @Override
@@ -90,7 +109,7 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
         });
         adapter.setMeListener(new RabbitNestFriendsAdapter.onMeCardClickListener() {
             @Override
-            public void clickListener(int type) {
+            public void clickListener(int type,String[] s) {
                 switch (type) {
                     case 1:
                         startActivity(new Intent(context, MyOrdersActivity.class));
@@ -99,10 +118,13 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
                         startActivity(new Intent(context, MyWalletActivity.class));
                         break;
                     case 3:
-                        startActivity(new Intent(context , MyChatActivity.class));
+                        startActivity(new Intent(context, MyChatActivity.class));
                         break;
                     case 4:
-                        startActivity(new Intent(context , MyRabbitSayActivity.class));
+                        startActivity(new Intent(context, MyRabbitSayActivity.class));
+                        break;
+                    case 5:
+                        getMainActivity().getNaviHelpTools().startNavi(location, s[0], s[1]);
                         break;
                 }
             }
@@ -147,9 +169,12 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
             @Override
             public void onRefresh(LatLng location) {
                 if (location != null) {
-                    presenter.getFriends();
-                    redPacketPresenter.loadRedPacket();
-                    adapter.getLocation(location);
+                    RabbitNestFragment.this.location = location;
+                    if (MarkMapTools.isNestPager) {
+                        presenter.getFriends();
+                        redPacketPresenter.loadRedPacket();
+                        adapter.getLocation(location);
+                    }
                 }
             }
 
@@ -166,20 +191,31 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
 
     @Override
     public void getFriendsSuccess(FriendsBean friendsBean) {
-        adapter.addData(friendsBean);
-        if (friendsBean.getFriend().size() > 0) {
-            presenter.showFriendsPosition(context, friendsBean.getFriend());
+        if (MarkMapTools.isNestPager) {
+            adapter.addData(friendsBean);
+//            vp.setOffscreenPageLimit(adapter.getCount());
+            if (friendsBean.getFriend().size() > 0) {
+                presenter.showFriendsPosition(context, friendsBean.getFriend());
+
+                presenter.showMeetsPosition(context , friendsBean.getMeet());
+            }
+            StyledDialogTools.disMissStyleDialog();
         }
     }
 
     @Override
     public void friendsImgSuccess(MarkerOptions option) {
-        getMainActivity().showFriendsPosition(option);
+//        getMainActivity().showFriendsPosition(option);
     }
 
     @Override
     public void friendsImgFails(String err) {
         CustomToast.customToast(false, err, context);
+    }
+
+    @Override
+    public BaiduMap getBaiDuMap() {
+        return getMainActivity().getBaiDuMap();
     }
 
 

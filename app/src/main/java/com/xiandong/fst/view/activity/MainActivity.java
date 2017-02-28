@@ -1,20 +1,19 @@
 package com.xiandong.fst.view.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TabHost;
-import android.widget.Toast;
 
+import com.baidu.location.Address;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -40,33 +39,47 @@ import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener;
 import com.baidu.mapapi.search.sug.SuggestionResult;
 import com.baidu.mapapi.search.sug.SuggestionSearch;
 import com.baidu.mapapi.search.sug.SuggestionSearchOption;
-import com.hyphenate.easeui.EaseConstant;
+import com.baidu.navisdk.adapter.BaiduNaviManager;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.easeui.DemoHelper;
+import com.hyphenate.easeui.model.EaseAtMessageHelper;
+import com.hyphenate.easeui.model.EaseNotifier;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.exceptions.HyphenateException;
 import com.xiandong.fst.R;
 import com.xiandong.fst.application.Constant;
 import com.xiandong.fst.model.bean.SearchAddressBean;
 import com.xiandong.fst.presenter.MarkerPresenterImpl;
-import com.xiandong.fst.tools.ChatTools;
+import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
+import com.xiandong.fst.tools.chat.ChatTools;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.StyledDialogTools;
-import com.xiandong.fst.tools.WXShareTools;
 import com.xiandong.fst.tools.WechatShareManager;
+import com.xiandong.fst.tools.chat.GetMessageManager;
+import com.xiandong.fst.tools.dbmanager.AppDbManager;
+import com.xiandong.fst.tools.navi.NaviHelpTools;
 import com.xiandong.fst.utils.StringUtil;
-import com.xiandong.fst.view.MainActivityInterface;
 import com.xiandong.fst.view.MainActivityInterfaceManger;
 import com.xiandong.fst.view.MarkerView;
-import com.xiandong.fst.view.customview.MyViewPager;
-import com.xiandong.fst.view.fragment.ChatBaseFragment;
 import com.xiandong.fst.view.fragment.RabbitBillingFragment;
 import com.xiandong.fst.view.fragment.RabbitMeFragment;
 import com.xiandong.fst.view.fragment.RabbitNestFragment;
 import com.xiandong.fst.view.fragment.RabbitOrdersFragment;
 import com.xiandong.fst.view.fragment.RabbitSayFragment;
 
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 
 
 /**
@@ -79,6 +92,8 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
     TabHost tabHost;
     MarkerPresenterImpl markerPresenter;
     String locationCity;
+    String locationAddress;
+    NaviHelpTools naviHelpTools;
 
     @Override
     protected void initialize() {
@@ -89,6 +104,113 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         initMapView();
         initMarKer();
         ChatTools.initChat(context);
+        setTags();
+        naviHelpTools = new NaviHelpTools(this);
+
+        DemoHelper.getInstance().getNotifier().setNotificationInfoProvider(
+                new EaseNotifier.EaseNotificationInfoProvider() {
+                    @Override
+                    public String getDisplayedText(EMMessage message) {
+                        String ticker = EaseCommonUtils.getMessageDigest(message, context);
+                        String name = "";
+                        if (message.getType() == EMMessage.Type.TXT) {
+                            ticker = ticker.replaceAll("\\[.{2,3}\\]", "[表情]");
+                        }
+
+                        if (EaseAtMessageHelper.get().isAtMeMsg(message)) {
+                            return "有人@了你";
+                        }
+
+                        try {
+                            name =  message.getStringAttribute("name") ;
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                        }
+                        return name + ": " + ticker;
+                    }
+
+                    @Override
+                    public String getLatestText(EMMessage message, int fromUsersNum, int messageNum) {
+                        String name = "";
+                        String msg = "";
+                        try {
+                            if (message.getType() == EMMessage.Type.TXT) {
+                                msg = "普通消息";
+                            } else if (message.getType() == EMMessage.Type.IMAGE) {
+                                msg = "图片消息";
+                            } else if (message.getType() == EMMessage.Type.VOICE) {
+                                msg = "语音消息";
+                            }
+                            name = message.getStringAttribute("name");
+                        } catch (HyphenateException e) {
+                            e.printStackTrace();
+                        }
+                        return name +": "+ msg;
+                    }
+
+                    @Override
+                    public String getTitle(EMMessage message) {
+
+
+
+
+                        if (message.getChatType() == EMMessage.ChatType.GroupChat) {
+
+                            try {
+                                String orderid = message.getStringAttribute("orderID");
+                                if (!StringUtil.isEmpty(orderid)) {
+                                    String sp = orderid.substring(0, 1);
+                                    if (StringUtil.isEquals(sp, "m")) {
+                                        return "聚会新消息";
+                                    } else {
+                                        return "订单新消息";
+                                    }
+                                } else {
+                                    return "新消息";
+                                }
+                            } catch (HyphenateException e) {
+                                e.printStackTrace();
+                            }
+
+                        } else {
+                            GetMessageManager.getInstance().getSingleMessage(message.getFrom());
+                            return "好友新消息";
+                        }
+                        return "新消息";
+                    }
+
+                    @Override
+                    public int getSmallIcon(EMMessage message) {
+
+                        return R.mipmap.ic_launcher;
+                    }
+
+                    @Override
+                    public Intent getLaunchIntent(EMMessage message) {
+                        Intent intent = new Intent();
+                        if (message.getChatType() == EMMessage.ChatType.Chat) {
+                            intent.setClass(getApplicationContext(), MyChatActivity.class);
+                            intent.putExtra("id", message.getFrom());
+                        } else {
+                            try {
+                                String orderid = message.getStringAttribute("orderID");
+                                if (!StringUtil.isEmpty(orderid)) {
+                                    String sp = orderid.substring(0, 1);
+                                    if (StringUtil.isEquals(sp, "m")) {
+                                        intent.setClass(getApplicationContext(), MeetChatActivity.class);
+                                        intent.putExtra("id", orderid.substring(4, orderid.length()));
+                                    } else {
+                                        intent.setClass(getApplicationContext(), OrderDetailsActivity.class);
+                                        intent.putExtra("orderId", orderid.substring(5, orderid.length()));
+                                    }
+                                }
+                            } catch (HyphenateException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return intent;
+                    }
+                });
     }
 
     @ViewInject(R.id.mapView)
@@ -104,7 +226,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         // 百度地图LoGo -> 正式版切记不能这么做，本人只是觉得logo丑了
         mapView.removeViewAt(1);
         // 百度地图logo显示位置
-        // mapView.setLogoPosition(LogoPosition.logoPostionRightTop);
+        mapView.setLogoPosition(LogoPosition.logoPostionRightTop);
         // 不倾斜
         mBaiduMap.getUiSettings().setOverlookingGesturesEnabled(false);
         // 不旋转
@@ -128,7 +250,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         option.setOpenGps(true); // 打开gps
         option.setIsNeedAddress(true);
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(5000);
+        option.setScanSpan(10000);
         option.setNeedDeviceDirect(true);
         mLocClient.setLocOption(option);
         mLocClient.start();
@@ -141,17 +263,21 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                     return;
                 MyLocationData locData = new MyLocationData.Builder()
                         .accuracy(bdLocation.getRadius())
-                        // 此处设置开发者获取到的方向信息，顺时针0-360
+                                // 此处设置开发者获取到的方向信息，顺时针0-360
                         .direction(0).latitude(bdLocation.getLatitude())
                         .longitude(bdLocation.getLongitude()).build();
                 mBaiduMap.setMyLocationData(locData);
                 location = new LatLng(bdLocation.getLatitude(), bdLocation.getLongitude());
-
                 MainActivityInterfaceManger.getInstance().refresh(location);
-
+                upPosition(location);
                 if (isFirstLoc) {
                     isFirstLoc = false;
                     locationCity = bdLocation.getCity();
+                    Address address = bdLocation.getAddress();
+                    StringBuffer sb = new StringBuffer();
+                    sb.append(address.city).append(address.district).append(address.street);//.append(address.streetNumber);
+                    locationAddress = sb.toString();
+                    MainActivityInterfaceManger.getInstance().mapChangeFinish(location, locationAddress);
                     MapStatus.Builder builder = new MapStatus.Builder();
                     builder.target(location);
                     mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
@@ -164,8 +290,34 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         });
     }
 
-    GeoCoder mSearch;
+    private void upPosition(LatLng location) {
+        RequestParams params = new RequestParams(Constant.APIURL + "position");
+        params.addBodyParameter("uid", AppDbManager.getUserId());
+        params.addBodyParameter("position", location.latitude + ";" + location.longitude);
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
 
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    GeoCoder mSearch;
     LatLng mapStatusChangeLatLng;
     SuggestionSearch mSuggestionSearch;
 
@@ -220,16 +372,19 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         mSuggestionSearch.setOnGetSuggestionResultListener(new OnGetSuggestionResultListener() {
             @Override
             public void onGetSuggestionResult(SuggestionResult suggestionResult) {
-                List<SearchAddressBean> searchList = new ArrayList<SearchAddressBean>();
-                for (SuggestionResult.SuggestionInfo info : suggestionResult.getAllSuggestions()) {
-                    SearchAddressBean bean = new SearchAddressBean();
-                    bean.setCity(info.city);
-                    bean.setDistrict(info.district);
-                    bean.setKey(info.key);
-                    bean.setPt(info.pt);
-                    searchList.add(bean);
+                if (suggestionResult != null && suggestionResult.getAllSuggestions() != null &&
+                        suggestionResult.getAllSuggestions().size() > 0) {
+                    List<SearchAddressBean> searchList = new ArrayList<SearchAddressBean>();
+                    for (SuggestionResult.SuggestionInfo info : suggestionResult.getAllSuggestions()) {
+                        SearchAddressBean bean = new SearchAddressBean();
+                        bean.setCity(info.city);
+                        bean.setDistrict(info.district);
+                        bean.setKey(info.key);
+                        bean.setPt(info.pt);
+                        searchList.add(bean);
+                    }
+                    MainActivityInterfaceManger.getInstance().searchResult(searchList);
                 }
-                MainActivityInterfaceManger.getInstance().searchResult(searchList);
             }
         });
 
@@ -245,7 +400,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                 if (title.length > 0) {
                     switch (title[0]) {
                         case Constant.MarkerType.REDPACKET:
-                            markerPresenter.getRedPacketMsg(title[3], title[1], title[2]);
+                            markerPresenter.getRedPacketMsg(title[3], title[1], title[2], title[4]);
                             break;
                     }
                 }
@@ -253,6 +408,82 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
             }
         });
     }
+
+    private static final int MSG_SET_ALIAS = 1001;
+    private static final int MSG_SET_TAGS = 1002;
+
+    /***
+     * 设置推送tags
+     */
+    private void setTags() {
+        String tag = "HDQ" + AppDbManager.getUserId();
+        // ","隔开的多个 转换成 Set
+        String[] sArray = tag.split(",");
+        Set<String> tagSet = new LinkedHashSet<String>();
+        for (String sTagItme : sArray) {
+            tagSet.add(sTagItme);
+        }
+        //调用JPush API设置Tag
+        setTagHandler.sendMessage(setTagHandler.obtainMessage(MSG_SET_TAGS, tagSet));
+        //调用JPush API设置Alias
+        setTagHandler.sendMessage(setTagHandler.obtainMessage(MSG_SET_ALIAS, "HDQ" + AppDbManager.getUserId()));
+        String tags = "http://www.fenshentu.com/app.php/Index/index/act/registrationID/uid/" +
+                AppDbManager.getUserId() + "/code/" + JPushInterface.getRegistrationID(getApplicationContext()) +
+                "/tags/" + tag;
+        x.http().get(new RequestParams(tags), new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    Handler setTagHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case MSG_SET_ALIAS:
+                    JPushInterface.setAliasAndTags(getApplicationContext(), (String) msg.obj, null, new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                            switch (i) {
+                                case 0:
+                                    //    success
+                                    break;
+                                case 6002:
+                                    //    Failed
+                                    setTagHandler.sendMessageDelayed(setTagHandler.obtainMessage(MSG_SET_ALIAS, s), 1000 * 60);
+                                    break;
+                            }
+                        }
+                    });
+                    break;
+                case MSG_SET_TAGS:
+                    JPushInterface.setAliasAndTags(getApplicationContext(), null, (Set<String>) msg.obj, new TagAliasCallback() {
+                        @Override
+                        public void gotResult(int i, String s, Set<String> set) {
+                        }
+                    });
+                    break;
+            }
+        }
+    };
 
     private void initTabSpace() {
         tabHost.setup();
@@ -338,8 +569,24 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
     }
 
+    public String getLocationAddress() {
+        return locationAddress;
+    }
+
+    public String getLocationCity() {
+        return locationCity;
+    }
+
     public void cleanMarks() {
         mBaiduMap.clear();
+        MarkMapTools.friends.clear();
+        MarkMapTools.getRedPacket().clear();
+        MarkMapTools.getForum().clear();
+        MarkMapTools.getOrders().clear();
+    }
+
+    public NaviHelpTools getNaviHelpTools() {
+        return naviHelpTools;
     }
 
     public BaiduMap getBaiDuMap() {
@@ -347,7 +594,8 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
     }
 
     public void showFriendsPosition(MarkerOptions option) {
-        mBaiduMap.addOverlay(option);
+//        Marker marker = (Marker) mBaiduMap.addOverlay(option);
+//        MarkMapTools.friends.put("",marker);
     }
 
     public void searchAddress(String key) {
@@ -355,7 +603,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
     }
 
     @Override
-    public void getRedPacketSuccess(final int type, final String come, final String money) {
+    public void getRedPacketSuccess(final int type, final String come, final String money, final String address) {
         String dialogMsg = "";
         switch (type) {
             case 1:   // 先去分享
@@ -376,24 +624,28 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                 break;
         }
 
-        StyledDialogTools.showRedPacket(dialogMsg, context, new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (type) {
                     case 1:   // 先去分享
+                        redDialog.dismiss();
                         if (StringUtil.isEquals(come, Constant.MarkerType.REDPACKETCOME)) {
                             WechatShareManager shareManager = WechatShareManager.getInstance(context);
                             shareManager.shareByWebchat(shareManager.getShareContentPicture(
-                                    R.layout.share_red_packet), 1, money);
+                                    R.layout.share_red_packet), 1, money, locationAddress);
                             shareManager.registerListener(new WechatShareManager.ShareInterface() {
                                 @Override
                                 public void shareSuccess() {
                                     CustomToast.customToast(true, "分享成功", context);
                                     markerPresenter.grabRedPacket(title[1]);
+                                    redDialog.dismiss();
                                 }
+
                                 @Override
                                 public void shareFails() {
                                     CustomToast.customToast(false, "分享失败", context);
+                                    redDialog.dismiss();
                                 }
                             });
                         } else {
@@ -411,8 +663,12 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                         break;
                 }
             }
-        });
+        };
+
+        redDialog = StyledDialogTools.showRedPacket(dialogMsg, context, listener);
     }
+
+    Dialog redDialog;
 
     @Override
     public void getRedPacketFails(String err) {
@@ -429,6 +685,19 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         startActivity(new Intent(context, RedPacketDetailsActivity.class).putExtra("id", title[1]));
     }
 
+    @Override
+    protected void onPause() {
+        // MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
+        mapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        // MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
+        mapView.onResume();
+        super.onResume();
+    }
 
     @Override
     protected void onDestroy() {
@@ -441,6 +710,26 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         }
         // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
         mapView.onDestroy();
+        BaiduNaviManager.getInstance().uninit();
         super.onDestroy();
     }
+
+    private long exitTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                CustomToast.customToast(true, "再按一次退出程序", context);
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+
 }

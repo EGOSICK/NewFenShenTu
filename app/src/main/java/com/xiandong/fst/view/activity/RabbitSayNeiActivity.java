@@ -1,8 +1,11 @@
 package com.xiandong.fst.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -36,7 +39,7 @@ public class RabbitSayNeiActivity extends AbsBaseActivity implements HotPintView
     ForumListAdapter adapter;
     HotPintPresenterImpl presenter;
     HotPintDetailBean bean;
-    String position, id;
+    String position, id, HFid;
 
     @Override
     protected void initialize() {
@@ -47,6 +50,21 @@ public class RabbitSayNeiActivity extends AbsBaseActivity implements HotPintView
         forumListView.setAdapter(adapter);
         presenter = new HotPintPresenterImpl(this);
         presenter.getHotPintMsg(id);
+        huiFuEt.clearFocus();
+        forumListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                if (i == 0) {
+                    HFid = id;
+                    huiFuEt.setHint("回复  "+bean.getPforum().getNicheng());
+                } else {
+                    HFid = adapter.getForumId(i);
+                    huiFuEt.setHint("回复  "+bean.getForum().get(i-1).getNicheng());
+                }
+            }
+        });
     }
 
     @Event(type = View.OnClickListener.class, value = {R.id.titleBackImg, R.id.huiFuBtn})
@@ -56,41 +74,40 @@ public class RabbitSayNeiActivity extends AbsBaseActivity implements HotPintView
                 finish();
                 break;
             case R.id.huiFuBtn:
-
                 if (StringUtil.isEmpty(huiFuEt.getText().toString().trim()))
                     return;
                 else
                     presenter.huiFu(huiFuEt.getText().toString().trim(),
-                            bean.getPforum().getId(), position);
+                            HFid, position);
                 break;
         }
     }
-
+    View headView;
+    TextView itemForumHFTv;
     @Override
     public void getHotPintSuccess(HotPintDetailBean bean) {
         this.bean = bean;
-
+        HFid = bean.getPforum().getId();
         titleTitleTv.setText("兔子说");
-
         if (forumListView.getHeaderViewsCount() == 0) {
-            View v = LayoutInflater.from(this).inflate(R.layout.item_forum_list, null);
-            TextView itemForumTimeTv = (TextView) v.findViewById(R.id.itemForumTimeTv);
-            TextView itemForumContentTv = (TextView) v.findViewById(R.id.itemForumContentTv);
-            TextView itemForumNameTv = (TextView) v.findViewById(R.id.itemForumNameTv);
-            TextView itemForumHFTv = (TextView) v.findViewById(R.id.itemForumHFTv);
-            ImageView itemForumImg = (ImageView) v.findViewById(R.id.itemForumImg);
+            headView = LayoutInflater.from(this).inflate(R.layout.item_forum_list, null);
+            TextView itemForumTimeTv = (TextView) headView.findViewById(R.id.itemForumTimeTv);
+            TextView itemForumContentTv = (TextView) headView.findViewById(R.id.itemForumContentTv);
+            TextView itemForumNameTv = (TextView) headView.findViewById(R.id.itemForumNameTv);
+            itemForumHFTv = (TextView) headView.findViewById(R.id.itemForumHFTv);
+            ImageView itemForumImg = (ImageView) headView.findViewById(R.id.itemForumImg);
             itemForumContentTv.setText(bean.getPforum().getContent());
             itemForumTimeTv.setText(TimeUtil.convertTimeToFormat(Long.parseLong(bean.getPforum().getTimeline())));
             itemForumNameTv.setText(bean.getPforum().getNicheng());
             itemForumHFTv.setText(bean.getPforum().getCount());
             XCircleImgTools.setCircleImg(itemForumImg, bean.getPforum().getImg());
-            forumListView.addHeaderView(v);
+            forumListView.addHeaderView(headView);
         }
         adapter.addData(bean.getForum());
     }
 
     @Override
-    public void fetHotPintFails(String err) {
+    public void getHotPintFails(String err) {
 
     }
 
@@ -98,5 +115,11 @@ public class RabbitSayNeiActivity extends AbsBaseActivity implements HotPintView
     public void huiFuSuccess() {
         huiFuEt.setText("");
         presenter.getHotPintMsg(id);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        int count = Integer.parseInt(itemForumHFTv.getText().toString());
+        count ++;
+        itemForumHFTv.setText(count+"");
+        huiFuEt.setHint("写评论...");
     }
 }

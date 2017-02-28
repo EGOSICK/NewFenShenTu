@@ -1,5 +1,6 @@
 package com.xiandong.fst.view.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,12 +11,15 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.dd.CircularProgressButton;
+import com.jungly.gridpasswordview.GridPasswordView;
 import com.xiandong.fst.R;
 import com.xiandong.fst.application.Constant;
 import com.xiandong.fst.model.bean.RedPacketPayBean;
 import com.xiandong.fst.presenter.PayPresenterImpl;
-import com.xiandong.fst.tools.CircularProgressButtonTools;
 import com.xiandong.fst.tools.CustomToast;
+import com.xiandong.fst.tools.StyledDialogTools;
+import com.xiandong.fst.tools.dbmanager.AppDbManager;
+import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.utils.alipayutils.AliPayListener;
 import com.xiandong.fst.utils.alipayutils.AliPayUtils;
 import com.xiandong.fst.utils.wxpayutils.WXPayListener;
@@ -45,6 +49,7 @@ public class RedPacketPayActivity extends AbsBaseActivity implements PayView {
     RadioButton payZFBWayRb;
     Context context;
     RedPacketPayBean payBean;
+    Dialog dialog;
 
     @Override
     protected void initialize() {
@@ -92,9 +97,26 @@ public class RedPacketPayActivity extends AbsBaseActivity implements PayView {
                 finish();
                 break;
             case R.id.payBtn:
-                CircularProgressButtonTools.showLoding(payBtn);
-                PayPresenterImpl payPresenter = new PayPresenterImpl(this);
-                payPresenter.getRedPacketOrderId(payBean);
+                final PayPresenterImpl payPresenter = new PayPresenterImpl(this);
+                if (payBean.getType() == Constant.YUEPAY){
+                    dialog = StyledDialogTools.showPayPswDialog("输入支付密码", context, new GridPasswordView.OnPasswordChangedListener() {
+                        @Override
+                        public void onTextChanged(String psw) {
+                        }
+
+                        @Override
+                        public void onInputFinish(String psw) {
+                            dialog.dismiss();
+                            if (StringUtil.isEquals(psw, AppDbManager.getLastUser().getUserPayPsw())) {
+                                payPresenter.getRedPacketOrderId(payBean);
+                            } else {
+                                payFails("密码错误");
+                            }
+                        }
+                    });
+                }else {
+                    payPresenter.getRedPacketOrderId(payBean);
+                }
                 break;
         }
     }
@@ -109,49 +131,43 @@ public class RedPacketPayActivity extends AbsBaseActivity implements PayView {
                     @Override
                     public void wxPaySuccess() {
                         paySuccess("微信支付成功");
-                        CircularProgressButtonTools.showTrue(payBtn);
                     }
 
                     @Override
                     public void wxPayFails(String err) {
                         payFails(err);
-                        CircularProgressButtonTools.showErr(payBtn);
                     }
                 });
                 break;
             case Constant.ZFBPAY:
                 AliPayUtils ali = new AliPayUtils(context);
-                ali.pay("分身兔", "发单", payBean.getTotalFee(), payBean.getOrderId(),
+                ali.pay("分身兔", "红包", payBean.getTotalFee(), payBean.getOrderId(),
                         new AliPayListener() {
                             @Override
                             public void aliPaySuccess() {
                                 paySuccess("支付宝支付成功");
-                                CircularProgressButtonTools.showTrue(payBtn);
                             }
 
                             @Override
                             public void aliPayFails(String err) {
                                 payFails(err);
-                                CircularProgressButtonTools.showErr(payBtn);
                             }
                         });
                 break;
             case Constant.YUEPAY:
                 paySuccess("余额支付成功");
-                CircularProgressButtonTools.showTrue(payBtn);
                 break;
         }
     }
 
     public void paySuccess(String msg) {
-        CustomToast.customToast(true, msg, context);
         setResult(0);
+        CustomToast.customToast(true, msg, context);
         finish();
     }
 
     public void payFails(String err) {
         CustomToast.customToast(false, err, context);
-        CircularProgressButtonTools.showErr(payBtn);
     }
 
     @Override
@@ -163,6 +179,5 @@ public class RedPacketPayActivity extends AbsBaseActivity implements PayView {
     @Override
     public void getOrderIdFails(String err) {
         CustomToast.customToast(false, err, context);
-        CircularProgressButtonTools.showErr(payBtn);
     }
 }

@@ -32,7 +32,7 @@
 
     <LinearLayout
         android:id="@+id/chatListFg"
-        android:layout_width="70dp"
+        android:layout_width="150dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
     </LinearLayout>

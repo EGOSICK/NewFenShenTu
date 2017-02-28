@@ -18,8 +18,8 @@ public class MarkerPresenterImpl implements MarkerPresenter {
         this.model = new MarkerModelImpl();
     }
 
-    public void getRedPacketMsg(String come, String id, String money) {
-        model.getRedPacketMsg(come, id, money, this);
+    public void getRedPacketMsg(String come, String id, String money,String address) {
+        model.getRedPacketMsg(come, id, money,address, this);
     }
 
     public void grabRedPacket(String id) {
@@ -27,8 +27,8 @@ public class MarkerPresenterImpl implements MarkerPresenter {
     }
 
     @Override
-    public void getRedPacketSuccess(int type, String come, String money) {
-        view.getRedPacketSuccess(type, come, money);
+    public void getRedPacketSuccess(int type, String come, String money,String address) {
+        view.getRedPacketSuccess(type, come, money,address);
     }
 
     @Override

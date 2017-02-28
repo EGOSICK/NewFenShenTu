@@ -1,6 +1,5 @@
 package com.xiandong.fst.view.activity;
 
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,16 +37,19 @@ import com.xiandong.fst.model.bean.AbsBaseBean;
 import com.xiandong.fst.model.bean.FriendsBean;
 import com.xiandong.fst.model.bean.SearchAddressBean;
 import com.xiandong.fst.presenter.FriendsPresenterImpl;
+import com.xiandong.fst.tools.chat.ChatTools;
 import com.xiandong.fst.tools.CircularProgressButtonTools;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.adapter.YueFriendsAdapter;
 import com.xiandong.fst.tools.dbmanager.AppDbManager;
 import com.xiandong.fst.utils.GsonUtil;
+import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.utils.TimeUtil;
 import com.xiandong.fst.view.FriendsView;
-import com.xiandong.fst.view.MainActivityInterfaceManger;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
@@ -131,8 +133,9 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
         yueFriendsRv.setAdapter(adapter);
         adapter.setItemClick(new YueFriendsAdapter.itemClickListener() {
             @Override
-            public void clickListener(String id) {
-                chooseFriends.add(id);
+            public void clickListener(List<String> ids) {
+                chooseFriends.clear();
+                chooseFriends.addAll(ids);
                 yueFriendsNumTv.setText(chooseFriends.size() + "/" + adapter.getItemCount());
             }
         });
@@ -187,7 +190,7 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
                     return;
                 MyLocationData locData = new MyLocationData.Builder()
                         .accuracy(bdLocation.getRadius())
-                        // 此处设置开发者获取到的方向信息，顺时针0-360
+                                // 此处设置开发者获取到的方向信息，顺时针0-360
                         .direction(0).latitude(bdLocation.getLatitude())
                         .longitude(bdLocation.getLongitude()).build();
                 mBaiduMap.setMyLocationData(locData);
@@ -209,7 +212,6 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
     }
 
     GeoCoder mSearch;
-
     LatLng mapStatusChangeLatLng;
     SuggestionSearch mSuggestionSearch;
 
@@ -294,17 +296,34 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
                 String a = yueAddressEt.getText().toString().trim();
 
                 StringBuffer sb = new StringBuffer();
-                if (chooseFriends != null && chooseFriends.size() > 0){
+                if (chooseFriends != null && chooseFriends.size() > 0) {
                     for (int i = 0; i < chooseFriends.size(); i++) {
-                        if (i == chooseFriends.size()-1){
+                        if (i == chooseFriends.size() - 1) {
                             sb.append(chooseFriends.get(i));
-                        }else {
-                            sb.append(chooseFriends.get(i)+",");
+                        } else {
+                            sb.append(chooseFriends.get(i) + ",");
                         }
                     }
                 }
 
-                creatZu(sb.toString(), c, a, t);
+                if (StringUtil.isEmpty(c)) {
+                    CustomToast.customToast(false, "请填写备注信息!", this);
+                    CircularProgressButtonTools.showErr(yueCommitBtn);
+                    return;
+                } else {
+                    if (StringUtil.isEmpty(a)) {
+                        CustomToast.customToast(false, "请选择聚会位置!", this);
+                        CircularProgressButtonTools.showErr(yueCommitBtn);
+                        return;
+                    } else {
+                        if (sb.length() <= 0) {
+                            CustomToast.customToast(false, "请选择聚会好友!", this);
+                            CircularProgressButtonTools.showErr(yueCommitBtn);
+                        } else {
+                            creatZu(sb.toString(), c, a, t);
+                        }
+                    }
+                }
                 break;
             case R.id.yueTimeView:
                 StyledDialogTools.datePickerDialog(
@@ -328,16 +347,27 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
         RequestParams params = new RequestParams(Constant.APIURL + "addmeeting");
         params.addBodyParameter("uid", AppDbManager.getUserId());
         params.addBodyParameter("user_id", ids);
-        params.addBodyParameter("position", location.latitude + ";" + location.longitude);
+        params.addBodyParameter("position", mapStatusChangeLatLng.latitude + ";" +
+                mapStatusChangeLatLng.longitude);
         params.addBodyParameter("content", content);
         params.addBodyParameter("pcontent", p);
         params.addBodyParameter("time", t);
         x.http().post(params, new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
+                Log.d("YueActivity", result);
                 AbsBaseBean bean = GsonUtil.fromJson(result, AbsBaseBean.class);
                 switch (bean.getResult()) {
                     case Constant.HTTPSUCCESS:
+                        try {
+                            JSONObject jb = new JSONObject(result);
+                            JSONObject meet = jb.getJSONObject("meet");
+                            String id = meet.getString("user_id");
+                            String[] uids = id.split(",");
+                            ChatTools.creatGroup("meet" + id, uids);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         success(bean.getMessage());
                         break;
                     default:
@@ -369,7 +399,7 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
     }
 
     private void success(String msg) {
-        CustomToast.customToast(true , msg , this);
+        CustomToast.customToast(true, msg, this);
         finish();
     }
 
@@ -392,5 +422,39 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
     @Override
     public void friendsImgFails(String err) {
 
+    }
+
+    @Override
+    public BaiduMap getBaiDuMap() {
+        return null;
+    }
+
+
+    @Override
+    protected void onPause() {
+        // MapView的生命周期与Activity同步，当activity挂起时需调用MapView.onPause()
+        mMapView.onPause();
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        // MapView的生命周期与Activity同步，当activity恢复时需调用MapView.onResume()
+        mMapView.onResume();
+        super.onResume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // 释放编码实例
+        mSearch.destroy();
+        mSearch.destroy();
+        //退出时销毁定位
+        if (mLocClient != null) {
+            mLocClient.stop();
+        }
+        // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
+        mMapView.onDestroy();
+        super.onDestroy();
     }
 }

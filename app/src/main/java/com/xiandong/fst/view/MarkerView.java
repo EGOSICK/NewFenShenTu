@@ -5,7 +5,7 @@ package com.xiandong.fst.view;
 */
 
 public interface MarkerView{
-    void getRedPacketSuccess(int type, String come ,String money);
+    void getRedPacketSuccess(int type, String come ,String money,String address);
     void getRedPacketFails(String err);
 
     void grabRedPacketFails(String err);

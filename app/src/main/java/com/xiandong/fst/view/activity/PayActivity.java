@@ -1,5 +1,6 @@
 package com.xiandong.fst.view.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,12 +12,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dd.CircularProgressButton;
+import com.jungly.gridpasswordview.GridPasswordView;
 import com.xiandong.fst.R;
 import com.xiandong.fst.application.Constant;
 import com.xiandong.fst.model.bean.PayBean;
 import com.xiandong.fst.presenter.PayPresenterImpl;
 import com.xiandong.fst.tools.CircularProgressButtonTools;
 import com.xiandong.fst.tools.CustomToast;
+import com.xiandong.fst.tools.StyledDialogTools;
+import com.xiandong.fst.tools.dbmanager.AppDbManager;
+import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.utils.TimeUtil;
 import com.xiandong.fst.utils.alipayutils.AliPayListener;
 import com.xiandong.fst.utils.alipayutils.AliPayUtils;
@@ -48,7 +53,7 @@ public class PayActivity extends AbsBaseActivity implements PayView {
     RadioGroup payRg;
     @ViewInject(R.id.payZFBWayRb)
     RadioButton payZFBWayRb;
-
+    Dialog dialog;
     @Override
     protected void initialize() {
         initView();
@@ -96,8 +101,24 @@ public class PayActivity extends AbsBaseActivity implements PayView {
                 finish();
                 break;
             case R.id.payBtn:
-                CircularProgressButtonTools.showLoding(payBtn);
-                payPresenter.getOrderId(payBean, PayActivity.this);
+                if (payBean.getType() == Constant.YUEPAY){
+                    dialog = StyledDialogTools.showPayPswDialog("输入支付密码", context, new GridPasswordView.OnPasswordChangedListener() {
+                        @Override
+                        public void onTextChanged(String psw) {
+                        }
+                        @Override
+                        public void onInputFinish(String psw) {
+                            dialog.dismiss();
+                            if (StringUtil.isEquals(psw , AppDbManager.getLastUser().getUserPayPsw())){
+                                payPresenter.getOrderId(payBean, PayActivity.this);
+                            }else {
+                                payFails("密码错误");
+                            }
+                        }
+                    });
+                }else {
+                    payPresenter.getOrderId(payBean, PayActivity.this);
+                }
                 break;
         }
     }
@@ -112,13 +133,11 @@ public class PayActivity extends AbsBaseActivity implements PayView {
                     @Override
                     public void wxPaySuccess() {
                         paySuccess("微信支付成功");
-                        CircularProgressButtonTools.showTrue(payBtn);
                     }
 
                     @Override
                     public void wxPayFails(String err) {
                         payFails(err);
-                        CircularProgressButtonTools.showErr(payBtn);
                     }
                 });
                 break;
@@ -129,19 +148,16 @@ public class PayActivity extends AbsBaseActivity implements PayView {
                             @Override
                             public void aliPaySuccess() {
                                 paySuccess("支付宝支付成功");
-                                CircularProgressButtonTools.showTrue(payBtn);
                             }
 
                             @Override
                             public void aliPayFails(String err) {
                                 payFails(err);
-                                CircularProgressButtonTools.showErr(payBtn);
                             }
                         });
                 break;
             case Constant.YUEPAY:
                 paySuccess("余额支付成功");
-                CircularProgressButtonTools.showTrue(payBtn);
                 break;
         }
     }
@@ -164,6 +180,5 @@ public class PayActivity extends AbsBaseActivity implements PayView {
     @Override
     public void getOrderIdFails(String err) {
         CustomToast.customToast(false, err, context);
-        CircularProgressButtonTools.showErr(payBtn);
     }
 }

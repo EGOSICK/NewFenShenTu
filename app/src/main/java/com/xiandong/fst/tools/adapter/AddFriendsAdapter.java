@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.xiandong.fst.R;
 import com.xiandong.fst.model.bean.ContactBean;
 import com.xiandong.fst.model.bean.NewFriendsBean;
 import com.xiandong.fst.tools.XCircleImgTools;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,9 +21,9 @@ import java.util.List;
  */
 public class AddFriendsAdapter extends BaseAdapter {
     Context context;
-    List<ContactBean> list;
-    RightBtnClick click;
-    List<NewFriendsBean.UserEntity> newUserList;
+    List<ContactBean> list = new ArrayList<>();
+    private RightBtnClick click;
+    List<NewFriendsBean.UserEntity> newUserList = new ArrayList<>();
 
     public interface RightBtnClick {
         void rightBtnClick(int type, String phone);
@@ -42,6 +45,7 @@ public class AddFriendsAdapter extends BaseAdapter {
 
     public void addNewFriendsData(NewFriendsBean friendsBean) {
         this.newUserList = friendsBean.getUser();
+        list.clear();
         notifyDataSetChanged();
     }
 
@@ -82,13 +86,11 @@ public class AddFriendsAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-
         if (isNewFriendsNotNull()) {
             final NewFriendsBean.UserEntity entity = newUserList.get(i);
             holder.contactNameTv.setText(entity.getNicheng());
             holder.contactPhoneTv.setVisibility(View.GONE);
             XCircleImgTools.setCircleImg(holder.contactUserImg, entity.getImg());
-
             switch (entity.getAct()) {
                 case "1":
                     holder.contactUserAlreadyTv.setVisibility(View.VISIBLE);
@@ -108,15 +110,12 @@ public class AddFriendsAdapter extends BaseAdapter {
                     });
                     break;
             }
-
         }
-
         if (isListNotNull()) {
             final ContactBean bean = list.get(i);
             holder.contactNameTv.setText(bean.getName());
             holder.contactPhoneTv.setText(bean.getPhone());
             XCircleImgTools.setCircleImg(holder.contactUserImg, bean.getImg());
-
             switch (bean.getStatus()) {
                 case "1":
                     switch (bean.getHaoyou()) {

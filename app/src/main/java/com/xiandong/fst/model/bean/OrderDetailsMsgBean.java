@@ -18,8 +18,8 @@ public class OrderDetailsMsgBean extends AbsBaseBean{
      * user_id : 0
      * utime :
      * usertime :
-     * uact : 0
-     * useract : 0
+     * uact : 0               发单人 完成状态
+     * useract : 0            接单人 完成状态
      * phone : 15104555841
      * title : 帮忙
      * info : 有5个人要杀我。我已经在草丛蹲了10分钟了，在不快点老家要没了
@@ -27,9 +27,9 @@ public class OrderDetailsMsgBean extends AbsBaseBean{
      * type : 1
      * payact : 1
      * orderid : 4703cdd0af0ff6c7
-     * extraprice :
-     * extrauid :
-     * extrauser_id :
+     * extraprice :     支付完成
+     * extrauid :       发单人支付完成状态
+     * extrauser_id :   接单人提示金额
      * come : android
      * uimg : http://www.fenshentu.com/Public/Upload/images/1484643691233.jpg?1484643691
      * unicheng : qwer

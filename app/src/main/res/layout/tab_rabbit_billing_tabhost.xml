@@ -11,8 +11,8 @@
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="@dimen/item_tab"
+            android:layout_height="@dimen/item_tab"
             android:paddingBottom="3dp"
             android:src="@drawable/tab_two"/>
 

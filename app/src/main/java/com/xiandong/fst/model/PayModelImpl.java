@@ -6,10 +6,12 @@ import android.util.Log;
 
 import com.xiandong.fst.application.Constant;
 import com.xiandong.fst.model.bean.AbsBaseBean;
+import com.xiandong.fst.model.bean.EWaiPayBean;
 import com.xiandong.fst.model.bean.PayBean;
 import com.xiandong.fst.model.bean.PayOrderBean;
 import com.xiandong.fst.model.bean.RedPacketPayBean;
 import com.xiandong.fst.presenter.PayPresenter;
+import com.xiandong.fst.tools.dbmanager.AppDbManager;
 import com.xiandong.fst.utils.GsonUtil;
 
 import org.xutils.common.Callback;
@@ -124,4 +126,46 @@ public class PayModelImpl implements PayModel {
             }
         });
     }
+
+    @Override
+    public void getEWaiPriceOrderId(EWaiPayBean payBean, final PayPresenter payPresenter) {
+        RequestParams params = new RequestParams(Constant.APIURL + "extra");
+        params.addParameter("uid", AppDbManager.getUserId());
+        params.addParameter("oid", payBean.getId());
+        params.addParameter("money", payBean.getMoney());
+        params.addParameter("type",payBean.getType());
+        x.http().post(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                Log.d("OrderDetailsModelImpl", result);
+                AbsBaseBean absBaseBean = GsonUtil.fromJson(result, AbsBaseBean.class);
+                switch (absBaseBean.getResult()) {
+                    case Constant.HTTPSUCCESS:
+                        PayOrderBean orderBean = GsonUtil.fromJson(result, PayOrderBean.class);
+                        payPresenter.getOrderIdSuccess(orderBean.getOrderid());
+                        break;
+                    default:
+                        payPresenter.getOrderIdFails(absBaseBean.getMessage());
+                        break;
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                payPresenter.getOrderIdFails(ex.getMessage());
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+
 }

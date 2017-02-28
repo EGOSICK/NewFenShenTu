@@ -23,6 +23,7 @@ import com.xiandong.fst.tools.adapter.SearchFriendsAdapter;
 import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.AddFriendsView;
 import com.xiandong.fst.view.SearchFriendsView;
+import com.xiandong.fst.view.fragment.AddFriendsFragment;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
@@ -49,6 +50,7 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
     SearchFriendsPresenterImpl presenter;
     SearchFriendsAdapter adapter;
     Context context;
+    AddFriendsTitleAdapter titleAdapter;
 
     @Override
     protected void initialize() {
@@ -56,6 +58,7 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
         titleTitleTv.setText("加好友");
         addFriendsSearchEt.clearFocus();
         adapter = new SearchFriendsAdapter(context);
+        titleAdapter = new AddFriendsTitleAdapter(getSupportFragmentManager());
         addFriendsPresenter = new AddFriendsPresenterImpl(this);
         addFriendsSearchLv.setAdapter(adapter);
         addFriendsSearchLv.addFooterView(new View(this));
@@ -66,6 +69,7 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
             }
         });
         presenter = new SearchFriendsPresenterImpl(this);
+
         addFriendsSearchEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -77,14 +81,18 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable != null && !StringUtil.isEmpty(editable.toString()) &&
-                        editable.length() > 0) {
+                if (editable != null && !StringUtil.isEmpty(editable.toString()) && editable.length() > 0) {
                     String search = editable.toString().trim();
                     presenter.searchFriends(search);
+                    addFriendsSearchLv.setVisibility(View.VISIBLE);
+
+                }else {
+                    addFriendsSearchLv.setVisibility(View.GONE);
+
                 }
             }
         });
-        addFriendsVp.setAdapter(new AddFriendsTitleAdapter(getSupportFragmentManager()));
+        addFriendsVp.setAdapter(titleAdapter);
         addFriendsTl.setupWithViewPager(addFriendsVp);
     }
 

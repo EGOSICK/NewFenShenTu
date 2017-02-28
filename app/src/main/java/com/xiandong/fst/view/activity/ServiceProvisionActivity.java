@@ -5,10 +5,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.xiandong.fst.R;
+import com.xiandong.fst.application.Constant;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
 /**
  * 服务条款
@@ -21,10 +27,13 @@ public class ServiceProvisionActivity extends AbsBaseActivity{
     TextView titleTitleTv;
     @ViewInject(R.id.titleBackImg)
     ImageView titleBackImg;
+    @ViewInject(R.id.serviceTv)
+    TextView serviceTv;
 
     @Override
     protected void initialize() {
         initView();
+        initServiceProvision();
     }
 
     private void initView(){
@@ -38,5 +47,39 @@ public class ServiceProvisionActivity extends AbsBaseActivity{
                 finish();
                 break;
         }
+    }
+
+    private void initServiceProvision(){
+        RequestParams params = new RequestParams(Constant.APIURL+"xieyi");
+        x.http().get(params, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                try {
+                    JSONObject object = new JSONObject(result);
+                    String xieyi = object.getString("xieyi");
+                    serviceTv.setText(xieyi);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+
     }
 }

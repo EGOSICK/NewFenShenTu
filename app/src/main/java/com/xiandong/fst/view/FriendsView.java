@@ -1,5 +1,6 @@
 package com.xiandong.fst.view;
 
+import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.xiandong.fst.model.bean.FriendsBean;
 
@@ -16,4 +17,6 @@ public interface FriendsView{
     void friendsImgSuccess(MarkerOptions option);
 
     void friendsImgFails(String err);
+
+    BaiduMap getBaiDuMap();
 }

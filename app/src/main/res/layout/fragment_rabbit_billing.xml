@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/transparent"
-                android:padding="20dp">
+                android:padding="10dp">
 
     <ImageView
         android:layout_width="40dp"
@@ -20,7 +20,11 @@
         android:background="@drawable/filled_white_bg_no_wk"
         android:orientation="vertical">
 
+
         <LinearLayout
+            android:focusable="true"
+            android:transitionName="shareName"
+            android:focusableInTouchMode="true"
             android:id="@+id/rabbitBillingAddressView"
             android:layout_width="match_parent"
             android:layout_height="40dp"
@@ -33,19 +37,21 @@
                 android:layout_marginLeft="10dp"
                 android:padding="5dp"
                 android:text="位置:"
-                android:textColor="@color/appBlack"
+                android:textColor="@color/textBlack"
                 android:textSize="15sp"/>
 
-            <EditText
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="match_parent"-->
+            <!--android:singleLine="true"-->
+            <TextView
+                style="@style/marquee_text"
                 android:id="@+id/rabbitBillingAddressEt"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
+                android:gravity="center_vertical"
                 android:background="@color/transparent"
                 android:hint="请填写具体位置"
-                android:singleLine="true"
                 android:textSize="15sp"/>
         </LinearLayout>
 
@@ -65,8 +71,9 @@
                 android:layout_marginLeft="10dp"
                 android:padding="5dp"
                 android:text="标题:"
-                android:textColor="@color/appBlack"
-                android:textSize="15sp"/>
+                android:textColor="@color/textBlack"
+                android:textSize="15sp"
+                android:id="@+id/textView2"/>
 
             <EditText
                 android:id="@+id/rabbitBillingTitleEt"
@@ -97,7 +104,7 @@
                 android:layout_marginLeft="10dp"
                 android:padding="5dp"
                 android:text="费用:"
-                android:textColor="@color/appBlack"
+                android:textColor="@color/textBlack"
                 android:textSize="15sp"/>
 
             <EditText
@@ -108,7 +115,7 @@
                 android:layout_marginRight="15dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                android:hint="推荐费用约XX元"
+                android:hint="费用最低为1.00元"
                 android:inputType="numberDecimal"
                 android:singleLine="true"
                 android:textSize="15sp"/>
@@ -131,7 +138,7 @@
                 android:layout_marginLeft="10dp"
                 android:padding="5dp"
                 android:text="时间:"
-                android:textColor="@color/appBlack"
+                android:textColor="@color/textBlack"
                 android:textSize="15sp"/>
 
             <TextView
@@ -140,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:textColor="@color/appBlack"
+                android:textColor="@color/textBlack"
                 android:textSize="15sp"/>
 
             <TextView
@@ -148,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="15dp"
-                android:textColor="@color/appBlack"
+                android:textColor="@color/textBlack"
                 android:textSize="15sp"/>
         </LinearLayout>
 
@@ -168,7 +175,7 @@
                 android:layout_marginLeft="10dp"
                 android:padding="5dp"
                 android:text="电话:"
-                android:textColor="@color/appBlack"
+                android:textColor="@color/textBlack"
                 android:textSize="15sp"/>
 
             <EditText
@@ -202,7 +209,7 @@
                 android:layout_marginLeft="10dp"
                 android:padding="5dp"
                 android:text="详细:"
-                android:textColor="@color/appBlack"
+                android:textColor="@color/textBlack"
                 android:textSize="15sp"/>
 
             <EditText

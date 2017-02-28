@@ -1,11 +1,16 @@
 package com.xiandong.fst.view.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
 import com.hyphenate.easeui.DemoHelper;
 import com.hyphenate.easeui.EaseConstant;
 import com.xiandong.fst.R;
@@ -27,25 +32,37 @@ public class MyChatActivity extends AbsBaseActivity {
     @ViewInject(R.id.chatListFg)
     View chatListFg;
     boolean isListOpen = true;
+    MyChatListFragment chatListFragment;
+    String friendId;
 
     @Override
     protected void initialize() {
-        MyChatListFragment chatListFragment = new MyChatListFragment();
+        if (getIntent() != null) {
+            friendId = getIntent().getStringExtra("id");
+        }
+        chatListFragment = new MyChatListFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
         ft.replace(R.id.chatListFg, chatListFragment);
         ft.commit();
+
+
+    }
+
+    public String getSelectFriendId() {
+        return friendId;
     }
 
     public void replaceChat(String id, String title) {
         titleTitleTv.setText(title);
-
         ChatBaseFragment fragment = new ChatBaseFragment();
         Bundle args = new Bundle();
         args.putInt(EaseConstant.EXTRA_CHAT_TYPE, EaseConstant.CHATTYPE_SINGLE);
         args.putString(EaseConstant.EXTRA_USER_ID, id);
         fragment.setArguments(args);
-        fragment.setMyAttributes(AppDbManager.getLastUser().getUserName(), AppDbManager.getLastUser().getUserImg());
+        fragment.setFriendId(AppDbManager.getUserId());
+        fragment.setMyAttributes(AppDbManager.getLastUser().getUserName(),
+                AppDbManager.getLastUser().getUserImg());
         DemoHelper.getInstance().setMeAvatar(AppDbManager.getLastUser().getUserImg());
         getSupportFragmentManager().
                 beginTransaction().replace(R.id.chatContentFg, fragment).commit();
@@ -67,5 +84,18 @@ public class MyChatActivity extends AbsBaseActivity {
                 }
                 break;
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            friendId = intent.getStringExtra("id");
+        }
+        chatListFragment = new MyChatListFragment();
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.chatListFg, chatListFragment);
+        ft.commit();
     }
 }

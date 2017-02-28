@@ -13,7 +13,7 @@
     <!--<size android:height="50dp"-->
           <!--android:width=""/>-->
 
-    <stroke android:color="@color/appGray"
+    <stroke android:color="#FFE8E8E8"
         android:width="1px"/>
     <!--<gradient-->
     <!--android:angle="270"-->

@@ -23,8 +23,8 @@ public class HotPintPresenterImpl implements HotPintPresenter {
         model.getHotPintMsg(id, this);
     }
 
-    public void huiFu(String msg,String pid , String position){
-        model.huiFu(msg,pid,position,this);
+    public void huiFu(String msg, String pid, String position) {
+        model.huiFu(msg, pid, position, this);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class HotPintPresenterImpl implements HotPintPresenter {
 
     @Override
     public void fetHotPintFails(String err) {
-        view.fetHotPintFails(err);
+        view.getHotPintFails(err);
     }
 
     @Override

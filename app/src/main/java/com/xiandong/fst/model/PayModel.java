@@ -3,6 +3,7 @@ package com.xiandong.fst.model;
 import android.app.Activity;
 import android.content.Context;
 
+import com.xiandong.fst.model.bean.EWaiPayBean;
 import com.xiandong.fst.model.bean.PayBean;
 import com.xiandong.fst.model.bean.RedPacketPayBean;
 import com.xiandong.fst.presenter.PayPresenter;
@@ -17,4 +18,6 @@ public interface PayModel {
     void getOrderId(PayBean payBean , Activity context , PayPresenter payPresenter);
 
     void getRedPacketOrderId(RedPacketPayBean payBean, PayPresenter payPresenter);
+
+    void getEWaiPriceOrderId(EWaiPayBean payBean , PayPresenter payPresenter);
 }

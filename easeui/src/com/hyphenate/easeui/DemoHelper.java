@@ -1,6 +1,7 @@
 package com.hyphenate.easeui;
 
 import android.app.Activity;
+import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -203,14 +204,10 @@ public class DemoHelper {
 
     protected void setEaseUIProviders() {
         // set profile provider if you want easeUI to handle avatar and nickname
-
-
         easeUI.setUserProfileProvider(new EaseUserProfileProvider() {
 
             @Override
             public EaseUser getUser(String username) {
-
-                Log.d("GetUserMessage", "-=-=-=-= :" + userName);
 
                 if (username == null)
                     return getUserInfo(userName);
@@ -285,33 +282,24 @@ public class DemoHelper {
             @Override
             public String getTitle(EMMessage message) {
                 //you can update title here
-//                String title = message.getStringAttribute("name", "");
-
-                if (message.getChatType() == ChatType.GroupChat)
-                    return "订单新消息";
-                else
-                    return "好友新消息";
+                return "分身兔";
             }
 
             @Override
             public int getSmallIcon(EMMessage message) {
                 //you can update icon here
-
-                return R.drawable.ic_launcher;
+                return R.mipmap.ic_launcher;
             }
 
             @Override
             public String getDisplayedText(EMMessage message) {
-
                 // be used on notification bar, different text according the message type.
                 String ticker = EaseCommonUtils.getMessageDigest(message, appContext);
                 if (message.getType() == Type.TXT) {
                     ticker = ticker.replaceAll("\\[.{2,3}\\]", "[表情]");
                 }
-
                 userName = message.getFrom();
                 EaseUser user = getUserInfo(message.getFrom());
-
                 if (user != null) {
                     if (EaseAtMessageHelper.get().isAtMeMsg(message)) {
                         return String.format(appContext.getString(R.string.at_your_in_group), user.getNick());
@@ -327,45 +315,14 @@ public class DemoHelper {
 
             @Override
             public String getLatestText(EMMessage message, int fromUsersNum, int messageNum) {
-                // here you can customize the text.
-
-//                return fromUsersNum + "contacts send " + messageNum + "messages to you";
-                return fromUsersNum + "个人给你发送了" + messageNum + "条消息";
-//                return null;
+//                return fromUsersNum + "个人给你发送了" + messageNum + "条消息";
+                return "有人给你发了一条新消息";
             }
 
             @Override
             public Intent getLaunchIntent(EMMessage message) {
-                // you can set what activity you want display when user click the notification
-                Intent intent = notificationIntent;
-                // open calling activity if there is call
-//                if (isVideoCalling) {
-////                    intent = new Intent(appContext, VideoCallActivity.class);
-//                } else if (isVoiceCalling) {
-////                    intent = new Intent(appContext, VoiceCallActivity.class);
-//                } else {
-                ChatType chatType = message.getChatType();
-                if (chatType == ChatType.Chat) { // single chat message
-                    intent.putExtra("userId", message.getFrom());
-                    intent.putExtra("chatType", Constant.CHATTYPE_SINGLE);
-
-
-//                    intent.putExtra("name",message.getStringAttribute("otherName",""));
-//                    intent.putExtra("myUrl",message.getStringAttribute("otherAva",""));
-                } else { // group chat message
-                    // message.getTo() is the group id
-                    if (chatType == ChatType.GroupChat) {
-                        intent = groupIntent;
-                        intent.putExtra("userId", message.getTo());
-                        intent.putExtra("orderId", message.getStringAttribute("orderID", ""));
-                        intent.putExtra("chatType", Constant.CHATTYPE_GROUP);
-                    } else {
-                        intent.putExtra("userId", message.getTo());
-                        intent.putExtra("chatType", Constant.CHATTYPE_CHATROOM);
-                    }
-                }
-//                }
-                return intent;
+//                // you can set what activity you want display when user click the notification
+                return null;
             }
         });
     }
@@ -399,7 +356,6 @@ public class DemoHelper {
         connectionListener = new EMConnectionListener() {
             @Override
             public void onDisconnected(int error) {
-                EMLog.d("global listener", "onDisconnect" + error);
                 if (error == EMError.USER_REMOVED) {
                     onUserException(Constant.ACCOUNT_REMOVED);
                 } else if (error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
@@ -599,32 +555,16 @@ public class DemoHelper {
             broadcastManager.sendBroadcast(new Intent(Constant.ACTION_GROUP_CHANAGED));
         }
 
-//        @Override
-//        public void onApplicationReceived(String groupId, String groupName, String applyer, String reason) {
-//
-//        }
-//
-//        @Override
-//        public void onApplicationAccept(String groupId, String groupName, String accepter) {
-//
-//
-//        }
-//
-//        @Override
-//        public void onApplicationDeclined(String groupId, String groupName, String decliner, String reason) {
-//            // your application was declined, we do nothing here in demo
-//        }
-
         @Override
         public void onAutoAcceptInvitationFromGroup(String groupId, String inviter, String inviteMessage) {
             // got an invitation
-            String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
+//            String st3 = appContext.getString(R.string.Invite_you_to_join_a_group_chat);
             EMMessage msg = EMMessage.createReceiveMessage(Type.TXT);
             msg.setChatType(ChatType.GroupChat);
             msg.setFrom(inviter);
             msg.setTo(groupId);
             msg.setMsgId(UUID.randomUUID().toString());
-            msg.addBody(new EMTextMessageBody(inviter + " " + st3));
+//            msg.addBody(new EMTextMessageBody(inviter + " " + st3));
             msg.setStatus(Status.SUCCESS);
             // save invitation as messages
             EMClient.getInstance().chatManager().saveMessage(msg);
@@ -757,9 +697,6 @@ public class DemoHelper {
         //从服务器获取的数据，最好缓存起来，避免频繁的网络请求
         EaseUser user = null;
         //设置自己的头像
-        Log.d("GetUserMessage", "------" + username);
-        Log.d("GetUserMessage", "======" + EMClient.getInstance().getCurrentUser());
-
         if (username == null)
             return null;
         if (username.equals(EMClient.getInstance().getCurrentUser())) {
@@ -791,6 +728,9 @@ public class DemoHelper {
         this.ava = ava;
     }
 
+
+
+
     /**
      * Global listener
      * If this event already handled by an activity, you don't need handle it again
@@ -802,6 +742,7 @@ public class DemoHelper {
 
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
+                getNotifier().onNewMesg(messages);
 
                 for (EMMessage message : messages) {
 
@@ -813,6 +754,11 @@ public class DemoHelper {
                     //接收处理扩展消息
                     String em_name = message.getStringAttribute("name", "");
                     String em_picturl = message.getStringAttribute("picturl", "");
+
+//                    getNotifier().onNewMsg(message);
+
+
+
 
                     //下面是环信客服的扩展消息，本身可以使用和上方一样的方法（扩展参数不同），但是不知道为什么取不到值，因此先取weichat，自己解析扩展消息
                     String hxIdFrom = message.getFrom();
@@ -844,10 +790,10 @@ public class DemoHelper {
                     // 通知listeners联系人同步完毕
                     notifyContactsSyncListener(true);
                     //应用在后台，不需要刷新UI,通知栏提示新消息
-                    if (!easeUI.hasForegroundActivies()) {
-                        getNotifier().onNewMsg(message);
-                    }
-                    getNotifier().onNewMsg(message);
+//                    if (!easeUI.hasForegroundActivies()) {
+//                        getNotifier().onNewMsg(message);
+//                    }
+//                    getNotifier().onNewMsg(message);
 
                 }
             }

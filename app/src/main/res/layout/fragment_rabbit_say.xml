@@ -81,8 +81,8 @@
 
             <ImageView
                 android:id="@+id/rabbitSaySearchNeiView"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_centerInParent="true"
                 android:src="@mipmap/rabbit_say_search_title_right"/>
         </RelativeLayout>
@@ -107,8 +107,8 @@
 
     <ImageView
         android:id="@+id/rabbitSaySendMsgImg"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
@@ -126,6 +126,7 @@
         android:visibility="gone">
 
         <EditText
+            android:paddingLeft="10dp"
             android:id="@+id/rabbitSaySendMsgEt"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -147,7 +148,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="50dp"
-        android:background="@color/half_trans"
+        android:background="#EEFFFFFF"
         android:orientation="vertical"
         android:visibility="gone">
 

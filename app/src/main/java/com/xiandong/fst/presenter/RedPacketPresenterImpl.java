@@ -38,28 +38,37 @@ public class RedPacketPresenterImpl implements RedPacketPresenter {
 
     @Override
     public void loadRedPacketSuccess(List<RedPacketBean.RedbagEntity> list) {
-        for (RedPacketBean.RedbagEntity redPacket : list) {
-            String[] position = redPacket.getPosition().split(";");
-            LatLng latLng = new LatLng(Double.valueOf(position[0]), Double.valueOf(position[1]));
-            MarkerOptions option = new MarkerOptions();
-            option.animateType(MarkerOptions.MarkerAnimateType.drop);
-            option.title(MarkMapTools.setTitle(Constant.MarkerType.REDPACKET, redPacket.getId(), redPacket.getTotalfee()
-                    , redPacket.getUser()));
-            option.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.map_red_packet));
-            if (MarkMapTools.getRedPacket() != null && MarkMapTools.getRedPacket().size() > 0) {
-                if (MarkMapTools.isHavaRedPcaket(redPacket.getId())) {
-                    if (MarkMapTools.getRedPacket().get(redPacket.getId()).getPosition() == latLng) {
-                        return;
+        if (MarkMapTools.isNestPager) {
+            for (RedPacketBean.RedbagEntity redPacket : list) {
+                String[] position = redPacket.getPosition().split(";");
+                LatLng latLng = new LatLng(Double.valueOf(position[0]), Double.valueOf(position[1]));
+                MarkerOptions option = new MarkerOptions();
+                option.animateType(MarkerOptions.MarkerAnimateType.drop);
+                option.title(MarkMapTools.setTitle(Constant.MarkerType.REDPACKET, redPacket.getId(), redPacket.getTotalfee()
+                        , redPacket.getUser() , redPacket.getPosition()));
+                if (StringUtil.isEquals(redPacket.getUser(),"fenshentu")){
+                    option.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.map_red_packet_xt));
+                }else {
+                    option.position(latLng).icon(BitmapDescriptorFactory.fromResource(R.mipmap.map_red_packet));
+                }
+
+
+                if (MarkMapTools.getRedPacket() != null && MarkMapTools.getRedPacket().size() > 0) {
+                    if (MarkMapTools.isHavaRedPcaket(redPacket.getId())) {
+                        if (MarkMapTools.getRedPacket().get(redPacket.getId()).getPosition() == latLng) {
+                            return;
+                        } else {
+                            MarkMapTools.getRedPacket().get(redPacket.getId()).setPosition(latLng);
+                        }
                     } else {
-                        MarkMapTools.getRedPacket().get(redPacket.getId()).setPosition(latLng);
+                        MarkMapTools.getRedPacket().put(redPacket.getId(), (Marker) view.loadRedPacket().addOverlay(option));
                     }
                 } else {
                     MarkMapTools.getRedPacket().put(redPacket.getId(), (Marker) view.loadRedPacket().addOverlay(option));
                 }
-            } else {
-                MarkMapTools.getRedPacket().put(redPacket.getId(), (Marker) view.loadRedPacket().addOverlay(option));
             }
         }
+
     }
 
     @Override

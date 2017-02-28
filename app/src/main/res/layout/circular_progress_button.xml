@@ -12,5 +12,4 @@
     app:cpb_iconComplete="@mipmap/circular_progress_button_true"
     app:cpb_iconError="@mipmap/circular_progress_button_error"
     app:cpb_selectorIdle="@color/appBlue"
-    app:cpb_textIdle=""
     />
