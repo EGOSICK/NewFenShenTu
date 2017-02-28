@@ -41,22 +41,6 @@ public class BaseApplication extends DemoApplication {
         iwxapi.registerApp(Constant.WX_APPID);
 
         DemoHelper.getInstance().init(this);
-
-        JPushListenerManager.getInstance().registerListtener(new IListener() {
-            @Override
-            public void notifyAllActivity(Object o) {
-                NoticeTag tag = (NoticeTag) o;
-                Intent intent = new Intent();
-                switch (tag.getTag()) {
-                    case 1:  // 请求添加好友
-                        intent.setClass(getApplicationContext(), AddFriendsActivity.class)
-                                .putExtra("notice", "1");
-                        break;
-                }
-                getApplicationContext().startActivity(intent);
-            }
-
-        });
     }
 
     @Override

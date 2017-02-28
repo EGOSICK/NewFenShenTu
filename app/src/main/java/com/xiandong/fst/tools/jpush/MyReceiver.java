@@ -9,7 +9,9 @@ import android.util.Log;
 
 import com.xiandong.fst.R;
 import com.xiandong.fst.utils.AppUtils;
+import com.xiandong.fst.view.activity.AddFriendsActivity;
 import com.xiandong.fst.view.activity.MainActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,7 +20,7 @@ import cn.jpush.android.api.JPushInterface;
 
 /**
  * 自定义接收器
- * <p/>
+ * <p>
  * 如果不定义这个 Receiver，则：
  * 1) 默认用户会打开主界面
  * 2) 接收不到自定义消息
@@ -35,35 +37,27 @@ public class MyReceiver extends BroadcastReceiver {
     // 打印所有的 intent extra 数据
     private void printBundle(Bundle bundle, Intent intent, Context context) {
         if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-            if (bundle != null && bundle.getString(JPushInterface.EXTRA_EXTRA) != null){
+            if (bundle != null && bundle.getString(JPushInterface.EXTRA_EXTRA) != null) {
                 try {
                     JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
                     Log.d(TAG, "json:--------------" + json);
                     int flag = json.getInt("flag");
-                    String id = json.getString("id");
-                    String uid = json.getString("user_id");
-                    String price = json.getString("price");
-                    JPushListenerManager.getInstance().sendBroadCast(new NoticeTag(flag ,id ,uid ,price));
+                    String id = "", uid = "", price = "", url = "";
+                    if (json.has("id"))
+                        id = json.getString("id");
+                    if (json.has("user_id"))
+                        uid = json.getString("user_id");
+                    if (json.has("price"))
+                        price = json.getString("price");
+                    if (json.has("url"))
+                        url = json.getString("url");
+                    JPushListenerManager.getInstance().sendBroadCast(new NoticeTag(flag, id, uid, price, url));
                 } catch (JSONException e) {
                     Log.e(TAG, "Get message extra JSON error!");
                 }
             }
         }
 //        if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
-//            if (bundle != null && bundle.getString(JPushInterface.EXTRA_EXTRA) != null){
-//                try {
-//                    JSONObject json = new JSONObject(bundle.getString(JPushInterface.EXTRA_EXTRA));
-//                    Log.d(TAG, "json:--------------" + json);
-//                    int flag = json.getInt("flag");
-//                    String id = json.getString("id");
-//                    String uid = json.getString("user_id");
-//                    String price = json.getString("price");
-//                    JPushListenerManager.getInstance().sendBroadCast(new NoticeTag(flag ,id ,uid ,price));
-//                } catch (JSONException e) {
-//                    Log.e(TAG, "Get message extra JSON error!");
-//                }
-//            }
-//
 //        }
     }
 
@@ -127,7 +121,7 @@ public class MyReceiver extends BroadcastReceiver {
             Intent intent;
             intent = new Intent(context, MainActivity.class);
             context.startActivity(intent);
-        }else {
+        } else {
             Log.d(TAG, "fs");
         }
     }

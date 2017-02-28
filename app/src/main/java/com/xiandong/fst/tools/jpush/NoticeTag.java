@@ -8,8 +8,14 @@ public class NoticeTag {
     String id;
     String uid;
     String price;
+    String url;
 
     public NoticeTag() {
+    }
+
+    public NoticeTag(String url, int tag) {
+        this.url = url;
+        this.tag = tag;
     }
 
     public NoticeTag(int tag) {
@@ -27,11 +33,12 @@ public class NoticeTag {
         this.uid = uid;
     }
 
-    public NoticeTag(int tag, String uid, String id, String price) {
+    public NoticeTag(int tag, String id, String uid, String price,String url) {
         this.tag = tag;
         this.uid = uid;
         this.id = id;
         this.price = price;
+        this.url = url;
     }
 
 
@@ -65,5 +72,13 @@ public class NoticeTag {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

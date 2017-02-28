@@ -57,11 +57,7 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
         context = this;
         titleTitleTv.setText("加好友");
 
-        if (getIntent() != null){
-            if (StringUtil.isEquals(getIntent().getStringExtra("notice"),"1")){
-                addFriendsTl.getTabAt(1).select();
-            }
-        }
+
 
         addFriendsSearchEt.clearFocus();
         adapter = new SearchFriendsAdapter(context);
@@ -101,6 +97,12 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
         });
         addFriendsVp.setAdapter(titleAdapter);
         addFriendsTl.setupWithViewPager(addFriendsVp);
+
+        if (getIntent() != null){
+            if (StringUtil.isEquals(getIntent().getStringExtra("notice"),"1")){
+                addFriendsTl.getTabAt(1).select();
+            }
+        }
     }
 
     @Event(type = View.OnClickListener.class, value = {R.id.titleBackImg,
@@ -142,5 +144,11 @@ public class AddFriendsActivity extends AbsBaseActivity implements SearchFriends
     @Override
     public void addFriendsSuccess() {
         CustomToast.customToast(true, "好友请求发送成功", context);
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
     }
 }

@@ -86,7 +86,8 @@
         <activity android:name=".view.activity.RealNameAuthenticationActivity"/>
         <activity android:name=".view.activity.RecommendActivity"/>
         <activity android:name=".view.activity.MyOrdersActivity"/>
-        <activity android:name=".view.activity.AddFriendsActivity"/>
+        <activity android:name=".view.activity.AddFriendsActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".view.activity.CaptureActivity"/>
         <activity android:name=".view.activity.UserCardActivity"/>
         <activity android:name=".view.activity.WithdrawalActivity"/>
@@ -114,7 +115,8 @@
         <activity android:name=".view.activity.PathGuideActivity"/>
         <activity android:name=".view.activity.QianDaoActivity"/>
         <activity android:name=".view.activity.MessageActivity"/>
-        <activity android:name=".view.activity.MessageWebViewActivity"/>
+        <activity android:name=".view.activity.MessageWebViewActivity"
+            android:launchMode="singleTask"/>
         <activity android:name=".view.activity.SearchAddressActivity"/>
         <activity android:name=".view.activity.PayEWaiActivity"/>
 

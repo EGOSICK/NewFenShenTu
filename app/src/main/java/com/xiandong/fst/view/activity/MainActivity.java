@@ -58,6 +58,9 @@ import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.WechatShareManager;
 import com.xiandong.fst.tools.chat.GetMessageManager;
 import com.xiandong.fst.tools.dbmanager.AppDbManager;
+import com.xiandong.fst.tools.jpush.IListener;
+import com.xiandong.fst.tools.jpush.JPushListenerManager;
+import com.xiandong.fst.tools.jpush.NoticeTag;
 import com.xiandong.fst.tools.navi.NaviHelpTools;
 import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.MainActivityInterfaceManger;
@@ -207,6 +210,31 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                         return intent;
                     }
                 });
+
+
+        JPushListenerManager.getInstance().registerListtener(new IListener() {
+            @Override
+            public void notifyAllActivity(Object o) {
+                NoticeTag tag = (NoticeTag) o;
+                Intent intent = new Intent();
+                switch (tag.getTag()) {
+                    case 1:  // 请求添加好友
+                        intent.setClass(context, AddFriendsActivity.class)
+                                .putExtra("notice", "1");
+                        break;
+                    case 2:  // 同意好友申请
+                        intent.setClass(context, AddFriendsActivity.class)
+                                .putExtra("notice", "1");
+                        break;
+                    case 3:
+                        intent.setClass(context , MessageWebViewActivity.class)
+                                .putExtra("url",tag.getUrl());
+                        break;
+                }
+                startActivity(intent);
+            }
+
+        });
     }
 
     @ViewInject(R.id.mapView)

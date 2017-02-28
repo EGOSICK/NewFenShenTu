@@ -1,5 +1,6 @@
 package com.xiandong.fst.view.activity;
 
+import android.content.Intent;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.TextView;
@@ -32,5 +33,12 @@ public class MessageWebViewActivity extends AbsBaseActivity{
                 finish();
                 break;
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        titleTitleTv.setText("系统消息");
+        messageWv.loadUrl(getIntent().getStringExtra("url"));
     }
 }
