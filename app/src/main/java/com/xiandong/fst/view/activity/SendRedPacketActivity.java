@@ -15,6 +15,7 @@ import com.xiandong.fst.R;
 import com.xiandong.fst.application.Constant;
 import com.xiandong.fst.model.bean.RedPacketPayBean;
 import com.xiandong.fst.tools.CircularProgressButtonTools;
+import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.dbmanager.AppDbManager;
 import com.xiandong.fst.utils.StringUtil;
 
@@ -145,17 +146,27 @@ public class SendRedPacketActivity extends AbsBaseActivity {
                 finish();
                 break;
             case R.id.sendRedPacketBtn:
-                CircularProgressButtonTools.showLoding(sendRedPacketBtn);
-                RedPacketPayBean payBean = new RedPacketPayBean();
-                payBean.setTotalCount(redPacketNum);
-                payBean.setDistance(redPacketDistance);
-                payBean.setTotalFee(redPacketMoney);
-                payBean.setUid(AppDbManager.getLastUser().getUserId());
-                Bundle bundle = new Bundle();
-                bundle.putParcelable("payBean", payBean);
-                startActivityForResult(new Intent(context, RedPacketPayActivity.class)
-                        .putExtra("payBean", bundle)
-                        .setAction(Constant.REDPACKETPAY), 0);
+                if (StringUtil.isEmpty(redPacketDistance) || redPacketDistance.length() <= 0){
+                    CustomToast.customToast(false,"请输入红包可以领取距离",context);
+                    return;
+                }
+                double jl = Double.parseDouble(redPacketDistance);
+                if (jl < 500){
+                    CustomToast.customToast(false,"请输入500米以上的距离",context);
+                }else {
+                    CircularProgressButtonTools.showLoding(sendRedPacketBtn);
+                    RedPacketPayBean payBean = new RedPacketPayBean();
+                    payBean.setTotalCount(redPacketNum);
+                    payBean.setDistance(redPacketDistance);
+                    payBean.setTotalFee(redPacketMoney);
+                    payBean.setUid(AppDbManager.getLastUser().getUserId());
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("payBean", payBean);
+                    startActivityForResult(new Intent(context, RedPacketPayActivity.class)
+                            .putExtra("payBean", bundle)
+                            .setAction(Constant.REDPACKETPAY), 0);
+                }
+
                 break;
         }
     }

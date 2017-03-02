@@ -1,5 +1,7 @@
 package com.xiandong.fst.utils;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -32,4 +34,12 @@ public class BitmapUtils {
         }
         return map;
     }
+
+
+    public static Bitmap getBitFromRes(Context context ,int resAds){
+        Resources res = context.getResources();
+        Bitmap bmp = BitmapFactory.decodeResource(res, resAds);
+        return bmp;
+    }
+
 }

@@ -133,11 +133,24 @@ public class OrderDetailsActivity extends AbsBaseActivity implements OrderDetail
             }
 
             @Override
-            public void changePager(int flag ,String id) {
-                switch (flag){
+            public void changePager(int flag, String id) {
+                switch (flag) {
                     case 6:
                         if (StringUtil.isEquals(id, orderId)) {
                             finish();
+                        }
+                        break;
+                    case 7:
+                        if (StringUtil.isEquals(id, orderId)) {
+                            IsOrderInvaild invaild = new IsOrderInvaild();
+                            invaild.loadOrderMsg(id, new IsOrderInvaild.IsOrdering() {
+                                @Override
+                                public void isOrdering(boolean is) {
+                                    if (!is){
+                                        finish();
+                                    }
+                                }
+                            });
                         }
                         break;
                     case 8:
@@ -492,7 +505,7 @@ public class OrderDetailsActivity extends AbsBaseActivity implements OrderDetail
         invaild.loadOrderMsg(orderId, new IsOrderInvaild.IsOrdering() {
             @Override
             public void isOrdering(boolean is) {
-                if (!is){
+                if (!is) {
                     finish();
                 }
             }

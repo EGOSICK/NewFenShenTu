@@ -21,6 +21,8 @@ import com.xiandong.fst.utils.wxpayutils.Util;
 
 import java.io.File;
 
+import static com.xiandong.fst.utils.wxpayutils.Util.bmpToByteArray;
+
 /**
  * 分享工具
  */
@@ -60,5 +62,54 @@ public class WXShareTools {
         shareIntent.setType("text/plain");
         //设置分享列表的标题，并且每次都显示分享列表
         context.startActivity(Intent.createChooser(shareIntent, "分享到"));
+    }
+
+
+    /**
+     * 分享图片到朋友圈或者好友
+     *
+     * @param bmp   图片的Bitmap对象
+     * @param scene 分享方式：好友还是朋友圈
+     */
+    public static boolean sharePic(Bitmap bmp, int scene , Context context) {
+        //初始化一个WXImageObject对象
+        WXImageObject imageObj = new WXImageObject(bmp);
+        //设置缩略图
+        Bitmap thumb = Bitmap.createScaledBitmap(bmp, 60, 60, true);
+        bmp.recycle();
+        return share(imageObj, thumb, scene ,context);
+    }
+
+    private static boolean share(WXMediaMessage.IMediaObject mediaObject, Bitmap thumb, int scene, Context context) {
+        return share(mediaObject, null, thumb, null, scene,context);
+    }
+
+    private boolean share(WXMediaMessage.IMediaObject mediaObject, String description, int scene,Context c) {
+        return share(mediaObject, null, null, description, scene,c);
+    }
+
+    private static boolean share(WXMediaMessage.IMediaObject mediaObject,
+                          String title, Bitmap thumb,
+                          String description, int scene ,Context context) {
+        wxApi = WXAPIFactory.createWXAPI(context, Constant.WX_APPID);
+        wxApi.registerApp(Constant.WX_APPID);
+        //初始化一个WXMediaMessage对象，填写标题、描述
+        WXMediaMessage msg = new WXMediaMessage(mediaObject);
+        if (title != null) {
+            msg.title = title;
+        }
+        if (description != null) {
+            msg.description = description;
+        }
+        if (thumb != null) {
+            msg.thumbData = bmpToByteArray(thumb, true);
+        }
+        //构造一个Req
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(System.currentTimeMillis());
+        req.message = msg;
+        req.scene = scene;
+
+        return wxApi.sendReq(req);
     }
 }

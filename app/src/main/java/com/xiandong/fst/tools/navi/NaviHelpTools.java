@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.baidu.mapapi.model.LatLng;
+import com.baidu.navisdk.adapter.BNOuterTTSPlayerCallback;
 import com.baidu.navisdk.adapter.BNRoutePlanNode;
 import com.baidu.navisdk.adapter.BaiduNaviManager;
 import com.xiandong.fst.tools.CustomToast;
@@ -66,18 +67,76 @@ public class NaviHelpTools {
     }
 
     private void initNaviPath() {//初始化导航路线的导航引擎
+        BaiduNaviManager.NaviInitListener listener = new BaiduNaviManager.NaviInitListener() {
+            @Override
+            public void onAuthResult(int i, String s) {
+
+            }
+
+            @Override
+            public void initStart() {
+
+            }
+
+            @Override
+            public void initSuccess() {
+
+            }
+
+            @Override
+            public void initFailed() {
+
+            }
+        };
+        BNOuterTTSPlayerCallback callback = new BNOuterTTSPlayerCallback() {
+            @Override
+            public int getTTSState() {
+                return 0;
+            }
+
+            @Override
+            public int playTTSText(String s, int i) {
+                return 0;
+            }
+
+            @Override
+            public void phoneCalling() {
+
+            }
+
+            @Override
+            public void phoneHangUp() {
+
+            }
+
+            @Override
+            public void initTTSPlayer() {
+
+            }
+
+            @Override
+            public void releaseTTSPlayer() {
+
+            }
+
+            @Override
+            public void stopTTS() {
+
+            }
+
+            @Override
+            public void resumeTTS() {
+
+            }
+
+            @Override
+            public void pauseTTS() {
+
+            }
+        };
         BaiduNaviManager.getInstance().init(context, mSdcardPath,
                 context.getApplicationInfo().packageName,
-                new BaiduNaviManager.NaviInitListener() {
-                    @Override
-                    public void onAuthResult(int status, String msg) {}
-
-                    public void initSuccess() {}
-
-                    public void initStart() {}
-
-                    public void initFailed() {}
-                }, null /*mTTSCallback*/);
+                listener, callback);
     }
 
 

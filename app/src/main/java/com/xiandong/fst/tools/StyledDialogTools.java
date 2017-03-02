@@ -230,7 +230,7 @@ public class StyledDialogTools {
 //            }
 //        });
         payPswEt.setOnPasswordChangedListener(listener);
-        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.setContentView(v);
         dialog.show();
         return dialog;

@@ -34,6 +34,7 @@ import com.xiandong.fst.utils.ViewUtils;
 import com.xiandong.fst.view.BillingView;
 import com.xiandong.fst.view.MainActivityInterface;
 import com.xiandong.fst.view.MainActivityInterfaceManger;
+import com.xiandong.fst.view.activity.MyOrdersActivity;
 import com.xiandong.fst.view.activity.PayActivity;
 import com.xiandong.fst.view.activity.SearchAddressActivity;
 
@@ -140,13 +141,10 @@ public class RabbitBillingFragment extends AbsBaseFragment implements BillingVie
                         }
                     }
                 }
-
-
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {
-            }
+            public void afterTextChanged(Editable editable) {}
         });
         rabbitBillingAddressEt.setSelected(true);
     }
@@ -211,8 +209,6 @@ public class RabbitBillingFragment extends AbsBaseFragment implements BillingVie
                 } else {
                     Intent intent = new Intent(context, SearchAddressActivity.class)
                             .putExtra("city", getMainActivity().getLocationCity());
-//                    getMainActivity().startActivityForResult(intent, 0, ActivityOptions.makeSceneTransitionAnimation(
-//                            getMainActivity(), rabbitBillingAddressView, "shareName").toBundle());
                     startActivityForResult(intent, 0);
                 }
                 break;
@@ -253,8 +249,8 @@ public class RabbitBillingFragment extends AbsBaseFragment implements BillingVie
     public void billingMsgTrue(PayBean payBean) {
         Bundle bundle = new Bundle();
         bundle.putParcelable("payBean", payBean);
-        startActivity(new Intent(getContext(), PayActivity.class).putExtra("payBean", bundle)
-                .setAction(Constant.BILLINGPAY));
+        startActivityForResult(new Intent(getContext(), PayActivity.class).putExtra("payBean", bundle)
+                .setAction(Constant.BILLINGPAY), 0);
         rabbitBillingMoneyEt.setText("");
         rabbitBillingDetialEt.setText("");
         rabbitBillingTitleEt.setText("");
@@ -271,6 +267,10 @@ public class RabbitBillingFragment extends AbsBaseFragment implements BillingVie
                 rabbitBillingAddressEt.setText(searchAddress);
                 LatLng latLng = data.getParcelableExtra("position");
                 getMainActivity().positioning(latLng);
+            }
+
+            if (resultCode == 3){
+                startActivity(new Intent(context , MyOrdersActivity.class));
             }
         }
     }

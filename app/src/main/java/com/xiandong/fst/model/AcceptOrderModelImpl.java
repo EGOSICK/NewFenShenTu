@@ -18,7 +18,7 @@ import org.xutils.x;
 public class AcceptOrderModelImpl implements AcceptOrderModel {
 
     @Override
-    public void acceptOrder(String id, final AcceptOrderPresenter presenter) {
+    public void acceptOrder(final String id, final  String sendId ,final AcceptOrderPresenter presenter) {
         RequestParams params = new RequestParams(Constant.APIURL + "jieorder");
         params.addBodyParameter("user_id", AppDbManager.getUserId());
         params.addBodyParameter("id", id);
@@ -28,7 +28,7 @@ public class AcceptOrderModelImpl implements AcceptOrderModel {
                 AbsBaseBean bean = GsonUtil.fromJson(result, AbsBaseBean.class);
                 switch (bean.getResult()) {
                     case 1:
-                        presenter.acceptOrderSuccess(bean.getMessage());
+                        presenter.acceptOrderSuccess(bean.getMessage() ,id , sendId);
                         break;
                     default:
                         presenter.acceptOrderFails(bean.getMessage());

@@ -6,7 +6,7 @@ package com.xiandong.fst.presenter;
 
 public interface AcceptOrderPresenter  {
 
-    void acceptOrderSuccess(String msg);
+    void acceptOrderSuccess(String msg ,String id ,String sendId);
 
     void acceptOrderFails(String err);
 }

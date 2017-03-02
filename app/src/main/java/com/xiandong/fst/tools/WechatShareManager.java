@@ -1,14 +1,19 @@
 package com.xiandong.fst.tools;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
-import android.graphics.Rect;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,12 +27,12 @@ import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 import com.xiandong.fst.R;
 import com.xiandong.fst.application.Constant;
+import com.xiandong.fst.utils.ViewUtils;
 import com.xiandong.fst.utils.wxpayutils.Util;
+import com.xiandong.fst.view.customview.ShareView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.hss01248.dialog.StyledDialog.context;
 
 /**
  * Created by dell on 2017/2/7.
@@ -48,6 +53,7 @@ public class WechatShareManager {
     private IWXAPI mWXApi;
     private Context mContext;
     private LayoutInflater inflater;
+
 
     public interface ShareInterface {
         void shareSuccess();
@@ -365,18 +371,41 @@ public class WechatShareManager {
      * 分享图片
      */
     private void sharePicture(ShareContent shareContent, int shareType, String money, String address) {
+
+
         //加载xml布局文件
 //        LayoutInflater factory = LayoutInflater.from(context);
-        View view = inflater.inflate(shareContent.getPictureResource(), null);
-        TextView tv = (TextView) view.findViewById(R.id.shareRedPacketMoneyTv);
-        tv.setText("有个"+money+"元大红包");
-        TextView at = (TextView) view.findViewById(R.id.shareRedPacketAddressTv);
-        at.setText(address);
+//        View view = inflater.inflate(shareContent.getPictureResource(), null);
+//
+//        int[] wah = new int[]{480 , 800};//ViewUtils.getViewWAndH(view);
+//
+//
+//        TextView tv = (TextView) view.findViewById(R.id.shareRedPacketMoneyTv);
+//        tv.setText("有个" + money + "元的大红包");
+////        tv.setTop();
+////        tv.setTextSize(wah[0]/30);
+//        RelativeLayout.LayoutParams linearParam =(RelativeLayout.LayoutParams)
+//                tv.getLayoutParams(); //取控件textView当前的布局参数
+//        linearParam.height = wah[1]/20;// 控件的高强制设成20
+//        tv.setLayoutParams(linearParam); //使设置好的布局参数应用到控件
+//
+//        TextView at = (TextView) view.findViewById(R.id.shareRedPacketAddressTv);
+//        at.setText(address);
+////        at.setTextSize(wah[0] / 30);
+//        at.setPadding(0, wah[1] / 11, 0, 0);
+//
+//        RelativeLayout.LayoutParams linearParams =(RelativeLayout.LayoutParams)
+//                at.getLayoutParams(); //取控件textView当前的布局参数
+//        linearParams.height = wah[1]/20;// 控件的高强制设成20
+//        at.setLayoutParams(linearParams); //使设置好的布局参数应用到控件
+//
+//
+////        at.setTop(wah[1]/8);
 //        //启用绘图缓存
 //        view.setDrawingCacheEnabled(true);
 //        //调用下面这个方法非常重要，如果没有调用这个方法，得到的bitmap为null
-//        view.measure(View.MeasureSpec.makeMeasureSpec(512, View.MeasureSpec.EXACTLY),
-//                View.MeasureSpec.makeMeasureSpec(512, View.MeasureSpec.EXACTLY));
+//        view.measure(View.MeasureSpec.makeMeasureSpec(wah[0], View.MeasureSpec.UNSPECIFIED),
+//                View.MeasureSpec.makeMeasureSpec(wah[1], View.MeasureSpec.UNSPECIFIED));
 //        //这个方法也非常重要，设置布局的尺寸和位置
 //        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
 //        //获得绘图缓存中的Bitmap
@@ -390,7 +419,75 @@ public class WechatShareManager {
 //        Bitmap bitmap = getViewBitmap(view,0,0);
 //        Bitmap bitmap = view2Bitmap(view, shareContent.getPictureResource(), money, address);
 
-        Bitmap bitmap = screenShot(view);
+
+//        Bitmap bmp=BitmapFactory.decodeResource(r, R.drawable.icon);
+//        Bitmap //b //= Bitmap.createBitmap(1000, 200, Bitmap.Config.ARGB_8888);
+
+//        Resources r = mContext.getResources();
+//        InputStream is = r.openRawResource(R.mipmap.share_red_pack);
+//        BitmapDrawable bd = new BitmapDrawable(is);
+//        Bitmap b = bd.getBitmap();
+//        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+//                R.mipmap.share_red_pack).copy(Bitmap.Config.ARGB_8888, true);  ;
+//        Bitmap bitmap = Bitmap.createBitmap(b, 0, 0, 200, 1000);
+//        Canvas canvas = new Canvas(bitmap);
+//        Paint paint = new Paint();
+//        Typeface typeface = Typeface.createFromAsset(context.getAssets(), "fonts/CONSOLA.TTF");
+//        paint.setTypeface(typeface);
+//        paint.setColor(Color.BLACK);
+//        paint.setTextSize(40);
+//        paint.setTextAlign(Paint.Align.CENTER);
+//
+//        String price = "有一个"+money+"元的大红包";
+//        Rect bounds = new Rect();
+//        paint.getTextBounds(price, 0, price.length(), bounds);
+//
+//
+//        Paint.FontMetricsInt fontMetrics = paint.getFontMetricsInt();
+//        int baseline = (getMeasuredHeight() - fontMetrics.bottom + fontMetrics.top) / 2 - fontMetrics.top;
+//        canvas.drawText(testString, getMeasuredWidth() / 2 - bounds.width() / 2, baseline, mPaint);
+//        canvas.drawText(price, 100, 100, paint);
+//        canvas.drawText(address , 100 , 200 ,paint);
+//
+//
+//        canvas.drawText(price, getMeasuredWidth()/2 - bounds.width()/2,
+//                getMeasuredHeight()/2 + bounds.height()/2, paint);
+//        Bitmap bitmap = drawTextAtBitmap(BitmapUtils.getBitFromRes(
+//                context, shareContent.getPictureResource()),address ,
+//                0 ,0);//= screenShot(view);
+
+//        ShareWXView shareWXView = new ShareWXView(mContext ,address,money);
+//
+//                //启用绘图缓存
+//        shareWXView.setDrawingCacheEnabled(true);
+//        //调用下面这个方法非常重要，如果没有调用这个方法，得到的bitmap为null
+//        shareWXView.measure(View.MeasureSpec.makeMeasureSpec(480, View.MeasureSpec.EXACTLY),
+//                View.MeasureSpec.makeMeasureSpec(800, View.MeasureSpec.EXACTLY));
+//        //这个方法也非常重要，设置布局的尺寸和位置
+//        shareWXView.layout(0, 0, shareWXView.getMeasuredWidth(), shareWXView.getMeasuredHeight());
+//
+//        Bitmap bitmap = shareWXView.getDrawingCache();
+
+//        ShareView view = new ShareView(mContext);
+//        启用绘图缓存
+//        view.setDrawingCacheEnabled(true);
+        //调用下面这个方法非常重要，如果没有调用这个方法，得到的bitmap为null
+//        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY),
+//                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY));
+        //这个方法也非常重要，设置布局的尺寸和位置
+//        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
+        //获得绘图缓存中的Bitmap
+//        view.buildDrawingCache();
+//        Bitmap bitmap = view.getDrawingCache();
+
+//        Bitmap bitmap = view2Bitmap(view);
+
+//        WXShareTools.sharePic(bitmap, 1, mContext);
+        Bitmap b = BitmapFactory.decodeResource(mContext.getResources(),
+                R.mipmap.share_red_pack).copy(Bitmap.Config.ARGB_8888, true);
+        Bitmap bitmap //= getBitmapByView(view , wah);
+        = getShareingBitmap(25 ,b,address,"有个" + money + "元的大红包");
+
         WXImageObject imgObj = new WXImageObject(bitmap);
         WXMediaMessage msg = new WXMediaMessage();
         msg.mediaObject = imgObj;
@@ -459,18 +556,55 @@ public class WechatShareManager {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
-    public Bitmap view2Bitmap(View view, int res, String money, String address) {
+    public Bitmap view2Bitmap(View view) {  //, int res, String money, String address
 //        View view = LayoutInflater.from(context).inflate(res, null);
 
 
         view.setDrawingCacheEnabled(true);
-        view.measure(View.MeasureSpec.makeMeasureSpec(720, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(1154, View.MeasureSpec.UNSPECIFIED));
+        view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         view.buildDrawingCache();
         Bitmap cacheBitmap = view.getDrawingCache();
         Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
         return bitmap;
+    }
+
+
+    /**
+     * 图片上画文字
+     *
+     * @param bitmap
+     * @param text   文字内容
+     * @param textX  文字X坐标
+     * @param textY  文字Y坐标
+     * @return Bitmap
+     */
+    private Bitmap drawTextAtBitmap(Bitmap bitmap, String text, float textX, float textY) {
+        int x = bitmap.getWidth();
+        int y = bitmap.getHeight();
+
+        // 创建一个和原图同样大小的位图
+        Bitmap newbit = Bitmap.createBitmap(x, y, Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(newbit);
+
+        Paint paint = new Paint();
+
+        // 在原始位置0，0插入原图
+        canvas.drawBitmap(bitmap, 0, 0, paint);
+        paint.setColor(mContext.getResources().getColor(R.color.text_black));
+        paint.setTextSize(17);
+
+        // 在原图指定位置写上字
+        canvas.drawText(text, textX, textY, paint);
+
+        canvas.save(Canvas.ALL_SAVE_FLAG);
+
+        // 存储
+        canvas.restore();
+
+        return newbit;
     }
 
 
@@ -567,5 +701,61 @@ public class WechatShareManager {
         view.buildDrawingCache();
         Bitmap bitmap = view.getDrawingCache();
         return bitmap;
+    }
+
+    /**
+     * 截取scrollview的屏幕
+     */
+    public Bitmap getBitmapByView(View view, int[] wAh) {
+        Bitmap imageBm;
+//        int h = 0;
+        // 获取scrollview实际高度
+//        for (int i = 0; i < scrollView.getChildCount(); i++) {
+//            h += scrollView.getChildAt(i).getHeight();
+//        }
+//        int[] wAh = ViewUtils.getViewWAndH(view);
+        // 创建对应大小的bitmap
+        imageBm = Bitmap.createBitmap(wAh[0], wAh[1],
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(imageBm);
+
+        view.draw(canvas);
+
+        return imageBm;
+    }
+
+
+    // 拍摄所得的图片为imageBitmap
+    private Bitmap getShareingBitmap(int textSize , Bitmap imageBitmap,String address,String money) {
+        Bitmap.Config config = imageBitmap.getConfig();
+        int sourceBitmapHeight = imageBitmap.getHeight();
+        int sourceBitmapWidth = imageBitmap.getWidth();
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK); // 画笔颜色
+        TextPaint textpaint = new TextPaint(paint);
+        textpaint.setTextSize(textSize); // 文字大小
+        textpaint.setAntiAlias(true); // 抗锯齿
+
+        StaticLayout title_layout = new StaticLayout(address, textpaint,
+                sourceBitmapWidth , Layout.Alignment.ALIGN_CENTER, 1f, 1f, true);
+        StaticLayout desc_layout = new StaticLayout(money, textpaint,
+                sourceBitmapWidth, Layout.Alignment.ALIGN_CENTER, 1f, 1f, true);
+//        StaticLayout phone_layout = new StaticLayout("联系电话："+phone.getText().toString(), textpaint,
+//                sourceBitmapWidth, Layout.Alignment.ALIGN_NORMAL, 1f, 1f, true);
+        Bitmap share_bitmap = Bitmap.createBitmap(sourceBitmapWidth, sourceBitmapHeight,// +
+                       // title_layout.getHeight() + desc_layout.getHeight() ,//+ phone_layout.getHeight(),
+                config);
+        Canvas canvas = new Canvas(share_bitmap);
+        canvas.drawColor(Color.WHITE);
+        canvas.drawBitmap(imageBitmap, 0, 0, paint); // 绘制图片
+        canvas.translate(0, sourceBitmapHeight/11);
+        title_layout.draw(canvas);
+
+        canvas.translate(0, title_layout.getHeight());
+//        phone_layout.draw(canvas);
+
+//        canvas.translate(0, phone_layout.getHeight());
+        desc_layout.draw(canvas);
+        return share_bitmap;
     }
 }

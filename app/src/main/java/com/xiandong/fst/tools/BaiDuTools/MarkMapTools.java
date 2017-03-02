@@ -22,6 +22,16 @@ public class MarkMapTools {
         return friends.containsKey(friendId);
     }
 
+    public static HashMap<String, Marker> meets = new HashMap<>();
+    public static boolean isHaveMeet(String meetId) {
+        return meets.containsKey(meetId);
+    }
+    public static HashMap<String, Marker> getMeets() {
+        if (meets == null)
+            meets = new HashMap<>();
+        return meets;
+    }
+
     private static HashMap<String, Marker> redPacket = new HashMap<>();
 
     public static HashMap<String, Marker> getRedPacket() {
@@ -30,7 +40,7 @@ public class MarkMapTools {
         return redPacket;
     }
 
-    public static boolean isHavaRedPcaket(String pid) {
+    public static boolean isHaveRedPacket(String pid) {
         return redPacket.containsKey(pid);
     }
 

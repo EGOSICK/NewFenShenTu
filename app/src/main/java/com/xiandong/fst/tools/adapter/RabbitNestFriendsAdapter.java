@@ -19,6 +19,7 @@ import com.xiandong.fst.model.bean.FriendsBean;
 import com.xiandong.fst.model.bean.MeetBean;
 import com.xiandong.fst.presenter.FriendsManagerPresenterImpl;
 import com.xiandong.fst.presenter.MeetPresenterImpl;
+import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.DistanceTools;
 import com.xiandong.fst.tools.PhoneTools;
@@ -52,6 +53,7 @@ public class RabbitNestFriendsAdapter extends RecyclingPagerAdapter implements F
     private onMeCardClickListener listener;
     FriendsManagerPresenterImpl presenter =
             new FriendsManagerPresenterImpl(RabbitNestFriendsAdapter.this);
+    private String city;
 
     @Override
     public void changeFriendMessageSuccess(String msg) {
@@ -80,6 +82,10 @@ public class RabbitNestFriendsAdapter extends RecyclingPagerAdapter implements F
 
     public interface onMeCardClickListener {
         void clickListener(int type, String... s);
+    }
+
+    public void setLocationCity(String city){
+        this.city = city;
     }
 
     public void setMeListener(onMeCardClickListener listener) {
@@ -199,6 +205,20 @@ public class RabbitNestFriendsAdapter extends RecyclingPagerAdapter implements F
                     viewHolder.itemFriendRNMeView.setVisibility(View.GONE);
                     viewHolder.itemFriendRNOtherView.setVisibility(View.VISIBLE);
                     final FriendsBean.FriendEntity ff = friendsBean.getFriend().get(lp - 1);
+                    if (StringUtil.isEquals("0", ff.getShowposition())) {
+                        /////////// 能看到
+                        if (MarkMapTools.isHaveFriend(ff.getId())){
+                            MarkMapTools.friends.get(ff.getId()).setVisible(true);
+                        }
+
+                    } else {
+                        if (MarkMapTools.isHaveFriend(ff.getId())){
+
+                        MarkMapTools.friends.get(ff.getId()).setVisible(false);
+                        }
+                    }
+
+
                     if (!StringUtil.isEmpty(ff.getBz())) {
                         viewHolder.itemFriendRNUserNameTv.setText(ff.getBz());
                     } else {
@@ -263,7 +283,7 @@ public class RabbitNestFriendsAdapter extends RecyclingPagerAdapter implements F
                                     }
                                     break;
                                 case R.id.itemFriendRNOtherYueImg:
-                                    context.startActivity(new Intent(context, YueActivity.class));
+                                    context.startActivity(new Intent(context, YueActivity.class).putExtra("city",city));
                                     break;
                                 case R.id.itemFriendRNUserPhotoImg:
                                     Bundle bundle1 = new Bundle();
@@ -311,8 +331,8 @@ public class RabbitNestFriendsAdapter extends RecyclingPagerAdapter implements F
                                         StyledDialogTools.showLoding(context);
                                         listener.clickListener(5, fm.getPosition(), fm.getPcontent());
 
-                                    }else {
-                                        CustomToast.customToast(false,"距离太近,无法计算路线",context);
+                                    } else {
+                                        CustomToast.customToast(false, "距离太近,无法计算路线", context);
                                     }
                                     break;
                                 case R.id.itemFriendRNZuLogoutImg:

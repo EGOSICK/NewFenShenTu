@@ -82,7 +82,6 @@ public class MyWalletActivity extends AbsBaseActivity implements UserMessageView
                 finish();
                 break;
             case R.id.withdrawalsBtn:
-//                CircularProgressButtonTools.showLoding(withdrawalsBtn);
                 startActivity(new Intent(context , WithdrawalActivity.class));
                 break;
             case R.id.yongJinJiLuView:
@@ -111,4 +110,9 @@ public class MyWalletActivity extends AbsBaseActivity implements UserMessageView
         CustomToast.customToast(false, err, this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initNetWork();
+    }
 }

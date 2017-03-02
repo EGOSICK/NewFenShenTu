@@ -5,7 +5,7 @@ package com.xiandong.fst.view;
 */
 
 public interface AcceptOrderView{
-    void acceptOrderSuccess(String msg);
+    void acceptOrderSuccess(String msg , String id , String sendId);
 
     void acceptOrderFails(String err);
 }

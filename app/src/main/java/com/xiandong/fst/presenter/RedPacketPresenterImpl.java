@@ -1,9 +1,6 @@
 package com.xiandong.fst.presenter;
 
 
-import android.util.Log;
-
-import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
@@ -54,7 +51,7 @@ public class RedPacketPresenterImpl implements RedPacketPresenter {
 
 
                 if (MarkMapTools.getRedPacket() != null && MarkMapTools.getRedPacket().size() > 0) {
-                    if (MarkMapTools.isHavaRedPcaket(redPacket.getId())) {
+                    if (MarkMapTools.isHaveRedPacket(redPacket.getId())) {
                         if (MarkMapTools.getRedPacket().get(redPacket.getId()).getPosition() == latLng) {
                             return;
                         } else {

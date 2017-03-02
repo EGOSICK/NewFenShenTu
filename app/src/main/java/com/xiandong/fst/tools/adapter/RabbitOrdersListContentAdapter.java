@@ -30,7 +30,7 @@ public class RabbitOrdersListContentAdapter extends BaseAdapter {
     private rabbitOrdersListContentAdapterListener listener;
 
     public interface rabbitOrdersListContentAdapterListener {
-        void rabbitOrdersListContentRobBtnClick(String uid);
+        void rabbitOrdersListContentRobBtnClick(String uid ,String sendId);
     }
 
     public void setRobBtnClick(rabbitOrdersListContentAdapterListener listener) {
@@ -65,6 +65,7 @@ public class RabbitOrdersListContentAdapter extends BaseAdapter {
         if (isListNotNull()) {
             OrderListBean.OrderEntity orderEntity = list.get(position);
             final String uid = orderEntity.getId();
+            final String sendId = orderEntity.getUid();
             viewHolder.itemROLContentTitleTv.setSelected(true);
             viewHolder.itemROLContentTitleTv.setText(orderEntity.getTitle());
             viewHolder.itemROLContentAddressTv.setSelected(true);
@@ -88,7 +89,7 @@ public class RabbitOrdersListContentAdapter extends BaseAdapter {
                         @Override
                         public void onClick(View view) {
                             if (listener != null)
-                                listener.rabbitOrdersListContentRobBtnClick(uid);
+                                listener.rabbitOrdersListContentRobBtnClick(uid,sendId);
                         }
                     });
                     break;

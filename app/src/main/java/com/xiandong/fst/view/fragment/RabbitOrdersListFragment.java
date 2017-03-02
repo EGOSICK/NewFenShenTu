@@ -1,6 +1,7 @@
 package com.xiandong.fst.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,12 +13,14 @@ import com.xiandong.fst.presenter.RabbitOrdersListDataPresenterImpl;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.adapter.RabbitOrdersListContentAdapter;
 import com.xiandong.fst.view.AcceptOrderView;
+import com.xiandong.fst.view.activity.OrderDetailsActivity;
 import com.xiandong.fst.view.customview.emptyview.HHEmptyView;
 import com.xiandong.fst.view.RabbitOrdersListDataView;
 
 import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.ViewInject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,8 +67,8 @@ public class RabbitOrdersListFragment extends AbsBaseFragment implements RabbitO
         });
         adapter.setRobBtnClick(new RabbitOrdersListContentAdapter.rabbitOrdersListContentAdapterListener() {
             @Override
-            public void rabbitOrdersListContentRobBtnClick(String uid) {
-                acceptOrderPresenter.acceptOrder(uid);
+            public void rabbitOrdersListContentRobBtnClick(String uid ,String sendId) {
+                acceptOrderPresenter.acceptOrder(uid,sendId);
             }
         });
         initNetWork();
@@ -108,9 +111,13 @@ public class RabbitOrdersListFragment extends AbsBaseFragment implements RabbitO
     }
 
     @Override
-    public void acceptOrderSuccess(String msg) {
+    public void acceptOrderSuccess(String msg, String id ,String sendId) {
         CustomToast.customToast(true, msg, context);
+        adapter.addData(new ArrayList<OrderListBean.OrderEntity>());
         initNetWork();
+
+        startActivity(new Intent(context , OrderDetailsActivity.class)
+        .putExtra("orderId",id).putExtra("sendId",sendId));
     }
 
     @Override

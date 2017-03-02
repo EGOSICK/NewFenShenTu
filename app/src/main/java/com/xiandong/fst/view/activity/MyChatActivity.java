@@ -37,9 +37,6 @@ public class MyChatActivity extends AbsBaseActivity {
 
     @Override
     protected void initialize() {
-        if (getIntent() != null) {
-            friendId = getIntent().getStringExtra("id");
-        }
         chatListFragment = new MyChatListFragment();
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction ft = manager.beginTransaction();
@@ -48,6 +45,9 @@ public class MyChatActivity extends AbsBaseActivity {
     }
 
     public String getSelectFriendId() {
+        if (getIntent() != null) {
+            friendId = getIntent().getStringExtra("id");
+        }
         return friendId;
     }
 

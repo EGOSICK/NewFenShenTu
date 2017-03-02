@@ -46,7 +46,6 @@ public class MyChatListFragment extends AbsBaseFragment implements FriendsView {
         adapter = new MyChatListAdapter(getContext());
         myChatLv.setAdapter(adapter);
         friendsPresenter.getFriends();
-        friendId = chatActivity.getSelectFriendId();
         adapter.setOnMyItemSelectListener(new MyChatListAdapter.OnMyItemSelectListener() {
             @Override
             public void onMyItemSelect(int position) {
@@ -55,18 +54,16 @@ public class MyChatListFragment extends AbsBaseFragment implements FriendsView {
                 chatActivity.replaceChat(adapter.getSelectId(), adapter.getSelectTitle());
             }
         });
-
         GetMessageManager.getInstance().registerListener(messageInterface);
     }
 
     @Override
-    public void getFriendsFails(String msg) {
-    }
+    public void getFriendsFails(String msg) {}
 
     @Override
     public void getFriendsSuccess(FriendsBean friendsBean) {
         adapter.addData(friendsBean.getFriend());
-
+        friendId = chatActivity.getSelectFriendId();
         for (FriendsBean.FriendEntity friend : friendsBean.getFriend()) {
             if (StringUtil.isEquals(friend.getUser_id(), friendId)) {
                 selectPosition = friendsBean.getFriend().indexOf(friend);

@@ -69,6 +69,9 @@ public class MyReceiver extends BroadcastReceiver {
                         case 6:  // 强制取消
                             JPushListenerManager.getInstance().changePager(flag,json.getString("id"));
                             break;
+                        case 7:  // 协商取消
+                            JPushListenerManager.getInstance().changePager(flag,json.getString("id"));
+                            break;
                         case 9:  // 完成订单
                             JPushListenerManager.getInstance().changePager(flag,json.getString("id"));
                             break;

@@ -18,6 +18,7 @@ import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.StyledDialogTools;
 import com.xiandong.fst.tools.adapter.RabbitNestFriendsAdapter;
+import com.xiandong.fst.utils.StringUtil;
 import com.xiandong.fst.view.RedPacketView;
 import com.xiandong.fst.view.activity.MyChatActivity;
 import com.xiandong.fst.view.activity.MyOrdersActivity;
@@ -58,17 +59,10 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
         return rabbitNestFragment;
     }
 
-    //    @ViewInject(R.id.friendsPc)
-//    PagerContainer friendsPc;
-//    @ViewInject(R.id.friendsPc)
-//    AppPagerContainer container;
     @ViewInject(R.id.friendsPc)
     PagerContainer friendsPc;
     Context context;
     LatLng location;
-//    @ViewInject(R.id.viewpager_layout)
-
-    //    @ViewInject(R.id.viewPager)
     ViewPager vp;
     RabbitNestFriendsAdapter adapter;
     FriendsPresenterImpl presenter;
@@ -84,6 +78,7 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
         adapter = new RabbitNestFriendsAdapter(context);
         vp = friendsPc.getViewPager();
         vp.setAdapter(adapter);
+
         vp.setPageMargin(20);
         vp.setCurrentItem(100);
 
@@ -94,13 +89,53 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
 
             @Override
             public void onPageSelected(int position) {
-                if (adapter.getSelectId(position) != null) {
-                    Marker marker = MarkMapTools.friends.get(adapter.getSelectId(position));
-                    if (marker == null)
-                        return;
-                    marker.setToTop();
-                    getMainActivity().positioning(marker.getPosition());
+                int p = position - 100;
+                int lp = p % (MarkMapTools.friends.size() + 1 + MarkMapTools.getMeets().size());
+                if (lp < 0)
+                    lp = MarkMapTools.friends.size() + 1 + lp + MarkMapTools.getMeets().size();
+                if (lp == 0) {
+                    getMainActivity().positioning();
+                } else {
+                    if (lp <= MarkMapTools.friends.size()) {
+                        Marker marker = MarkMapTools.friends.get(adapter.getSelectId(position));
+                        if (marker == null)
+                            return;
+                        marker.setToTop();
+                        getMainActivity().positioning(marker.getPosition());
+                    } else {
+                        Marker marker = MarkMapTools.getMeets().get(adapter.getSelectId(position));
+                        if (marker == null)
+                            return;
+                        marker.setToTop();
+                        getMainActivity().positioning(marker.getPosition());
+                    }
                 }
+
+
+
+//                if (position == 0){
+//                    getMainActivity().positioning();
+//                }else if (position <= MarkMapTools.friends.size() ){
+//                    Marker marker = MarkMapTools.friends.get(adapter.getSelectId(position));
+//                    if (marker == null)
+//                        return;
+//                    marker.setToTop();
+//                    getMainActivity().positioning(marker.getPosition());
+//                }else {
+//                    Marker marker = MarkMapTools.getMeets().get(adapter.getSelectId(position));
+//                    if (marker == null)
+//                        return;
+//                    marker.setToTop();
+//                    getMainActivity().positioning(marker.getPosition());
+//                }
+
+//                if (adapter.getSelectId(position) != null) {
+//                    Marker marker = MarkMapTools.friends.get(adapter.getSelectId(position));
+//                    if (marker == null)
+//                        return;
+//                    marker.setToTop();
+//                    getMainActivity().positioning(marker.getPosition());
+//                }
             }
 
             @Override
@@ -193,10 +228,9 @@ public class RabbitNestFragment extends AbsBaseFragment implements FriendsView, 
     public void getFriendsSuccess(FriendsBean friendsBean) {
         if (MarkMapTools.isNestPager) {
             adapter.addData(friendsBean);
-//            vp.setOffscreenPageLimit(adapter.getCount());
+            adapter.setLocationCity(getMainActivity().getLocationCity());
             if (friendsBean.getFriend().size() > 0) {
                 presenter.showFriendsPosition(context, friendsBean.getFriend());
-
                 presenter.showMeetsPosition(context , friendsBean.getMeet());
             }
             StyledDialogTools.disMissStyleDialog();

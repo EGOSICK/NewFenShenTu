@@ -19,13 +19,13 @@ public class AcceptOrderPresenterImpl implements AcceptOrderPresenter {
         this.model = new AcceptOrderModelImpl();
     }
 
-    public void acceptOrder(String id) {
-        model.acceptOrder(id, this);
+    public void acceptOrder(String id , String sendId) {
+        model.acceptOrder(id,sendId, this);
     }
 
     @Override
-    public void acceptOrderSuccess(String msg) {
-        view.acceptOrderSuccess(msg);
+    public void acceptOrderSuccess(String msg,String id,String sendId) {
+        view.acceptOrderSuccess(msg , id , sendId);
     }
 
     @Override

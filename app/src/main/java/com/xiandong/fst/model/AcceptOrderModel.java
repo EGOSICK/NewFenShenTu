@@ -7,5 +7,5 @@ import com.xiandong.fst.presenter.AcceptOrderPresenter;
  */
 
 public interface AcceptOrderModel {
-    void acceptOrder(String id, AcceptOrderPresenter presenter);
+    void acceptOrder(String id, String sendId ,AcceptOrderPresenter presenter);
 }

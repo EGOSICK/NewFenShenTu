@@ -53,6 +53,7 @@ import com.xiandong.fst.model.bean.SearchAddressBean;
 import com.xiandong.fst.presenter.MarkerPresenterImpl;
 import com.xiandong.fst.tools.BaiDuTools.MarkMapTools;
 import com.xiandong.fst.tools.IsOrderInvaild;
+import com.xiandong.fst.tools.WXShareTools;
 import com.xiandong.fst.tools.chat.ChatTools;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.StyledDialogTools;
@@ -191,7 +192,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                     public Intent getLaunchIntent(EMMessage message) {
                         final Intent intent = new Intent();
                         if (message.getChatType() == EMMessage.ChatType.Chat) {
-                            intent.setClass(getApplicationContext(), MyChatActivity.class);
+                            intent.setClass(context, MyChatActivity.class);
                             intent.putExtra("id", message.getFrom());
                         } else {
                             try {
@@ -199,7 +200,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                                 if (!StringUtil.isEmpty(orderid)) {
                                     String sp = orderid.substring(0, 1);
                                     if (StringUtil.isEquals(sp, "m")) {
-                                        intent.setClass(getApplicationContext(), MeetChatActivity.class);
+                                        intent.setClass(context, MeetChatActivity.class);
                                         intent.putExtra("id", orderid.substring(4, orderid.length()));
                                     } else {
                                         final String orderId = orderid.substring(5, orderid.length());
@@ -208,7 +209,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                                             @Override
                                             public void isOrdering(boolean is) {
                                                 if (is){
-                                                    intent.setClass(getApplicationContext(), OrderDetailsActivity.class);
+                                                    intent.setClass(context, OrderDetailsActivity.class);
                                                     intent.putExtra("orderId", orderId);
                                                 }else {
                                                     intent.setClass(context, MyOrdersActivity.class);
@@ -356,7 +357,7 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
         option.setOpenGps(true); // 打开gps
         option.setIsNeedAddress(true);
         option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(10000);
+        option.setScanSpan(5000);
         option.setNeedDeviceDirect(true);
         mLocClient.setLocOption(option);
         mLocClient.start();
@@ -737,7 +738,9 @@ public class MainActivity extends AbsBaseActivity implements MarkerView {
                     case 1:   // 先去分享
                         redDialog.dismiss();
                         if (StringUtil.isEquals(come, Constant.MarkerType.REDPACKETCOME)) {
-                            WechatShareManager shareManager = WechatShareManager.getInstance(context);
+
+                            WechatShareManager shareManager = WechatShareManager.
+                                    getInstance(context);
                             shareManager.shareByWebchat(shareManager.getShareContentPicture(
                                     R.layout.share_red_packet), 1, money, locationAddress);
                             shareManager.registerListener(new WechatShareManager.ShareInterface() {

@@ -23,6 +23,7 @@ public class WithdrawalPresenterImpl implements WithdrawalPresenter {
     WithdrawalModel model;
     WithdrawalView view;
     Dialog dialog;
+
     public WithdrawalPresenterImpl(WithdrawalView view) {
         this.view = view;
         this.model = new WithdrawalModelImpl();
@@ -41,18 +42,12 @@ public class WithdrawalPresenterImpl implements WithdrawalPresenter {
                     if (StringUtil.isEmpty(je)) {
                         CustomToast.customToast(false, "请输入要提现的金额", context);
                     } else {
-                        dialog = StyledDialogTools.showPayPswDialog("输入密码",context, new GridPasswordView.OnPasswordChangedListener() {
+                        dialog = StyledDialogTools.showPayPswDialog("输入密码", context, new GridPasswordView.OnPasswordChangedListener() {
                             @Override
                             public void onTextChanged(String psw) {}
                             @Override
                             public void onInputFinish(String psw) {
-                                if (StringUtil.isEquals(psw, AppDbManager.getLastUser().getUserPayPsw())) {
-                                    model.withdrawal(zh, mz, sj, je, psw, WithdrawalPresenterImpl.this);
-                                } else {
-                                    CustomToast.customToast(false, "密码不正确", context);
-                                }
-//                                StyledDialogTools.disMissStyleDialog();
-//                                StyledDialogTools.disMissDialog();
+                                model.withdrawal(zh, mz, sj, je, psw, WithdrawalPresenterImpl.this);
                                 dialog.dismiss();
                             }
                         });
@@ -63,9 +58,11 @@ public class WithdrawalPresenterImpl implements WithdrawalPresenter {
     }
 
     public void setPayPassword(Context context) {
-        dialog = StyledDialogTools.showPayPswDialog("创建支付密码",context, new GridPasswordView.OnPasswordChangedListener() {
+        dialog = StyledDialogTools.showPayPswDialog("创建支付密码", context, new GridPasswordView.OnPasswordChangedListener() {
             @Override
-            public void onTextChanged(String psw) {}
+            public void onTextChanged(String psw) {
+            }
+
             @Override
             public void onInputFinish(String psw) {
                 model.creatPayPsw(psw, WithdrawalPresenterImpl.this);

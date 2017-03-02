@@ -164,6 +164,9 @@ public class PayActivity extends AbsBaseActivity implements PayView {
 
     public void paySuccess(String msg) {
         CustomToast.customToast(true, msg, context);
+        Intent intent = new Intent();
+        intent.putExtra("result","success");
+        setResult(3, intent);
         finish();
     }
 

@@ -1,6 +1,7 @@
 package com.xiandong.fst.tools.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,6 +18,7 @@ import com.xiandong.fst.presenter.AcceptOrderPresenterImpl;
 import com.xiandong.fst.tools.CustomToast;
 import com.xiandong.fst.tools.XCircleImgTools;
 import com.xiandong.fst.view.AcceptOrderView;
+import com.xiandong.fst.view.activity.OrderDetailsActivity;
 import com.xiandong.fst.view.fragment.RabbitOrdersFragment;
 
 import java.util.List;
@@ -73,6 +75,7 @@ public class RabbitOrdersVpAdapter extends RecyclingPagerAdapter implements Acce
                 lp = list.size() + lp;
             OrderListBean.OrderEntity orderEntity = list.get(lp);
             final String uid = orderEntity.getId();
+            final String sendId = orderEntity.getUid();
             holder.itemROLContentTitleTv.setSelected(true);
             holder.itemROLContentTitleTv.setText(orderEntity.getTitle());
             holder.itemROLContentAddressTv.setSelected(true);
@@ -97,7 +100,7 @@ public class RabbitOrdersVpAdapter extends RecyclingPagerAdapter implements Acce
                         public void onClick(View view) {
                             AcceptOrderPresenterImpl acceptOrderPresenter =
                                     new AcceptOrderPresenterImpl(RabbitOrdersVpAdapter.this);
-                            acceptOrderPresenter.acceptOrder(uid);
+                            acceptOrderPresenter.acceptOrder(uid,sendId);
                         }
                     });
                     break;
@@ -123,8 +126,9 @@ public class RabbitOrdersVpAdapter extends RecyclingPagerAdapter implements Acce
     }
 
     @Override
-    public void acceptOrderSuccess(String msg) {
-        CustomToast.customToast(true, msg, context);
+    public void acceptOrderSuccess(String msg, String id, String sendId) {
+        context.startActivity(new Intent(context , OrderDetailsActivity.class)
+        .putExtra("orderId",id).putExtra("sendId",sendId));
     }
 
     @Override

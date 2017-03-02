@@ -1,5 +1,6 @@
 package com.xiandong.fst.view.activity;
 
+import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -76,7 +77,7 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
     MapView mMapView;
     BaiduMap mBaiduMap;
     @ViewInject(R.id.yueAddressEt)
-    EditText yueAddressEt;
+    TextView yueAddressEt;
 
     @ViewInject(R.id.yueFriendsNumTv)
     TextView yueFriendsNumTv;
@@ -99,7 +100,7 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
 
     YueFriendsAdapter adapter;
     FriendsPresenterImpl presenter;
-
+String city;
     List<String> chooseFriends = new ArrayList<>();
 
     @Override
@@ -108,6 +109,8 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
         yueCommitBtn.setIndeterminateProgressMode(true);
         yueCommitBtn.setText("提交");
         yueCommitBtn.setIdleText("提交");
+        city = getIntent().getStringExtra("city");
+
         presenter = new FriendsPresenterImpl(this);
         presenter.getFriends();
         initViews();
@@ -283,11 +286,14 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
     }
 
     @Event(type = View.OnClickListener.class, value = {R.id.titleBackImg, R.id.yueCommitBtn,
-            R.id.yueTimeView})
+            R.id.yueTimeView , R.id.yueAddressEt})
     private void onCLickListener(View view) {
         switch (view.getId()) {
             case R.id.titleBackImg:
                 finish();
+                break;
+            case R.id.yueAddressEt:
+                startActivityForResult(new Intent(this, SearchAddressActivity.class).putExtra("city", city), 0);
                 break;
             case R.id.yueCommitBtn:
                 CircularProgressButtonTools.showLoding(yueCommitBtn);
@@ -456,5 +462,21 @@ public class YueActivity extends AbsBaseActivity implements FriendsView {
         // MapView的生命周期与Activity同步，当activity销毁时需调用MapView.destroy()
         mMapView.onDestroy();
         super.onDestroy();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null) {
+            if (resultCode == 0) {
+                String searchAddress = data.getStringExtra("address");
+                yueAddressEt.setText(searchAddress);
+                LatLng latLng = data.getParcelableExtra("position");
+                MapStatus.Builder builder = new MapStatus.Builder();
+                builder.target(latLng);
+                builder.zoom(18f); // 支持缩放级别范围为3-18
+                mBaiduMap.animateMapStatus(MapStatusUpdateFactory.newMapStatus(builder.build()));
+            }
+        }
     }
 }
